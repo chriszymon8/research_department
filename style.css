@@ -1,0 +1,43 @@
+body.home {
+    background-color: white;
+}
+
+body.login {
+    background-color: black;
+}
+
+.header{
+    background-color: rgb(23, 78, 26);
+}
+
+a img{
+    width: 15vh;
+}
+
+.parallax-video {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1px;
+  transform-style: preserve-3d;
+}
+
+.parallax-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%; /* taller to allow movement */
+  object-fit: cover;
+  transform: translateZ(-1px) scale(2); /* creates depth */
+  animation: moveUp 10s linear infinite alternate; /* optional continuous upward motion */
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(-30) scale(1.1);
+  }
+  to {
+    transform: translateY(-20px) scale(1.1);
+  }
+}
