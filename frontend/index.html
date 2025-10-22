@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gentry</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/frontend/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     rel="stylesheet"
@@ -12,7 +12,7 @@
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
   />
   <style>
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     header img {
       margin: 0 auto;
     }
@@ -22,45 +22,46 @@
 <body class="home m-0 bg-gray-100">
 
   <!-- HEADER -->
-<header class="color-header bg-gradient-to-r  text-white  sticky top-0 z-50">
+<header class="color-header bg-gradient-to-r  text-white  sticky top-0 z-50 mt-[-55px]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
+    <div class="flex items-center justify-between h-20 relative">
 
-      <!-- Left: Logo + Nav -->
-      <div class="circle flex items-center gap-6 mt-[35px]">
-        <a href="/frontend/index.html" class="flex-shrink-0">
-          <img src="/frontend/gentry_logo_latest_rev.avif" alt="Gentry Logo" class="h-12 mx-auto md:mx-0">
+      <!-- LEFT: HAMBURGER BUTTON -->
+      <button id="mobile-menu-btn" class="absolute left-0 md:hidden focus:outline-none text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <!-- CENTER: LOGO -->
+      <div class="flex-1 flex justify-center md:justify-start mt-[45px]">
+        <a href="/frontend/index.html">
+          <img src="/frontend/gentry_logo_latest_rev.avif" alt="Gentry Logo" class="h-12">
         </a>
-
-        <!-- Desktop Nav -->
-        <nav class="hidden md:flex gap-6 text-lg font-medium">
-          <a href="/frontend/index.html" class="hover:text-yellow-400 transition">Home</a>
-          <a href="/frontend/catalog.html" class="hover:text-yellow-400 transition">Catalog</a>
-          <a href="#" class="hover:text-yellow-400 transition">About</a>
-          <a href="#" class="hover:text-yellow-400 transition">Contact</a>
-        </nav>
       </div>
 
-      <!-- Right: Icons -->
-      <div class="flex items-center gap-4">
-        <!-- Account Icon -->
+      <!-- RIGHT: ACCOUNT ICON -->
+      <div class="right-0 flex items-center md:w-auto ">
         <a href="#" class="hidden md:block">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white hover:text-yellow-400 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.878 6.196a9 9 0 01-13.757 11.608zM12 14a3 3 0 100-6 3 3 0 000 6z" />
           </svg>
         </a>
-
-        <!-- Hamburger -->
-        <button id="mobile-menu-btn" class="md:hidden focus:outline-none text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
       </div>
     </div>
+
+    <!-- DESKTOP NAV -->
+  <nav class="hidden md:flex justify-center items-center text-lg font-medium mt-6">
+    <div class="flex items-center gap-8 bg-black/60 text-white rounded-full px-10 py-3 backdrop-blur-sm">
+      <a href="/frontend/index.html" class="hover:text-yellow-400 transition">Home</a>
+      <a href="/frontend/catalog.html" class="hover:text-yellow-400 transition">Catalog</a>
+      <a href="#" class="hover:text-yellow-400 transition">About</a>
+      <a href="#" class="hover:text-yellow-400 transition">Contact</a>
+    </div>
+  </nav>
   </div>
 
-  <!-- Mobile Side Menu -->
+  <!-- MOBILE SIDE MENU -->
   <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-[#071424]/95 backdrop-blur-md transform -translate-x-full transition-transform duration-300 ease-in-out z-50 shadow-2xl">
     <div class="flex justify-between items-center p-4 border-b border-gray-700">
       <h2 class="text-lg font-bold tracking-wide">MENU</h2>
@@ -76,20 +77,87 @@
       <a href="/frontend/catalog.html" class="px-6 py-3 hover:bg-gray-700 transition">CATALOG</a>
       <a href="#" class="px-6 py-3 hover:bg-gray-700 transition">CONTACT</a>
       <a href="#" class="px-6 py-3 hover:bg-gray-700 transition">ABOUT US</a>
-      <a href="#" class="px-6 py-3 border-t border-gray-700 hover:bg-gray-700 transition">GENTRY CARE</a>
-      <div class="border-t border-gray-700 mt-2"></div>
-      <a href="#" class="px-6 py-3 text-sm text-yellow-400 tracking-wider uppercase">Account</a>
     </nav>
   </div>
 
-  <!-- Overlay -->
+  <!-- OVERLAY -->
   <div id="menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-40 transition-opacity"></div>
 </header>
 
   <!-- Background Section -->
   <div class="background flex flex-col md:flex-row justify-center items-center gap-6 mt-20">
-    <h1 class="text-[80px] md:text-[200px] text-black font-bold text-center">Nigga</h1>
-    <img src="/frontend/nigga.jpg" alt="Sample" class="h-[200px] md:h-[300px]">
+<section class="max-w-7xl mx-auto px-4 py-12">
+  <!-- HEADER -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-900">New Arrivals!</h2>
+      <p class="text-gray-600 mt-2">
+        Be the first to see what just came in the shop. You may also view Pareng Hayb's Instagram
+      </p>
+    </div>
+    <a href="#" class="flex items-center gap-2 text-lg font-semibold text-black mt-4 md:mt-0 hover:text-pink-600 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zM8 7.75A.75.75 0 018.75 7h6.5a.75.75 0 01.75.75v6.5a.75.75 0 01-.75.75h-6.5a.75.75 0 01-.75-.75v-6.5z" />
+      </svg>
+      Instagram Account
+    </a>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- CARD 1 -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
+      <img src="https://cdn.shopify.com/s/files/1/0703/8597/3184/files/watch1.jpg?v=169" alt="Santos De Cartier" class="w-full h-64 object-cover">
+      <div class="p-4 flex items-center justify-between bg-white/90 backdrop-blur-md rounded-xl shadow-sm m-4">
+        <div>
+          <p class="font-semibold text-gray-900">Santos De Cartier Iced Out</p>
+          <p class="text-gray-700 font-medium">₱730,000.00</p>
+        </div>
+        <a href="#" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
+      <img src="https://cdn.shopify.com/s/files/1/0703/8597/3184/files/watch2.jpg?v=169" alt="Rolex Cosmograph" class="w-full h-64 object-cover">
+      <div class="p-4 flex items-center justify-between bg-white/90 backdrop-blur-md rounded-xl shadow-sm m-4">
+        <div>
+          <p class="font-semibold text-gray-900">Rolex Cosmograph Daytona</p>
+          <p class="text-gray-700 font-medium">₱2,380,000.00</p>
+        </div>
+        <a href="#" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
+      <img src="https://cdn.shopify.com/s/files/1/0703/8597/3184/files/watch3.jpg?v=169" alt="Gold Watch" class="w-full h-64 object-cover">
+      <div class="p-4 flex items-center justify-between bg-white/90 backdrop-blur-md rounded-xl shadow-sm m-4">
+        <div>
+          <p class="font-semibold text-gray-900">Your collection’s name</p>
+          <p class="text-gray-700 font-medium">₱19.99</p>
+        </div>
+        <a href="#" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
   </div>
 
   <!-- Foreground Video Section -->
@@ -105,30 +173,10 @@
     </div>
   </section>
 
-<script>
-  const menuBtn = document.getElementById('mobile-menu-btn');
-  const closeBtn = document.getElementById('close-menu');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const overlay = document.getElementById('menu-overlay');
-  const mainContent = document.getElementById('main-content');
+  
 
-  menuBtn.addEventListener('click', () => {
-    mobileMenu.classList.remove('-translate-x-full');
-    overlay.classList.remove('hidden');
-    mainContent.classList.add('blur-sm', 'scale-[0.98]');
-  });
 
-  closeBtn.addEventListener('click', () => {
-    mobileMenu.classList.add('-translate-x-full');
-    overlay.classList.add('hidden');
-    mainContent.classList.remove('blur-sm', 'scale-[0.98]');
-  });
-
-  overlay.addEventListener('click', () => {
-    mobileMenu.classList.add('-translate-x-full');
-    overlay.classList.add('hidden');
-    mainContent.classList.remove('blur-sm', 'scale-[0.98]');
-  });
+<script src="/frontend/index.js">
 </script>
 </body>
 </html>
