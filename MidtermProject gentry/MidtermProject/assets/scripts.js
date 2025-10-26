@@ -1,0 +1,208 @@
+
+// assets/scripts.js
+
+const PRODUCTS = [
+  { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/images/watch1.svg', stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
+  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/images/watch2.svg', stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
+  { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/images/watch3.svg', stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
+  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/images/watch4.svg', stock: true, desc: 'Dual time zone travel watch — iconic “Pepsi” bezel.' },
+  { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/images/watch5.svg', stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },
+  { id: 'rx-6', brand: 'Rolex', name: 'Rolex Explorer 124270', price: 480000, img: 'assets/images/watch6.svg', stock: true, desc: 'Compact 36mm sports watch built for exploration and durability.' },
+  { id: 'rx-7', brand: 'Rolex', name: 'Rolex Milgauss 116400GV', price: 620000, img: 'assets/images/watch7.svg', stock: false, desc: 'Engineered for scientists, anti-magnetic performance.' },
+  { id: 'rx-8', brand: 'Rolex', name: 'Rolex Sea-Dweller 126600', price: 3550000, img: 'assets/images/watch8.svg', stock: true, desc: 'Professional diver rated to 1220 meters, helium escape valve.' },
+  { id: 'rx-9', brand: 'Rolex', name: 'Rolex Sky-Dweller 326934', price: 5200000, img: 'assets/images/watch9.svg', stock: true, desc: 'Annual calendar and dual time — complex yet intuitive.' },
+  { id: 'rx-10', brand: 'Rolex', name: 'Rolex Cellini Time 50509', price: 3200000, img: 'assets/images/watch10.svg', stock: true, desc: 'Refined dress watch with polished case and classic leather strap.' },
+  { id: 'rx-11', brand: 'Rolex', name: 'Rolex Oyster Perpetual 41 124300', price: 3000000, img: 'assets/images/watch11.svg', stock: true, desc: 'Modern entry-level Rolex with colourful dials and reliable movement.' },
+  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/images/watch12.svg', stock: false, desc: 'The President’s watch: 18k yellow gold with day and date apertures.' },
+  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Presage', price: 35000, img: 'assets/images/watch13.svg', stock: true, desc: 'Japanese craftsmanship with enamel dial.' },
+  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
+  { id: 'tg-1', brand: 'Tag Heuer', name: 'Tag Heuer Carrera', price: 150000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty chronograph.' },
+  { id: 'cs-1', brand: 'Casio', name: 'Casio G-Shock', price: 8000, img: 'assets/images/watch16.svg', stock: true, desc: 'Rugged digital watch.' }
+];
+
+function getQueryParam(name){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem('gentry_cart') || '[]');
+}
+function saveCart(cart){
+  localStorage.setItem('gentry_cart', JSON.stringify(cart));
+  updateCartCounts();
+}
+function addToCart(product, qty=1){
+  const cart = getCart();
+  const found = cart.find(i => i.id === product.id);
+  if(found){ found.qty += qty; } else { cart.push({ id: product.id, qty, price: product.price, name: product.name, img: product.img }); }
+  saveCart(cart);
+}
+function updateCartCounts(){
+  const cart = getCart();
+  const count = cart.reduce((s,i)=> s + i.qty, 0);
+  const elTop = document.getElementById('cartCountTop'); if(elTop) elTop.textContent = count;
+  const el = document.getElementById('cartCount'); if(el) el.textContent = count;
+  const elDet = document.getElementById('cartCountDetail'); if(elDet) elDet.textContent = count;
+}
+
+function renderFeatured(){
+  const featured = PRODUCTS.slice(0,4);
+  const grid = document.getElementById('featuredGrid');
+  if(!grid) return;
+  grid.innerHTML = featured.map(p => `
+    <div class="bg-gray-800 p-4 rounded-lg shadow">
+      <a href="product-detail.html?id=${p.id}">
+        <img src="${p.img}" class="w-full h-48 object-cover rounded" />
+        <h4 class="mt-3 font-semibold">${p.name}</h4>
+        <div class="mt-2 flex items-center justify-between">
+          <div class="text-amber-300 font-bold">₱${numberWithCommas(p.price)}</div>
+          <button onclick="addToCartHandler('${p.id}')" class="bg-amber-400 text-black px-3 py-1 rounded text-sm">Add</button>
+        </div>
+      </a>
+    </div>
+  `).join('');
+}
+
+function numberWithCommas(x){ return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+function addToCartHandler(id){
+  const p = PRODUCTS.find(x => x.id === id); if(!p) return alert('Product not found');
+  addToCart(p,1);
+  alert('Added to cart');
+}
+
+function renderProducts(){
+  const brand = getQueryParam('brand');
+  const grid = document.getElementById('productsGrid');
+  const title = document.getElementById('brandTitle');
+  const availabilitySummary = document.getElementById('availabilitySummary');
+  if(title) title.textContent = brand ? `${brand} Collection` : 'All Products';
+
+  let list = PRODUCTS.filter(p => !brand || p.brand.toLowerCase() === brand.toLowerCase());
+
+  if(availabilitySummary) availabilitySummary.textContent = `${list.length} models found`;
+
+  const availability = document.getElementById('availability');
+  const sortBy = document.getElementById('sortBy');
+  const minPrice = document.getElementById('minPrice');
+  const maxPrice = document.getElementById('maxPrice');
+
+  function apply(){
+    let copy = list.slice();
+    const av = availability?.value || 'any';
+    if(av === 'in') copy = copy.filter(x=>x.stock);
+    if(av === 'out') copy = copy.filter(x=>!x.stock);
+    const min = Number(minPrice?.value || 0);
+    const max = Number(maxPrice?.value || 0) || Infinity;
+    copy = copy.filter(x => x.price >= min && x.price <= max);
+    const s = sortBy?.value || 'alpha';
+    if(s === 'alpha') copy.sort((a,b)=> a.name.localeCompare(b.name));
+    if(s === 'price-asc') copy.sort((a,b)=> a.price - b.price);
+    if(s === 'price-desc') copy.sort((a,b)=> b.price - a.price);
+
+    grid.innerHTML = copy.map(p=> `
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <a href="product-detail.html?id=${p.id}">
+          <img src="${p.img}" class="w-full h-44 object-cover rounded" />
+        </a>
+        <h4 class="mt-3 font-semibold">${p.name}</h4>
+        <p class="text-sm text-gray-400 mt-1">${p.brand}</p>
+        <div class="mt-2 flex items-center justify-between">
+          <div class="font-bold text-amber-300">₱${numberWithCommas(p.price)}</div>
+          <div>
+            <button onclick="addToCartHandler('${p.id}')" class="bg-amber-400 text-black px-3 py-1 rounded text-sm">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('applyFilters')?.addEventListener('click', apply);
+  apply();
+}
+
+function renderProductDetail(){
+  const id = getQueryParam('id');
+  const root = document.getElementById('productDetail');
+  if(!root) return;
+  const p = PRODUCTS.find(x => x.id === id);
+  if(!p){ root.innerHTML = '<p>Product not found</p>'; return; }
+  root.innerHTML = `
+    <div>
+      <img src="${p.img}" class="rounded-lg w-full object-cover h-96" />
+      <div class="mt-4 flex gap-3">
+        <img src="${p.img}" class="w-24 h-24 rounded" />
+        <img src="${p.img}" class="w-24 h-24 rounded" />
+        <img src="${p.img}" class="w-24 h-24 rounded" />
+      </div>
+    </div>
+    <div>
+      <h2 class="text-2xl font-semibold">${p.name}</h2>
+      <p class="text-sm text-gray-400 mt-2">${p.brand}</p>
+      <div class="mt-4 text-amber-300 font-bold text-2xl">₱${numberWithCommas(p.price)}</div>
+      <p class="mt-4 text-gray-300">${p.desc}</p>
+      <div class="mt-6 flex gap-3">
+        <button id="addToCartBtn" class="px-6 py-3 bg-amber-400 text-black rounded font-semibold">Add to cart</button>
+        <a href="catalog.html" class="px-6 py-3 border border-gray-700 rounded">Back to catalog</a>
+      </div>
+    </div>
+  `;
+  document.getElementById('addToCartBtn').addEventListener('click', function(){ addToCart(p,1); alert('Added to cart'); });
+}
+
+function renderCartPage(){
+  const container = document.getElementById('cartContainer');
+  if(!container) return;
+  const cart = getCart();
+  if(cart.length === 0){ container.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>'; return; }
+  let total = 0;
+  container.innerHTML = `
+    <div class="space-y-4">
+      ${cart.map(item=>{
+        total += item.price * item.qty;
+        return `
+          <div class="flex items-center justify-between bg-gray-900 p-3 rounded">
+            <div class="flex items-center gap-4">
+              <img src="${item.img}" class="w-20 h-20 object-cover rounded" />
+              <div>
+                <div class="font-semibold">${item.name}</div>
+                <div class="text-sm text-gray-400">₱${numberWithCommas(item.price)} x ${item.qty}</div>
+              </div>
+            </div>
+            <div>
+              <button onclick="removeFromCart('${item.id}')" class="text-sm text-red-400">Remove</button>
+            </div>
+          </div>
+        `
+      }).join('')}
+
+      <div class="mt-4 p-4 bg-gray-900 rounded flex items-center justify-between">
+        <div class="text-gray-400">Total</div>
+        <div class="font-bold text-amber-300">₱${numberWithCommas(total)}</div>
+      </div>
+
+      <div class="mt-4 flex gap-3">
+        <button onclick="checkout()" class="px-6 py-3 bg-amber-400 text-black rounded">Checkout</button>
+        <button onclick="clearCart()" class="px-6 py-3 border border-gray-700 rounded">Clear</button>
+      </div>
+    </div>
+  `;
+}
+
+function removeFromCart(id){
+  let cart = getCart();
+  cart = cart.filter(i=> i.id !== id);
+  saveCart(cart);
+  renderCartPage();
+}
+function clearCart(){ localStorage.removeItem('gentry_cart'); updateCartCounts(); renderCartPage(); }
+function checkout(){ alert('Demo checkout — implement payment gateway in production.'); }
+
+document.addEventListener('DOMContentLoaded', function(){
+  updateCartCounts();
+  renderFeatured();
+  renderProducts();
+  renderProductDetail();
+  renderCartPage();
+});
