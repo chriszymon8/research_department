@@ -16,17 +16,17 @@ const PRODUCTS = [
 
   //  Cartier
   { id: 'ct-1', brand: 'Cartier', name: 'Cartier Santos De Cartier Automatic', price: 446299, img: 'assets/images/watch13.svg', stock: true, desc: 'Japanese craftsmanship with enamel dial.' },
-  { id: 'ct-2', brand: 'Cartier', name: 'Seiko Prospex Diver', price: 45000, img: 'assets/images/watch13.svg', stock: true, desc: 'Professional dive capabilities and robust design.' },
-  { id: 'ct-3', brand: 'Cartier', name: 'Seiko 5 Sports', price: 12000, img: 'assets/images/watch13.svg', stock: true, desc: 'Affordable automatic with classic design.' },
-  { id: 'ct-4', brand: 'Cartier', name: 'Seiko Presage Sharp Edged', price: 52000, img: 'assets/images/watch13.svg', stock: false, desc: 'Modern presage with textured dial.' },
+  { id: 'ct-2', brand: 'Cartier', name: 'Santos de Cartier watch(Yellow Gold)', price: 1991135, img: 'assets/images/watch13.svg', stock: true, desc: 'Santos de Cartier watch, small model, quartz movement.' },
+  { id: 'ct-3', brand: 'Cartier', name: 'Santos de Cartier watch(Two Tone)', price: 688315, img: 'assets/images/watch13.svg', stock: true, desc: 'Manufacture mechanical movement with automatic winding.' },
+  { id: 'ct-4', brand: 'Cartier', name: 'Tank Must de Cartier watch', price: 222605, img: 'assets/images/watch13.svg', stock: false, desc: 'Tank Must watch, large model, SolarBeat™ photovoltaic movement.' },
 
 
 
   // Patek
-  { id: 'pp-1', brand: 'Patek', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
-  { id: 'pp-2', brand: 'Patek', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/images/watch14.svg', stock: true, desc: 'The Moonwatch — legendary chronograph.' },
-  { id: 'pp-3', brand: 'Patek', name: 'Omega Constellation', price: 275000, img: 'assets/images/watch14.svg', stock: false, desc: 'Elegant integrated bracelet design.' },
-  { id: 'pp-4', brand: 'Patek', name: 'Omega De Ville', price: 240000, img: 'assets/images/watch14.svg', stock: true, desc: 'Classic dress collection.' },
+  { id: 'pp-1', brand: 'Patek', name: 'Patek Philippe Nautilus(White Gold)', price: 4523000, img: 'assets/images/watch14.svg', stock: true, desc: 'A reinterpretation of a cult design, this model is distinguished by its white gold case and bracelet.' },
+  { id: 'pp-2', brand: 'Patek', name: 'Patek Philippe Nautilus(Rose Gold)', price: 5383000, img: 'assets/images/watch14.svg', stock: true, desc: 'Sunburst brown with black-gradient rim, horizontally embossed, rose gold applied baton-style hour markers with white luminescent coating.' },
+  { id: 'pp-3', brand: 'Patek', name: 'Patek Philippe Nautilus(Steel)', price: 3462000, img: 'assets/images/watch14.svg', stock: false, desc: 'Sunburst blue-gray with black-gradient rim, horizontally embossed, white gold applied baton-style hour markers with white luminescent coating.' },
+  { id: 'pp-4', brand: 'Patek', name: 'Patek Philippe Aquanaut(Rose Gold)', price: 4903000, img: 'assets/images/watch14.svg', stock: true, desc: 'Sunburst brown with black-gradient rim, embossed Aquanaut pattern, rose gold applied numerals with white luminescent coating.' },
   
   // Omega
   { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
@@ -35,14 +35,14 @@ const PRODUCTS = [
   { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/images/watch14.svg', stock: true, desc: 'Classic dress collection.' },
 
   // Audemars
-  { id: 'ap-1', brand: 'Audemars', name: 'Tag Heuer Carrera', price: 150000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty chronograph.' },
-  { id: 'ap-2', brand: 'Audemars', name: 'Tag Heuer Monaco', price: 220000, img: 'assets/images/watch15.svg', stock: false, desc: 'Iconic square case, racing heritage.' },
-  { id: 'ap-3', brand: 'Audemars', name: 'Tag Heuer Aquaracer', price: 95000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty diver with reliable movement.' },
+  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/images/watch15.svg', stock: true, desc: 'Hammered 18-carat white gold case, glareproofed sapphire crystal.' },
+  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/images/watch15.svg', stock: false, desc: 'Hammered 18-carat yellow gold case, glareproofed sapphire crystal.' },
+  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/images/watch15.svg', stock: true, desc: 'Warm 18-carat pink gold tones sit in concert with a cool titanium bezel and a contemporary grey "Méga Tapisserie" dial matching the calfskin strap.' },
 
   // Seiko
   { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/images/watch16.svg', stock: true, desc: 'Rugged digital watch.' },
-  { id: 'sk-2', brand: 'Seiko', name: 'Casio Edifice', price: 12000, img: 'assets/images/watch16.svg', stock: true, desc: 'Analog-digital with sporty look.' },
-  { id: 'sk-3', brand: 'Seiko', name: 'Casio Pro Trek', price: 18000, img: 'assets/images/watch16.svg', stock: false, desc: 'Outdoor-focused features and durability.' }
+  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage(Enamel Dial)', price: 84000, img: 'assets/images/watch16.svg', stock: true, desc: 'This enamel watch dial is manufactured by firing it at a high temperature.' },
+  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster(Green Dial)', price: 92800, img: 'assets/images/watch16.svg', stock: false, desc: 'Diver Watch.' }
 ];
 
 function getQueryParam(name){
