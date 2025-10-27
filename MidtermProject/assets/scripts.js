@@ -1,7 +1,6 @@
-
-// assets/scripts.js
-
 const PRODUCTS = [
+
+  //Rolex
   { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/images/watch1.svg', stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
   { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/images/watch2.svg', stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
   { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/images/watch3.svg', stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
@@ -13,11 +12,37 @@ const PRODUCTS = [
   { id: 'rx-9', brand: 'Rolex', name: 'Rolex Sky-Dweller 326934', price: 5200000, img: 'assets/images/watch9.svg', stock: true, desc: 'Annual calendar and dual time — complex yet intuitive.' },
   { id: 'rx-10', brand: 'Rolex', name: 'Rolex Cellini Time 50509', price: 3200000, img: 'assets/images/watch10.svg', stock: true, desc: 'Refined dress watch with polished case and classic leather strap.' },
   { id: 'rx-11', brand: 'Rolex', name: 'Rolex Oyster Perpetual 41 124300', price: 3000000, img: 'assets/images/watch11.svg', stock: true, desc: 'Modern entry-level Rolex with colourful dials and reliable movement.' },
-  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/images/watch12.svg', stock: false, desc: 'The President’s watch: 18k yellow gold with day and date apertures.' },
-  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Presage', price: 35000, img: 'assets/images/watch13.svg', stock: true, desc: 'Japanese craftsmanship with enamel dial.' },
-  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
-  { id: 'tg-1', brand: 'Tag Heuer', name: 'Tag Heuer Carrera', price: 150000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty chronograph.' },
-  { id: 'cs-1', brand: 'Casio', name: 'Casio G-Shock', price: 8000, img: 'assets/images/watch16.svg', stock: true, desc: 'Rugged digital watch.' }
+  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/images/watch12.svg', stock: false, desc: "The President’s watch: 18k yellow gold with day and date apertures." },
+
+  //  Cartier
+  { id: 'ct-1', brand: 'Cartier', name: 'Cartier Santos De Cartier Automatic', price: 446299, img: 'assets/images/watch13.svg', stock: true, desc: 'Japanese craftsmanship with enamel dial.' },
+  { id: 'ct-2', brand: 'Cartier', name: 'Seiko Prospex Diver', price: 45000, img: 'assets/images/watch13.svg', stock: true, desc: 'Professional dive capabilities and robust design.' },
+  { id: 'ct-3', brand: 'Cartier', name: 'Seiko 5 Sports', price: 12000, img: 'assets/images/watch13.svg', stock: true, desc: 'Affordable automatic with classic design.' },
+  { id: 'ct-4', brand: 'Cartier', name: 'Seiko Presage Sharp Edged', price: 52000, img: 'assets/images/watch13.svg', stock: false, desc: 'Modern presage with textured dial.' },
+
+
+
+  // Patek
+  { id: 'pp-1', brand: 'Patek', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
+  { id: 'pp-2', brand: 'Patek', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/images/watch14.svg', stock: true, desc: 'The Moonwatch — legendary chronograph.' },
+  { id: 'pp-3', brand: 'Patek', name: 'Omega Constellation', price: 275000, img: 'assets/images/watch14.svg', stock: false, desc: 'Elegant integrated bracelet design.' },
+  { id: 'pp-4', brand: 'Patek', name: 'Omega De Ville', price: 240000, img: 'assets/images/watch14.svg', stock: true, desc: 'Classic dress collection.' },
+  
+  // Omega
+  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/images/watch14.svg', stock: true, desc: 'Diver watch with co-axial escapement.' },
+  { id: 'om-2', brand: 'Omega', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/images/watch14.svg', stock: true, desc: 'The Moonwatch — legendary chronograph.' },
+  { id: 'om-3', brand: 'Omega', name: 'Omega Constellation', price: 275000, img: 'assets/images/watch14.svg', stock: false, desc: 'Elegant integrated bracelet design.' },
+  { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/images/watch14.svg', stock: true, desc: 'Classic dress collection.' },
+
+  // Audemars
+  { id: 'ap-1', brand: 'Audemars', name: 'Tag Heuer Carrera', price: 150000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty chronograph.' },
+  { id: 'ap-2', brand: 'Audemars', name: 'Tag Heuer Monaco', price: 220000, img: 'assets/images/watch15.svg', stock: false, desc: 'Iconic square case, racing heritage.' },
+  { id: 'ap-3', brand: 'Audemars', name: 'Tag Heuer Aquaracer', price: 95000, img: 'assets/images/watch15.svg', stock: true, desc: 'Sporty diver with reliable movement.' },
+
+  // Seiko
+  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/images/watch16.svg', stock: true, desc: 'Rugged digital watch.' },
+  { id: 'sk-2', brand: 'Seiko', name: 'Casio Edifice', price: 12000, img: 'assets/images/watch16.svg', stock: true, desc: 'Analog-digital with sporty look.' },
+  { id: 'sk-3', brand: 'Seiko', name: 'Casio Pro Trek', price: 18000, img: 'assets/images/watch16.svg', stock: false, desc: 'Outdoor-focused features and durability.' }
 ];
 
 function getQueryParam(name){
