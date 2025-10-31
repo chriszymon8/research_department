@@ -1,12 +1,14 @@
 // assets/scripts.js
-// Cleaned & robust version using your PRODUCTS (fixed a small filename issue and added defensive checks)
+// Updated: mobile menu, no try/catch in init, optional external JSON loader
+// Drop-in replacement for your existing scripts.js
 
-const PRODUCTS = [
-  // Rolex
+// --- Product data (can be replaced by loadProductsFromJSON) ---
+let PRODUCTS = [
+  // Rolex (same as your list)
   { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/watches/m124060.avif', stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
   { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
   { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/watches/m126334.avif', stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
-  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', stock: true, desc: 'Dual time zone travel watch — iconic “Pepsi” bezel.' },
+  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', stock: true, desc: 'Dual time zone travel watch — iconic \"Pepsi\" bezel.' },
   { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/watches/m126622.avif', stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },
   { id: 'rx-6', brand: 'Rolex', name: 'Rolex Explorer 124270', price: 480000, img: 'assets/watches/m124270.avif', stock: true, desc: 'Compact 36mm sports watch built for exploration and durability.' },
   { id: 'rx-7', brand: 'Rolex', name: 'Rolex Milgauss 116400GV', price: 620000, img: 'assets/watches/116400GV.jpg', stock: false, desc: 'Engineered for scientists, anti-magnetic performance.' },
@@ -22,7 +24,7 @@ const PRODUCTS = [
   { id: 'ct-3', brand: 'Cartier', name: 'Santos de Cartier watch (Two Tone)', price: 688315, img: 'assets/watches/cartier3.avif', stock: true, desc: 'Manufacture mechanical movement with automatic winding.' },
   { id: 'ct-4', brand: 'Cartier', name: 'Tank Must de Cartier watch', price: 222605, img: 'assets/watches/cartier4.avif', stock: false, desc: 'Tank Must watch, large model, SolarBeat™ movement.' },
 
-  // Patek (fixed filename)
+  // Patek
   { id: 'pp-1', brand: 'Patek', name: 'Patek Philippe Nautilus (White Gold)', price: 4523000, img: 'assets/watches/PatekPhilippe1.avif', stock: true, desc: 'White gold case and bracelet.' },
   { id: 'pp-2', brand: 'Patek', name: 'Patek Philippe Nautilus (Rose Gold)', price: 5383000, img: 'assets/watches/PatekPhilippe2.avif', stock: true, desc: 'Rose gold with sunburst brown dial.' },
   { id: 'pp-3', brand: 'Patek', name: 'Patek Philippe Nautilus (Steel)', price: 3462000, img: 'assets/watches/PatekPhilippe3.avif', stock: false, desc: 'Steel version with embossed dial.' },
@@ -45,47 +47,44 @@ const PRODUCTS = [
   { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', stock: false, desc: 'Professional diver watch.' }
 ];
 
-//
-// Helpers & cart (localStorage)
-//
+// ----------------- Utilities & Cart -----------------
 function getQueryParam(name){
-  try {
-    const params = new URLSearchParams(window.location.search);
-    return params.get(name);
-  } catch (e) {
-    console.error('getQueryParam error', e);
-    return null;
-  }
+  const params = new URLSearchParams(window.location.search || '');
+  return params.get(name);
 }
 
 function getCart(){
-  try { return JSON.parse(localStorage.getItem('gentry_cart') || '[]'); }
-  catch(e){ console.error('Cart parse error', e); localStorage.removeItem('gentry_cart'); return []; }
+  const raw = localStorage.getItem('gentry_cart');
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    // if parse fails simply reset
+    localStorage.removeItem('gentry_cart');
+    return [];
+  }
 }
 function saveCart(cart){
-  try { localStorage.setItem('gentry_cart', JSON.stringify(cart)); updateCartCounts(); }
-  catch(e){ console.error('saveCart error', e); }
+  localStorage.setItem('gentry_cart', JSON.stringify(cart));
+  updateCartCounts();
 }
 function addToCart(product, qty=1){
-  if(!product || !product.id) return;
+  if (!product || !product.id) return;
   const cart = getCart();
   const found = cart.find(i => i.id === product.id);
-  if(found){ found.qty += qty; } else { cart.push({ id: product.id, qty, price: product.price, name: product.name, img: product.img }); }
+  if(found) found.qty += qty; else cart.push({ id: product.id, qty, price: product.price, name: product.name, img: product.img });
   saveCart(cart);
 }
 function updateCartCounts(){
   const cart = getCart();
-  const count = cart.reduce((s,i)=> s + (i.qty || 0), 0);
+  const count = cart.reduce((s,i)=> s + (i.qty||0), 0);
   const elTop = document.getElementById('cartCountTop'); if(elTop) elTop.textContent = count;
   const el = document.getElementById('cartCount'); if(el) el.textContent = count;
   const elDet = document.getElementById('cartCountDetail'); if(elDet) elDet.textContent = count;
 }
+function numberWithCommas(x){ return (x||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
-function numberWithCommas(x){ return (x || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-
-//
-// Featured (index)
-//
+// ----------------- Rendering functions -----------------
 function renderFeatured(){
   const grid = document.getElementById('featuredGrid');
   if(!grid) return;
@@ -111,9 +110,6 @@ function addToCartHandler(id){
   alert('Added to cart');
 }
 
-//
-// Products list (catalog / brand)
-//
 function renderProducts(){
   const brand = getQueryParam('brand');
   const grid = document.getElementById('productsGrid');
@@ -164,13 +160,6 @@ function renderProducts(){
   apply();
 }
 
-//
-// Product detail (robust)
-//
-// - works even when opened directly without id (shows friendly message)
-// - uses fallback image if p.img missing
-// - disables Add button when out of stock
-//
 function renderProductDetail(){
   const id = getQueryParam('id');
   const root = document.getElementById('productDetail');
@@ -236,9 +225,6 @@ function renderProductDetail(){
   }
 }
 
-//
-// Cart page rendering
-//
 function renderCartPage(){
   const container = document.getElementById('cartContainer');
   if(!container) return;
@@ -287,17 +273,137 @@ function removeFromCart(id){
 function clearCart(){ localStorage.removeItem('gentry_cart'); updateCartCounts(); renderCartPage(); }
 function checkout(){ alert('Demo checkout — implement payment gateway in production.'); }
 
-//
-// Boot
-//
-document.addEventListener('DOMContentLoaded', function(){
-  try {
-    updateCartCounts();
-    renderFeatured();
-    renderProducts();
-    renderProductDetail();
-    renderCartPage();
-  } catch (e) {
-    console.error('Initialization error', e);
+// ----------------- Mobile menu (functioning) -----------------
+function initMobileMenu(){
+  const btn = document.getElementById('mobileMenuBtn');
+  if(!btn) return;
+
+  // create menu container (only once)
+  let mobileMenu = document.getElementById('mobileSiteMenu');
+  if(!mobileMenu){
+    mobileMenu = document.createElement('div');
+    mobileMenu.id = 'mobileSiteMenu';
+    // base styles for mobile overlay (Tailwind classes as string)
+    mobileMenu.className = 'fixed inset-0 z-50 bg-black/70 hidden';
+    mobileMenu.innerHTML = `
+      <div class="absolute right-0 top-0 w-3/4 max-w-xs h-full bg-gray-900 p-6 shadow-lg overflow-auto">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-400 flex items-center justify-center font-bold text-black">GT</div>
+            <div>
+              <div class="font-semibold">The Gentry</div>
+              <div class="text-xs text-gray-400">Luxury timepieces</div>
+            </div>
+          </div>
+          <button id="mobileCloseBtn" aria-label="Close menu" class="text-gray-300 text-2xl">✕</button>
+        </div>
+        <nav class="flex flex-col gap-3 text-lg">
+          <a href="index.html" class="py-2 px-2 rounded hover:bg-gray-800">Home</a>
+          <a href="catalog.html" class="py-2 px-2 rounded hover:bg-gray-800">Catalog</a>
+          <a href="products.html?brand=Rolex" class="py-2 px-2 rounded hover:bg-gray-800">Rolex</a>
+          <a href="products.html?brand=Cartier" class="py-2 px-2 rounded hover:bg-gray-800">Cartier</a>
+          <a href="products.html?brand=Patek" class="py-2 px-2 rounded hover:bg-gray-800">Patek</a>
+          <a href="about.html" class="py-2 px-2 rounded hover:bg-gray-800">About</a>
+          <a href="cart.html" class="py-2 px-2 rounded hover:bg-gray-800">Cart</a>
+          <a href="login.html" class="py-2 px-2 rounded hover:bg-gray-800">Sign in</a>
+        </nav>
+        <div class="mt-6 text-sm text-gray-400">Free shipping on orders over ₱150,000</div>
+      </div>
+    `;
+    document.body.appendChild(mobileMenu);
+
+    // close on clicking overlay outside panel
+    mobileMenu.addEventListener('click', function(e){
+      if(e.target === mobileMenu) toggleMobileMenu(false);
+    });
+    // close button inside
+    document.getElementById('mobileCloseBtn')?.addEventListener('click', ()=> toggleMobileMenu(false));
+    // close on Escape key
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) toggleMobileMenu(false);
+    });
   }
+
+  btn.addEventListener('click', function(){
+    const isHidden = mobileMenu.classList.contains('hidden');
+    toggleMobileMenu(isHidden);
+  });
+}
+
+function toggleMobileMenu(show){
+  const mobileMenu = document.getElementById('mobileSiteMenu');
+  if(!mobileMenu) return;
+  if(show){
+    mobileMenu.classList.remove('hidden');
+    // small body lock
+    document.documentElement.style.overflow = 'hidden';
+  } else {
+    mobileMenu.classList.add('hidden');
+    document.documentElement.style.overflow = '';
+  }
+}
+
+// ----------------- External product loader (optional) -----------------
+/*
+  Usage:
+    loadProductsFromJSON('assets/products.json')
+      .then(() => { renderProducts(); renderFeatured(); })
+      .catch(() => { /* fallback to embedded PRODUCTS *\/ });
+  This function does not use try/catch blocks; it returns a Promise.
+*/
+function loadProductsFromJSON(url){
+  if(!url) return Promise.reject('No URL provided');
+  return fetch(url)
+    .then(response => {
+      if(!response.ok) return Promise.reject('Fetch failed: ' + response.status);
+      return response.json();
+    })
+    .then(json => {
+      if(Array.isArray(json) && json.length) {
+        PRODUCTS = json.map(p => ({
+          // normalize minimal fields
+          id: p.id || ('p-'+Math.random().toString(36).slice(2,9)),
+          brand: p.brand || p.make || 'Unknown',
+          name: p.name || p.title || 'Untitled',
+          price: Number(p.price) || 0,
+          img: p.img || p.image || 'assets/watches/placeholder.avif',
+          stock: (typeof p.stock === 'boolean') ? p.stock : true,
+          desc: p.desc || p.description || ''
+        }));
+        return PRODUCTS;
+      } else {
+        return Promise.reject('Invalid JSON structure');
+      }
+    });
+}
+
+// ----------------- Init (NO try/catch) -----------------
+document.addEventListener('DOMContentLoaded', function(){
+  // initialize mobile menu (will no-op if no button)
+  initMobileMenu();
+
+  // Optionally attempt to load external JSON first (uncomment to enable)
+  // loadProductsFromJSON('assets/products.json').then(()=>{
+  //   // re-render UI with fetched data
+  //   updateCartCounts();
+  //   renderFeatured();
+  //   renderProducts();
+  //   renderProductDetail();
+  //   renderCartPage();
+  // }).catch(err=>{
+  //   // silent fallback to embedded PRODUCTS if fetch fails
+  //   console.info('products.json not loaded, using embedded PRODUCTS —', err);
+  //   updateCartCounts();
+  //   renderFeatured();
+  //   renderProducts();
+  //   renderProductDetail();
+  //   renderCartPage();
+  // });
+
+  // Default: use embedded PRODUCTS
+  updateCartCounts();
+  renderFeatured();
+  renderProducts();
+  renderProductDetail();
+  renderCartPage();
 });
