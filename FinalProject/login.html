@@ -19,9 +19,28 @@
       </form>
 
       <p class="text-gray-400 text-sm mt-4">Don't have an account? <a href="register.html" class="text-amber-300">Register</a></p>
+
+      <div id="loginMsg" class="mt-4 text-sm text-red-400"></div>
     </div>
   </main>
 
-  <script src="assets/register.js"></script>
+  <script src="assets/scripts.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const res = loginUser({ email, password });
+      if(!res.ok){
+        document.getElementById('loginMsg').textContent = res.error;
+        return;
+      }
+      // success: redirect home (or previous page)
+      window.location.href = 'index.html';
+    });
+
+    // ensure UI updates if loaded standalone
+    document.addEventListener('DOMContentLoaded', function(){ updateAuthUI(); });
+  </script>
 </body>
 </html>

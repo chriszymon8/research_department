@@ -377,6 +377,197 @@ function loadProductsFromJSON(url){
     });
 }
 
+// ----------------- Auth (client-side demo) -----------------
+// Uses localStorage:
+// - "gentry_users" -> array of registered users [{id, name, email, password}] (demo, no hashing)
+// - "gentry_user"  -> current logged-in user {id, name, email} or null
+
+function getUsers(){
+  const raw = localStorage.getItem('gentry_users');
+  if(!raw) return [];
+  try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_users'); return []; }
+}
+function saveUsers(list){
+  localStorage.setItem('gentry_users', JSON.stringify(list));
+}
+
+function setCurrentUser(user){
+  if(!user) {
+    localStorage.removeItem('gentry_user');
+  } else {
+    localStorage.setItem('gentry_user', JSON.stringify(user));
+  }
+  updateAuthUI();
+}
+
+function getCurrentUser(){
+  const raw = localStorage.getItem('gentry_user');
+  if(!raw) return null;
+  try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_user'); return null; }
+}
+
+// simple id generator
+function uid(prefix='u'){ return prefix + '-' + Math.random().toString(36).slice(2,9); }
+
+// Register function (call from register.html)
+function registerUser({ name, email, password }){
+  if(!name || !email || !password) return { ok:false, error: 'Missing fields' };
+  const users = getUsers();
+  const exists = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  if(exists) return { ok:false, error: 'Email already registered' };
+  const user = { id: uid('u'), name, email, password }; // demo: store plain password (not for prod)
+  users.push(user);
+  saveUsers(users);
+  // auto-login
+  setCurrentUser({ id: user.id, name: user.name, email: user.email });
+  return { ok:true, user };
+}
+
+// Login function (call from login.html)
+function loginUser({ email, password }){
+  if(!email || !password) return { ok:false, error: 'Missing fields' };
+  const users = getUsers();
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+  if(!user) return { ok:false, error: 'Invalid credentials' };
+  setCurrentUser({ id: user.id, name: user.name, email: user.email });
+  return { ok:true, user };
+}
+
+// Logout
+function logoutUser(){
+  setCurrentUser(null);
+  // optional: clear guest cart or keep it — we keep it
+  // redirect optionally to homepage
+  const nav = document.location.pathname;
+  if(!nav.endsWith('index.html') && !nav.endsWith('/')) {
+    // stay on page but update UI
+  }
+}
+
+// ----------------- Account UI -----------------
+function updateAuthUI(){
+  const area = document.getElementById('accountArea');
+  if(!area) return;
+  const current = getCurrentUser();
+
+  // remove existing dynamic elements if any
+  const existingBtn = document.getElementById('accountBtn');
+  const existingSignIn = document.getElementById('signInBtn');
+  const menu = document.getElementById('accountMenu');
+
+  // show Sign in if not logged
+  if(!current){
+    if(!existingSignIn){
+      const sign = document.createElement('a');
+      sign.id = 'signInBtn';
+      sign.href = 'login.html';
+      sign.className = 'ml-4 px-4 py-2 border border-gray-700 rounded-md';
+      sign.textContent = 'Sign in';
+      area.prepend(sign);
+    }
+    if(existingBtn) existingBtn.remove();
+    if(menu) menu.classList.add('hidden');
+    return;
+  }
+
+  // logged-in: remove signInBtn, create accountBtn if missing
+  if(existingSignIn) existingSignIn.remove();
+
+  if(!existingBtn){
+    const btn = document.createElement('button');
+    btn.id = 'accountBtn';
+    btn.className = 'ml-4 flex items-center gap-2 rounded-md px-3 py-1 bg-gray-800';
+    // avatar (initials)
+    const avatar = document.createElement('span');
+    avatar.id = 'accountAvatar';
+    avatar.className = 'w-8 h-8 rounded-full flex items-center justify-center bg-amber-400 text-black font-semibold';
+    avatar.textContent = initialsFromName(current.name || current.email);
+    btn.appendChild(avatar);
+
+    const nameSpan = document.createElement('span');
+    nameSpan.id = 'accountNameShort';
+    nameSpan.className = 'hidden md:inline-block text-sm text-gray-200';
+    nameSpan.textContent = shortName(current.name || current.email);
+    btn.appendChild(nameSpan);
+
+    area.prepend(btn);
+
+    // ensure accountMenu exists
+    let menuEl = document.getElementById('accountMenu');
+    if(!menuEl){
+      menuEl = document.createElement('div');
+      menuEl.id = 'accountMenu';
+      menuEl.className = 'absolute right-0 mt-2 w-64 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 hidden z-30';
+      area.appendChild(menuEl);
+    }
+
+    // click toggles menu
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleAccountMenu();
+    });
+
+    // close when clicking outside
+    document.addEventListener('click', function(evt){
+      const menu = document.getElementById('accountMenu');
+      const btn = document.getElementById('accountBtn');
+      if(!menu || !btn) return;
+      if(menu.classList.contains('hidden')) return;
+      const isInside = btn.contains(evt.target) || menu.contains(evt.target);
+      if(!isInside) { menu.classList.add('hidden'); }
+    });
+  }
+
+  // fill menu content
+  const menuEl = document.getElementById('accountMenu');
+  if(menuEl){
+    menuEl.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center font-semibold text-black">${initialsFromName(current.name || current.email)}</div>
+        <div>
+          <div class="font-semibold">${current.name || current.email}</div>
+          <div class="text-xs text-gray-400">${current.email}</div>
+        </div>
+      </div>
+      <div class="mt-3 border-t border-gray-700 pt-3 space-y-2">
+        <a href="account.html" class="block py-2 px-2 rounded hover:bg-gray-900">Account details</a>
+        <a href="orders.html" class="block py-2 px-2 rounded hover:bg-gray-900">Orders</a>
+        <button id="signOutBtn" class="w-full mt-2 py-2 bg-red-600 text-white rounded">Sign out</button>
+      </div>
+    `;
+    // attach sign out
+    const sOut = document.getElementById('signOutBtn');
+    if(sOut) sOut.addEventListener('click', function(){
+      logoutUser();
+      // close menu
+      const m = document.getElementById('accountMenu'); if(m) m.classList.add('hidden');
+      // optional: redirect to index
+      window.location.href = 'index.html';
+    });
+  }
+}
+
+function initialsFromName(name){
+  if(!name) return 'U';
+  const parts = name.trim().split(/\s+/).slice(0,2);
+  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+function shortName(name){
+  if(!name) return '';
+  const n = name.split(' ')[0];
+  return n.length > 12 ? n.slice(0,12) + '...' : n;
+}
+
+function toggleAccountMenu(){
+  const menu = document.getElementById('accountMenu');
+  if(!menu) return;
+  menu.classList.toggle('hidden');
+}
+
+// call this once at boot (your DOMContentLoaded block should call updateAuthUI())
+
+
 // ----------------- Init (NO try/catch) -----------------
 document.addEventListener('DOMContentLoaded', function(){
   // initialize mobile menu (will no-op if no button)
@@ -406,4 +597,6 @@ document.addEventListener('DOMContentLoaded', function(){
   renderProducts();
   renderProductDetail();
   renderCartPage();
+  updateAuthUI(); // <-- ensure this runs
+  initMobileMenu();
 });
