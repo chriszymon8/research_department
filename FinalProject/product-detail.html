@@ -21,7 +21,38 @@
     <div id="productDetail" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- JS will populate this section -->
     </div>
+
+    <!-- Suggestions (rendered by JS into #productSuggestions) -->
+    <section id="productSuggestionsSection" class="max-w-6xl mx-auto px-6 mt-12 hidden">
+      <h3 class="text-xl font-semibold mb-4">You may also like</h3>
+      <div id="productSuggestions" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- JS will inject recommended products here -->
+      </div>
+    </section>
   </main>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-gray-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h4 class="font-semibold">The Gentry Timepieces</h4>
+        <p class="text-gray-400 mt-2">Curated collection of luxury watches. Company-quality design ready for your midterm submission.</p>
+      </div>
+      <div>
+        <h5 class="font-semibold">Company</h5>
+        <ul class="mt-2 text-gray-400 space-y-1 text-sm">
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold">Contact</h5>
+        <p class="text-gray-400 text-sm mt-2">Email: hello@gentrytime.com</p>
+        <p class="text-gray-400 text-sm">Phone: +63 912 345 6789</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="assets/scripts.js"></script>
 </body>

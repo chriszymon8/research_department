@@ -7,86 +7,86 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-gray-100">
-  <!-- HEADER -->
-  <header class="bg-[linear-gradient(90deg,#0b1220,rgba(10,10,10,0.6))]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        <a href="index.html" class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 via-amber-400 to-yellow-300 flex items-center justify-center shadow-lg">
-            <span class="font-bold text-black">GT</span>
-          </div>
-          <div>
-            <h1 class="text-xl font-semibold">The Gentry Timepieces</h1>
-            <p class="text-xs text-gray-400 -mt-1">Refined luxury, timeless design</p>
-          </div>
-        </a>
-
-        <nav class="hidden md:flex items-center gap-6" id="mainNav">
-          <a href="catalog.html" class="hover:underline">Catalog</a>
-          <a href="about.html" class="hover:underline">About</a>
-          <a href="cart.html" class="relative">
-            Cart <span id="cartCountTop" class="ml-1 inline-block bg-amber-400 text-black px-2 rounded-full text-xs">0</span>
-          </a>
-          <div id="accountArea" class="relative">
-            <a href="login.html" id="signInBtn" class="ml-4 px-4 py-2 border border-gray-700 rounded-md">Sign in</a>
-            <div id="accountMenu" class="absolute right-0 mt-2 w-64 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 hidden z-30"></div>
-          </div>
-        </nav>
-      </div>
+  <header class="px-6 py-6 border-b border-gray-800">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="font-semibold">The Gentry Timepieces</a>
+      <nav class="flex gap-4">
+        <a href="catalog.html">Catalog</a>
+        <a href="cart.html">Cart (<span id="cartCountDetail">0</span>)</a>
+      </nav>
     </div>
   </header>
 
-  <!-- ORDERS SECTION -->
-  <main class="max-w-5xl mx-auto px-4 py-12">
-    <h2 class="text-3xl font-bold mb-6">My Orders</h2>
-    <div id="ordersList" class="space-y-6">
-      <!-- Orders will appear here -->
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <h1 class="text-2xl font-semibold mb-6">Orders</h1>
+
+    <div id="ordersBox" class="bg-gray-800 rounded-lg p-6">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="mt-6">
+      <a href="index.html" class="text-gray-400">Back to home</a>
     </div>
   </main>
 
-  <footer class="mt-16 border-t border-gray-800 py-10 text-center text-gray-500">
-    © 2025 The Gentry Timepieces
-  </footer>
-
   <script src="assets/scripts.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function(){
-      updateAuthUI();
-      const user = getCurrentUser();
-      const container = document.getElementById('ordersList');
+    (function(){
+      const box = document.getElementById('ordersBox');
+      function getCurrentUser(){ const raw = localStorage.getItem('gentry_user'); if(!raw) return null; try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_user'); return null; } }
+      const current = getCurrentUser();
 
-      if(!user){
-        container.innerHTML = '<p class="text-gray-400">You must be logged in to view this page.</p><a href="login.html" class="text-amber-400 underline">Go to Login</a>';
+      if(!box) return;
+
+      if(!current){
+        const p = document.createElement('p'); p.className = 'text-gray-400';
+        p.textContent = 'Please sign in to view your orders.';
+        const a = document.createElement('a'); a.href = 'login.html'; a.className = 'text-amber-300 ml-1'; a.textContent = 'Sign in';
+        box.appendChild(p); box.appendChild(a);
         return;
       }
 
-      // Demo static orders
-      const orders = JSON.parse(localStorage.getItem('gentry_orders') || '[]');
-      if(orders.length === 0){
-        // create demo sample orders
-        const sample = [
-          { id:'ORD-1001', date:'2025-10-22', total:'₱620,000', items:['Rolex Daytona','Rolex Submariner'] },
-          { id:'ORD-1002', date:'2025-11-03', total:'₱245,000', items:['Omega Speedmaster'] }
-        ];
-        localStorage.setItem('gentry_orders', JSON.stringify(sample));
+      const raw = localStorage.getItem('gentry_orders');
+      let orders = [];
+      try { orders = raw ? JSON.parse(raw) : []; } catch(e){ orders = []; }
+
+      const myOrders = orders.filter(o => o.userId === current.id);
+
+      if(!myOrders.length){
+        const p = document.createElement('p'); p.className = 'text-gray-400';
+        p.textContent = 'You have no orders yet.';
+        box.appendChild(p);
+        return;
       }
 
-      const finalOrders = JSON.parse(localStorage.getItem('gentry_orders') || '[]');
-      container.innerHTML = finalOrders.map(o => `
-        <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
-          <div class="flex justify-between">
-            <div>
-              <h3 class="font-semibold">Order ID: ${o.id}</h3>
-              <p class="text-gray-400 text-sm">${o.date}</p>
-            </div>
-            <div class="text-amber-400 font-semibold">${o.total}</div>
-          </div>
-          <ul class="mt-4 text-gray-300 list-disc list-inside">
-            ${o.items.map(i=>`<li>${i}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('');
-    });
+      myOrders.forEach(o => {
+        const card = document.createElement('div'); card.className = 'bg-gray-900 p-4 rounded mb-4';
+        const header = document.createElement('div'); header.className = 'flex items-center justify-between';
+        const id = document.createElement('div'); id.className = 'font-semibold'; id.textContent = `Order #${o.id}`;
+        const date = document.createElement('div'); date.className = 'text-sm text-gray-400'; date.textContent = new Date(o.date).toLocaleString();
+        header.appendChild(id); header.appendChild(date);
+
+        const list = document.createElement('div'); list.className = 'mt-3 space-y-2';
+        (o.items || []).forEach(it => {
+          const row = document.createElement('div'); row.className = 'flex items-center justify-between';
+          const left = document.createElement('div'); left.className = 'flex items-center gap-3';
+          const img = document.createElement('img'); img.src = it.img || 'assets/watches/placeholder.avif'; img.className = 'w-12 h-12 object-cover rounded';
+          const name = document.createElement('div'); name.className = 'text-sm'; name.textContent = `${it.name} x ${it.qty}`;
+          left.appendChild(img); left.appendChild(name);
+          const price = document.createElement('div'); price.className = 'text-sm text-amber-300'; price.textContent = `₱${(it.price || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+          row.appendChild(left); row.appendChild(price);
+          list.appendChild(row);
+        });
+
+        const total = document.createElement('div'); total.className = 'mt-3 flex items-center justify-between';
+        const tlabel = document.createElement('div'); tlabel.className = 'text-gray-400'; tlabel.textContent = 'Total';
+        const tamount = document.createElement('div'); tamount.className = 'font-bold text-amber-300'; tamount.textContent = `₱${(o.total || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+        total.appendChild(tlabel); total.appendChild(tamount);
+
+        card.appendChild(header); card.appendChild(list); card.appendChild(total);
+        box.appendChild(card);
+      });
+    })();
   </script>
 </body>
 </html>

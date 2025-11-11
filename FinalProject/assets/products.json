@@ -1,0 +1,277 @@
+[
+  {
+    "id": "rx-1",
+    "brand": "Rolex",
+    "name": "Rolex Submariner 124060",
+    "price": 2650000,
+    "images": ["assets/watches/m124060.avif"],
+    "stock": true,
+    "desc": "Iconic diver watch, 40mm Oystersteel case, unidirectional bezel."
+  },
+  {
+    "id": "rx-2",
+    "brand": "Rolex",
+    "name": "Rolex Daytona 116500LN",
+    "price": 6599000,
+    "images": ["assets/watches/m116500ln.avif", "assets/watches/daytona.jpg", "assets/watches/m116500ln_back.avif"],
+    "stock": true,
+    "desc": "Legendary racing chronograph with Cerachrom bezel and Oyster bracelet."
+  },
+  {
+    "id": "rx-3",
+    "brand": "Rolex",
+    "name": "Rolex Datejust 126334",
+    "price": 1850000,
+    "images": ["assets/watches/m126334.avif"],
+    "stock": false,
+    "desc": "Timeless Datejust in steel with fluted bezel and jubilee bracelet."
+  },
+  {
+    "id": "rx-4",
+    "brand": "Rolex",
+    "name": "Rolex GMT-Master II 126710BLRO",
+    "price": 4125000,
+    "images": ["assets/watches/m126710blro.avif"],
+    "stock": true,
+    "desc": "Dual time zone travel watch — iconic “Pepsi” bezel."
+  },
+  {
+    "id": "rx-5",
+    "brand": "Rolex",
+    "name": "Rolex Yacht-Master 126622",
+    "price": 2750000,
+    "images": ["assets/watches/m126622.avif"],
+    "stock": true,
+    "desc": "Sport-luxury model with comfortable Oysterflex bracelet option."
+  },
+  {
+    "id": "rx-6",
+    "brand": "Rolex",
+    "name": "Rolex Explorer 124270",
+    "price": 480000,
+    "images": ["assets/watches/m124270.avif"],
+    "stock": true,
+    "desc": "Compact 36mm sports watch built for exploration and durability."
+  },
+  {
+    "id": "rx-7",
+    "brand": "Rolex",
+    "name": "Rolex Milgauss 116400GV",
+    "price": 620000,
+    "images": ["assets/watches/116400GV.jpg"],
+    "stock": false,
+    "desc": "Engineered for scientists, anti-magnetic performance."
+  },
+  {
+    "id": "rx-8",
+    "brand": "Rolex",
+    "name": "Rolex Sea-Dweller 126600",
+    "price": 3550000,
+    "images": ["assets/watches/m126600.avif"],
+    "stock": true,
+    "desc": "Professional diver rated to 1220 meters, helium escape valve."
+  },
+  {
+    "id": "rx-9",
+    "brand": "Rolex",
+    "name": "Rolex Sky-Dweller 326934",
+    "price": 5200000,
+    "images": ["assets/watches/m326934.avif"],
+    "stock": true,
+    "desc": "Annual calendar and dual time — complex yet intuitive."
+  },
+  {
+    "id": "rx-10",
+    "brand": "Rolex",
+    "name": "Rolex Cellini Time 50509",
+    "price": 3200000,
+    "images": ["assets/watches/50509.jpg"],
+    "stock": true,
+    "desc": "Refined dress watch with polished case and classic leather strap."
+  },
+  {
+    "id": "rx-11",
+    "brand": "Rolex",
+    "name": "Rolex Oyster Perpetual 41 124300",
+    "price": 3000000,
+    "images": ["assets/watches/m124300.avif"],
+    "stock": true,
+    "desc": "Modern entry-level Rolex with colourful dials and reliable movement."
+  },
+  {
+    "id": "rx-12",
+    "brand": "Rolex",
+    "name": "Rolex Day-Date 40 228238",
+    "price": 12500000,
+    "images": ["assets/watches/m228238.avif"],
+    "stock": false,
+    "desc": "The President's watch: 18k yellow gold with day and date apertures."
+  },
+
+  {
+    "id": "ct-1",
+    "brand": "Cartier",
+    "name": "Cartier Santos De Cartier Automatic",
+    "price": 446299,
+    "images": ["assets/watches/cartier1.avif"],
+    "stock": true,
+    "desc": "Classic square case with refined finishing."
+  },
+  {
+    "id": "ct-2",
+    "brand": "Cartier",
+    "name": "Santos de Cartier watch (Yellow Gold)",
+    "price": 1991135,
+    "images": ["assets/watches/cartier2.avif"],
+    "stock": true,
+    "desc": "Santos de Cartier watch, small model, quartz movement."
+  },
+  {
+    "id": "ct-3",
+    "brand": "Cartier",
+    "name": "Santos de Cartier watch (Two Tone)",
+    "price": 688315,
+    "images": ["assets/watches/cartier3.avif"],
+    "stock": true,
+    "desc": "Manufacture mechanical movement with automatic winding."
+  },
+  {
+    "id": "ct-4",
+    "brand": "Cartier",
+    "name": "Tank Must de Cartier watch",
+    "price": 222605,
+    "images": ["assets/watches/cartier4.avif"],
+    "stock": false,
+    "desc": "Tank Must watch, large model, SolarBeat™ movement."
+  },
+
+  {
+    "id": "pp-1",
+    "brand": "Patek",
+    "name": "Patek Philippe Nautilus (White Gold)",
+    "price": 4523000,
+    "images": ["assets/watches/PatekPhilippe1.avif"],
+    "stock": true,
+    "desc": "White gold case and bracelet."
+  },
+  {
+    "id": "pp-2",
+    "brand": "Patek",
+    "name": "Patek Philippe Nautilus (Rose Gold)",
+    "price": 5383000,
+    "images": ["assets/watches/PatekPhilippe2.avif"],
+    "stock": true,
+    "desc": "Rose gold with sunburst brown dial."
+  },
+  {
+    "id": "pp-3",
+    "brand": "Patek",
+    "name": "Patek Philippe Nautilus (Steel)",
+    "price": 3462000,
+    "images": ["assets/watches/PatekPhilippe3.avif"],
+    "stock": false,
+    "desc": "Steel version with embossed dial."
+  },
+  {
+    "id": "pp-4",
+    "brand": "Patek",
+    "name": "Patek Philippe Aquanaut (Rose Gold)",
+    "price": 4903000,
+    "images": ["assets/watches/PatekPhilippe4.avif"],
+    "stock": true,
+    "desc": "Aquanaut pattern with rose-gold case."
+  },
+
+  {
+    "id": "om-1",
+    "brand": "Omega",
+    "name": "Omega Seamaster Diver 300M",
+    "price": 420000,
+    "images": ["assets/watches/omega1.avif"],
+    "stock": true,
+    "desc": "Diver watch with co-axial escapement."
+  },
+  {
+    "id": "om-2",
+    "brand": "Omega",
+    "name": "Omega Speedmaster Professional",
+    "price": 380000,
+    "images": ["assets/watches/omega2.avif"],
+    "stock": true,
+    "desc": "The Moonwatch — legendary chronograph."
+  },
+  {
+    "id": "om-3",
+    "brand": "Omega",
+    "name": "Omega Constellation",
+    "price": 275000,
+    "images": ["assets/watches/omega3.avif"],
+    "stock": false,
+    "desc": "Elegant integrated bracelet design."
+  },
+  {
+    "id": "om-4",
+    "brand": "Omega",
+    "name": "Omega De Ville",
+    "price": 240000,
+    "images": ["assets/watches/omega4.avif"],
+    "stock": true,
+    "desc": "Classic dress collection."
+  },
+
+  {
+    "id": "ap-1",
+    "brand": "Audemars",
+    "name": "Royal Oak Mini Frosted Quartz",
+    "price": 6310224,
+    "images": ["assets/watches/AP1.avif"],
+    "stock": true,
+    "desc": "Hammered 18-carat white gold case."
+  },
+  {
+    "id": "ap-2",
+    "brand": "Audemars",
+    "name": "Royal Oak Mini Frosted Gold Quartz",
+    "price": 5528958,
+    "images": ["assets/watches/AP2.avif"],
+    "stock": false,
+    "desc": "Hammered 18-carat yellow gold case."
+  },
+  {
+    "id": "ap-3",
+    "brand": "Audemars",
+    "name": "Royal Oak Offshore Selfwinding Chronograph",
+    "price": 4891934,
+    "images": ["assets/watches/AP3.avif"],
+    "stock": true,
+    "desc": "Warm 18-carat pink gold with titanium bezel."
+  },
+
+  {
+    "id": "sk-1",
+    "brand": "Seiko",
+    "name": "Seiko Lord Marvel",
+    "price": 8000,
+    "images": ["assets/watches/Seiko1.avif"],
+    "stock": true,
+    "desc": "Rugged digital watch."
+  },
+  {
+    "id": "sk-2",
+    "brand": "Seiko",
+    "name": "Seiko Presage (Enamel Dial)",
+    "price": 84000,
+    "images": ["assets/watches/Seiko2.png"],
+    "stock": true,
+    "desc": "Enamel dial manufactured by firing at high temperature."
+  },
+  {
+    "id": "sk-3",
+    "brand": "Seiko",
+    "name": "Seiko Prospex Marinemaster (Green Dial)",
+    "price": 92800,
+    "images": ["assets/watches/Seiko3.png"],
+    "stock": false,
+    "desc": "Professional diver watch."
+  }
+]

@@ -1,50 +1,47 @@
-// assets/scripts.js
-// Updated: mobile menu, no try/catch in init, optional external JSON loader
-// Drop-in replacement for your existing scripts.js
+/* assets/scripts.js
+   Full JS: DOM-based rendering (no innerHTML)
+   - products can be embedded or loaded from assets/products.json via loadProductsFromJSON(url)
+   - account and mobile menus built with createElement
+   - product detail supports p.images
+*/
 
-// --- Product data (can be replaced by loadProductsFromJSON) ---
+// ----------------- Product data (fallback embedded) -----------------
 let PRODUCTS = [
-  // Rolex (same as your list)
-  { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/watches/m124060.avif', stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
-  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
-  { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/watches/m126334.avif', stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
-  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', stock: true, desc: 'Dual time zone travel watch — iconic \"Pepsi\" bezel.' },
-  { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/watches/m126622.avif', stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },
-  { id: 'rx-6', brand: 'Rolex', name: 'Rolex Explorer 124270', price: 480000, img: 'assets/watches/m124270.avif', stock: true, desc: 'Compact 36mm sports watch built for exploration and durability.' },
-  { id: 'rx-7', brand: 'Rolex', name: 'Rolex Milgauss 116400GV', price: 620000, img: 'assets/watches/116400GV.jpg', stock: false, desc: 'Engineered for scientists, anti-magnetic performance.' },
-  { id: 'rx-8', brand: 'Rolex', name: 'Rolex Sea-Dweller 126600', price: 3550000, img: 'assets/watches/m126600.avif', stock: true, desc: 'Professional diver rated to 1220 meters, helium escape valve.' },
-  { id: 'rx-9', brand: 'Rolex', name: 'Rolex Sky-Dweller 326934', price: 5200000, img: 'assets/watches/m326934.avif', stock: true, desc: 'Annual calendar and dual time — complex yet intuitive.' },
-  { id: 'rx-10', brand: 'Rolex', name: 'Rolex Cellini Time 50509', price: 3200000, img: 'assets/watches/50509.jpg', stock: true, desc: 'Refined dress watch with polished case and classic leather strap.' },
-  { id: 'rx-11', brand: 'Rolex', name: 'Rolex Oyster Perpetual 41 124300', price: 3000000, img: 'assets/watches/m124300.avif', stock: true, desc: 'Modern entry-level Rolex with colourful dials and reliable movement.' },
-  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/watches/m228238.avif', stock: false, desc: "The President's watch: 18k yellow gold with day and date apertures." },
+  { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/watches/m124060.avif', images: ['assets/watches/m124060.avif'], stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
+  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', images: ['assets/watches/m116500ln.avif','assets/watches/daytona.jpg','assets/watches/m116500ln_back.avif'], stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
+  { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/watches/m126334.avif', images: ['assets/watches/m126334.avif'], stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
+  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', images: ['assets/watches/m126710blro.avif'], stock: true, desc: 'Dual time zone travel watch — iconic "Pepsi" bezel.' },
+  { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/watches/m126622.avif', images: ['assets/watches/m126622.avif'], stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },
+  { id: 'rx-6', brand: 'Rolex', name: 'Rolex Explorer 124270', price: 480000, img: 'assets/watches/m124270.avif', images: ['assets/watches/m124270.avif'], stock: true, desc: 'Compact 36mm sports watch built for exploration and durability.' },
+  { id: 'rx-7', brand: 'Rolex', name: 'Rolex Milgauss 116400GV', price: 620000, img: 'assets/watches/116400GV.jpg', images: ['assets/watches/116400GV.jpg'], stock: false, desc: 'Engineered for scientists, anti-magnetic performance.' },
+  { id: 'rx-8', brand: 'Rolex', name: 'Rolex Sea-Dweller 126600', price: 3550000, img: 'assets/watches/m126600.avif', images: ['assets/watches/m126600.avif'], stock: true, desc: 'Professional diver rated to 1220 meters, helium escape valve.' },
+  { id: 'rx-9', brand: 'Rolex', name: 'Rolex Sky-Dweller 326934', price: 5200000, img: 'assets/watches/m326934.avif', images: ['assets/watches/m326934.avif'], stock: true, desc: 'Annual calendar and dual time — complex yet intuitive.' },
+  { id: 'rx-10', brand: 'Rolex', name: 'Rolex Cellini Time 50509', price: 3200000, img: 'assets/watches/50509.jpg', images: ['assets/watches/50509.jpg'], stock: true, desc: 'Refined dress watch with polished case and classic leather strap.' },
+  { id: 'rx-11', brand: 'Rolex', name: 'Rolex Oyster Perpetual 41 124300', price: 3000000, img: 'assets/watches/m124300.avif', images: ['assets/watches/m124300.avif'], stock: true, desc: 'Modern entry-level Rolex with colourful dials and reliable movement.' },
+  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/watches/m228238.avif', images: ['assets/watches/m228238.avif'], stock: false, desc: "The President's watch: 18k yellow gold with day and date apertures." },
 
-  // Cartier
-  { id: 'ct-1', brand: 'Cartier', name: 'Cartier Santos De Cartier Automatic', price: 446299, img: 'assets/watches/cartier1.avif', stock: true, desc: 'Classic square case with refined finishing.' },
-  { id: 'ct-2', brand: 'Cartier', name: 'Santos de Cartier watch (Yellow Gold)', price: 1991135, img: 'assets/watches/cartier2.avif', stock: true, desc: 'Santos de Cartier watch, small model, quartz movement.' },
-  { id: 'ct-3', brand: 'Cartier', name: 'Santos de Cartier watch (Two Tone)', price: 688315, img: 'assets/watches/cartier3.avif', stock: true, desc: 'Manufacture mechanical movement with automatic winding.' },
-  { id: 'ct-4', brand: 'Cartier', name: 'Tank Must de Cartier watch', price: 222605, img: 'assets/watches/cartier4.avif', stock: false, desc: 'Tank Must watch, large model, SolarBeat™ movement.' },
+  { id: 'ct-1', brand: 'Cartier', name: 'Cartier Santos De Cartier Automatic', price: 446299, img: 'assets/watches/cartier1.avif', images: ['assets/watches/cartier1.avif'], stock: true, desc: 'Classic square case with refined finishing.' },
+  { id: 'ct-2', brand: 'Cartier', name: 'Santos de Cartier watch (Yellow Gold)', price: 1991135, img: 'assets/watches/cartier2.avif', images: ['assets/watches/cartier2.avif'], stock: true, desc: 'Santos de Cartier watch, small model, quartz movement.' },
+  { id: 'ct-3', brand: 'Cartier', name: 'Santos de Cartier watch (Two Tone)', price: 688315, img: 'assets/watches/cartier3.avif', images: ['assets/watches/cartier3.avif'], stock: true, desc: 'Manufacture mechanical movement with automatic winding.' },
+  { id: 'ct-4', brand: 'Cartier', name: 'Tank Must de Cartier watch', price: 222605, img: 'assets/watches/cartier4.avif', images: ['assets/watches/cartier4.avif'], stock: false, desc: 'Tank Must watch, large model, SolarBeat™ movement.' },
 
-  // Patek
-  { id: 'pp-1', brand: 'Patek', name: 'Patek Philippe Nautilus (White Gold)', price: 4523000, img: 'assets/watches/PatekPhilippe1.avif', stock: true, desc: 'White gold case and bracelet.' },
-  { id: 'pp-2', brand: 'Patek', name: 'Patek Philippe Nautilus (Rose Gold)', price: 5383000, img: 'assets/watches/PatekPhilippe2.avif', stock: true, desc: 'Rose gold with sunburst brown dial.' },
-  { id: 'pp-3', brand: 'Patek', name: 'Patek Philippe Nautilus (Steel)', price: 3462000, img: 'assets/watches/PatekPhilippe3.avif', stock: false, desc: 'Steel version with embossed dial.' },
-  { id: 'pp-4', brand: 'Patek', name: 'Patek Philippe Aquanaut (Rose Gold)', price: 4903000, img: 'assets/watches/PatekPhilippe4.avif', stock: true, desc: 'Aquanaut pattern with rose-gold case.' },
+  { id: 'pp-1', brand: 'Patek', name: 'Patek Philippe Nautilus (White Gold)', price: 4523000, img: 'assets/watches/PatekPhilippe1.avif', images: ['assets/watches/PatekPhilippe1.avif'], stock: true, desc: 'White gold case and bracelet.' },
+  { id: 'pp-2', brand: 'Patek', name: 'Patek Philippe Nautilus (Rose Gold)', price: 5383000, img: 'assets/watches/PatekPhilippe2.avif', images: ['assets/watches/PatekPhilippe2.avif'], stock: true, desc: 'Rose gold with sunburst brown dial.' },
+  { id: 'pp-3', brand: 'Patek', name: 'Patek Philippe Nautilus (Steel)', price: 3462000, img: 'assets/watches/PatekPhilippe3.avif', images: ['assets/watches/PatekPhilippe3.avif'], stock: false, desc: 'Steel version with embossed dial.' },
+  { id: 'pp-4', brand: 'Patek', name: 'Patek Philippe Aquanaut (Rose Gold)', price: 4903000, img: 'assets/watches/PatekPhilippe4.avif', images: ['assets/watches/PatekPhilippe4.avif'], stock: true, desc: 'Aquanaut pattern with rose-gold case.' },
 
-  // Omega
-  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/watches/omega1.avif', stock: true, desc: 'Diver watch with co-axial escapement.' },
-  { id: 'om-2', brand: 'Omega', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/watches/omega2.avif', stock: true, desc: 'The Moonwatch — legendary chronograph.' },
-  { id: 'om-3', brand: 'Omega', name: 'Omega Constellation', price: 275000, img: 'assets/watches/omega3.avif', stock: false, desc: 'Elegant integrated bracelet design.' },
-  { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/watches/omega4.avif', stock: true, desc: 'Classic dress collection.' },
+  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/watches/omega1.avif', images: ['assets/watches/omega1.avif'], stock: true, desc: 'Diver watch with co-axial escapement.' },
+  { id: 'om-2', brand: 'Omega', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/watches/omega2.avif', images: ['assets/watches/omega2.avif'], stock: true, desc: 'The Moonwatch — legendary chronograph.' },
+  { id: 'om-3', brand: 'Omega', name: 'Omega Constellation', price: 275000, img: 'assets/watches/omega3.avif', images: ['assets/watches/omega3.avif'], stock: false, desc: 'Elegant integrated bracelet design.' },
+  { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/watches/omega4.avif', images: ['assets/watches/omega4.avif'], stock: true, desc: 'Classic dress collection.' },
 
-  // Audemars
-  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/watches/AP1.avif', stock: true, desc: 'Hammered 18-carat white gold case.' },
-  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/watches/AP2.avif', stock: false, desc: 'Hammered 18-carat yellow gold case.' },
-  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/watches/AP3.avif', stock: true, desc: 'Warm 18-carat pink gold with titanium bezel.' },
+  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/watches/AP1.avif', images: ['assets/watches/AP1.avif'], stock: true, desc: 'Hammered 18-carat white gold case.' },
+  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/watches/AP2.avif', images: ['assets/watches/AP2.avif'], stock: false, desc: 'Hammered 18-carat yellow gold case.' },
+  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/watches/AP3.avif', images: ['assets/watches/AP3.avif'], stock: true, desc: 'Warm 18-carat pink gold with titanium bezel.' },
 
-  // Seiko
-  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/watches/Seiko1.avif', stock: true, desc: 'Rugged digital watch.' },
-  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage (Enamel Dial)', price: 84000, img: 'assets/watches/Seiko2.png', stock: true, desc: 'Enamel dial manufactured by firing at high temperature.' },
-  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', stock: false, desc: 'Professional diver watch.' }
+  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/watches/Seiko1.avif', images: ['assets/watches/Seiko1.avif'], stock: true, desc: 'Rugged digital watch.' },
+  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage (Enamel Dial)', price: 84000, img: 'assets/watches/Seiko2.png', images: ['assets/watches/Seiko2.png'], stock: true, desc: 'Enamel dial manufactured by firing at high temperature.' },
+  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', images: ['assets/watches/Seiko3.png'], stock: false, desc: 'Professional diver watch.' }
 ];
 
 // ----------------- Utilities & Cart -----------------
@@ -56,13 +53,7 @@ function getQueryParam(name){
 function getCart(){
   const raw = localStorage.getItem('gentry_cart');
   if (!raw) return [];
-  try {
-    return JSON.parse(raw);
-  } catch (e) {
-    // if parse fails simply reset
-    localStorage.removeItem('gentry_cart');
-    return [];
-  }
+  try { return JSON.parse(raw); } catch(e) { localStorage.removeItem('gentry_cart'); return []; }
 }
 function saveCart(cart){
   localStorage.setItem('gentry_cart', JSON.stringify(cart));
@@ -84,25 +75,29 @@ function updateCartCounts(){
 }
 function numberWithCommas(x){ return (x||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
-// ----------------- Rendering functions -----------------
+// ----------------- Rendering (DOM only) -----------------
 function renderFeatured(){
   const grid = document.getElementById('featuredGrid');
   if(!grid) return;
+  while(grid.firstChild) grid.removeChild(grid.firstChild);
   const featured = PRODUCTS.slice(0,4);
-  grid.innerHTML = featured.map(p => `
-    <div class="bg-gray-800 p-4 rounded-lg shadow">
-      <a href="product-detail.html?id=${encodeURIComponent(p.id)}">
-        <img src="${p.img}" class="w-full h-48 object-cover rounded" alt="${p.name}" />
-        <h4 class="mt-3 font-semibold">${p.name}</h4>
-        <div class="mt-2 flex items-center justify-between">
-          <div class="text-amber-300 font-bold">₱${numberWithCommas(p.price)}</div>
-          <button onclick="addToCartHandler('${p.id}')" class="bg-amber-400 text-black px-3 py-1 rounded text-sm">Add</button>
-        </div>
-      </a>
-    </div>
-  `).join('');
+  featured.forEach(p => {
+    const card = document.createElement('div'); card.className = 'bg-gray-800 p-4 rounded-lg shadow';
+    const anchor = document.createElement('a'); anchor.href = `product-detail.html?id=${encodeURIComponent(p.id)}`;
+    const img = document.createElement('img'); img.src = p.img; img.alt = p.name; img.className = 'w-full h-48 object-cover rounded';
+    anchor.appendChild(img);
+    const h4 = document.createElement('h4'); h4.className = 'mt-3 font-semibold'; h4.textContent = p.name;
+    anchor.appendChild(h4);
+    const bottom = document.createElement('div'); bottom.className = 'mt-2 flex items-center justify-between';
+    const price = document.createElement('div'); price.className = 'text-amber-300 font-bold'; price.textContent = `₱${numberWithCommas(p.price)}`;
+    const btn = document.createElement('button'); btn.className = 'bg-amber-400 text-black px-3 py-1 rounded text-sm'; btn.textContent = 'Add';
+    btn.addEventListener('click', (e) => { e.preventDefault(); addToCartHandler(p.id); });
+    bottom.appendChild(price); bottom.appendChild(btn);
+    anchor.appendChild(bottom);
+    card.appendChild(anchor);
+    grid.appendChild(card);
+  });
 }
-
 function addToCartHandler(id){
   const p = PRODUCTS.find(x => x.id === id);
   if(!p) return alert('Product not found');
@@ -116,10 +111,8 @@ function renderProducts(){
   const title = document.getElementById('brandTitle');
   const availabilitySummary = document.getElementById('availabilitySummary');
   if(title) title.textContent = brand ? `${brand} Collection` : 'All Products';
-
   let list = PRODUCTS.filter(p => !brand || p.brand.toLowerCase() === brand.toLowerCase());
   if(availabilitySummary) availabilitySummary.textContent = `${list.length} models found`;
-
   const availability = document.getElementById('availability');
   const sortBy = document.getElementById('sortBy');
   const minPrice = document.getElementById('minPrice');
@@ -127,476 +120,273 @@ function renderProducts(){
 
   function apply(){
     if(!grid) return;
+    while(grid.firstChild) grid.removeChild(grid.firstChild);
     let copy = list.slice();
     const av = availability?.value || 'any';
-    if(av === 'in') copy = copy.filter(x=>x.stock);
-    if(av === 'out') copy = copy.filter(x=>!x.stock);
+    if(av==='in') copy = copy.filter(x=>x.stock);
+    if(av==='out') copy = copy.filter(x=>!x.stock);
     const min = Number(minPrice?.value || 0);
     const max = Number(maxPrice?.value || 0) || Infinity;
     copy = copy.filter(x => x.price >= min && x.price <= max);
     const s = sortBy?.value || 'alpha';
-    if(s === 'alpha') copy.sort((a,b)=> a.name.localeCompare(b.name));
-    if(s === 'price-asc') copy.sort((a,b)=> a.price - b.price);
-    if(s === 'price-desc') copy.sort((a,b)=> b.price - a.price);
+    if(s==='alpha') copy.sort((a,b)=> a.name.localeCompare(b.name));
+    if(s==='price-asc') copy.sort((a,b)=> a.price - b.price);
+    if(s==='price-desc') copy.sort((a,b)=> b.price - a.price);
 
-    grid.innerHTML = copy.map(p=> `
-      <div class="bg-gray-800 p-4 rounded-lg">
-        <a href="product-detail.html?id=${encodeURIComponent(p.id)}">
-          <img src="${p.img}" class="w-full h-44 object-cover rounded" alt="${p.name}" />
-        </a>
-        <h4 class="mt-3 font-semibold">${p.name}</h4>
-        <p class="text-sm text-gray-400 mt-1">${p.brand}</p>
-        <div class="mt-2 flex items-center justify-between">
-          <div class="font-bold text-amber-300">₱${numberWithCommas(p.price)}</div>
-          <div>
-            <button onclick="addToCartHandler('${p.id}')" class="bg-amber-400 text-black px-3 py-1 rounded text-sm">Add to cart</button>
-          </div>
-        </div>
-      </div>
-    `).join('');
+    copy.forEach(p => {
+      const card = document.createElement('div'); card.className = 'bg-gray-800 p-4 rounded-lg';
+      const anchor = document.createElement('a'); anchor.href = `product-detail.html?id=${encodeURIComponent(p.id)}`;
+      const img = document.createElement('img'); img.src = p.img; img.alt = p.name; img.className = 'w-full h-44 object-cover rounded';
+      anchor.appendChild(img);
+      card.appendChild(anchor);
+      const h4 = document.createElement('h4'); h4.className = 'mt-3 font-semibold'; h4.textContent = p.name;
+      card.appendChild(h4);
+      const brandP = document.createElement('p'); brandP.className = 'text-sm text-gray-400 mt-1'; brandP.textContent = p.brand;
+      card.appendChild(brandP);
+      const bottom = document.createElement('div'); bottom.className = 'mt-2 flex items-center justify-between';
+      const price = document.createElement('div'); price.className = 'font-bold text-amber-300'; price.textContent = `₱${numberWithCommas(p.price)}`;
+      const btn = document.createElement('button'); btn.className = 'bg-amber-400 text-black px-3 py-1 rounded text-sm'; btn.textContent = 'Add to cart';
+      btn.addEventListener('click', (e)=> { e.preventDefault(); addToCartHandler(p.id); });
+      bottom.appendChild(price); bottom.appendChild(btn);
+      card.appendChild(bottom);
+      grid.appendChild(card);
+    });
   }
-
   document.getElementById('applyFilters')?.addEventListener('click', apply);
   apply();
 }
 
+// ----------------- Product detail -----------------
 function renderProductDetail(){
   const id = getQueryParam('id');
   const root = document.getElementById('productDetail');
   if(!root) return;
+  while(root.firstChild) root.removeChild(root.firstChild);
+  if(!id){ showNoProduct(root); return; }
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p){ showNotFound(root,id); return; }
 
-  if(!id){
-    root.innerHTML = `
-      <div class="bg-gray-800 p-8 rounded-lg text-center">
-        <h3 class="text-xl font-semibold">No product selected</h3>
-        <p class="text-gray-400 mt-2">Please select a product from the catalog.</p>
-        <div class="mt-4"><a href="catalog.html" class="px-4 py-2 bg-amber-400 text-black rounded">Back to Catalog</a></div>
-      </div>`;
-    return;
-  }
+  let images = Array.isArray(p.images) && p.images.length ? p.images.slice() : [p.img || 'assets/watches/placeholder.avif'];
+  while(images.length < 3) images.push(images[0]);
 
-  const p = PRODUCTS.find(x => x.id === id);
-  if(!p){
-    root.innerHTML = `
-      <div class="bg-gray-800 p-8 rounded-lg text-center">
-        <h3 class="text-xl font-semibold">Product not found</h3>
-        <p class="text-gray-400 mt-2">We couldn't find the product with id: ${id}</p>
-        <div class="mt-4"><a href="catalog.html" class="px-4 py-2 bg-amber-400 text-black rounded">Back to Catalog</a></div>
-      </div>`;
-    return;
-  }
+  const left = document.createElement('div'); left.className = 'space-y-4';
+  const mainWrap = document.createElement('div'); mainWrap.className = 'bg-gray-800 rounded-lg overflow-hidden';
+  const mainImg = document.createElement('img'); mainImg.id = 'productMainImage'; mainImg.src = images[0]; mainImg.alt = p.name; mainImg.className = 'w-full object-cover h-96';
+  mainWrap.appendChild(mainImg); left.appendChild(mainWrap);
 
-  const imgSrc = p.img || 'assets/watches/placeholder.avif';
-
-  root.innerHTML = `
-    <div>
-      <img src="${imgSrc}" class="rounded-lg w-full object-cover h-96" alt="${p.name}" />
-      <div class="mt-4 flex gap-3">
-        <img src="${imgSrc}" class="w-24 h-24 rounded" alt="${p.name} thumb1" />
-        <img src="${imgSrc}" class="w-24 h-24 rounded" alt="${p.name} thumb2" />
-        <img src="${imgSrc}" class="w-24 h-24 rounded" alt="${p.name} thumb3" />
-      </div>
-    </div>
-    <div>
-      <h2 class="text-2xl font-semibold">${p.name}</h2>
-      <p class="text-sm text-gray-400 mt-2">${p.brand}</p>
-      <div class="mt-4 text-amber-300 font-bold text-2xl">₱${numberWithCommas(p.price)}</div>
-      <p class="mt-4 text-gray-300">${p.desc || 'No description available.'}</p>
-      <div class="mt-4 text-sm text-gray-400">Availability: <span class="${p.stock ? 'text-green-400' : 'text-red-400'} font-semibold">${p.stock ? 'In Stock' : 'Out of Stock'}</span></div>
-      <div class="mt-6 flex gap-3">
-        <button id="addToCartBtn" class="px-6 py-3 ${p.stock ? 'bg-amber-400 text-black' : 'bg-gray-700 text-gray-400 cursor-not-allowed'} rounded font-semibold" ${p.stock ? '' : 'disabled'}>
-          ${p.stock ? 'Add to cart' : 'Out of stock'}
-        </button>
-        <a href="catalog.html" class="px-6 py-3 border border-gray-700 rounded">Back to catalog</a>
-      </div>
-    </div>
-  `;
-
-  const addBtn = document.getElementById('addToCartBtn');
-  if(addBtn && p.stock){
-    addBtn.addEventListener('click', function(){
-      addToCart(p,1);
-      updateCartCounts();
-      const orig = addBtn.textContent;
-      addBtn.textContent = 'Added ✅';
-      addBtn.disabled = true;
-      setTimeout(()=> { addBtn.textContent = orig; addBtn.disabled = false; }, 1200);
-    });
-  }
-}
-
-function renderCartPage(){
-  const container = document.getElementById('cartContainer');
-  if(!container) return;
-  const cart = getCart();
-  if(!cart || cart.length === 0){ container.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>'; return; }
-  let total = 0;
-  container.innerHTML = `
-    <div class="space-y-4">
-      ${cart.map(item=>{
-        total += (item.price || 0) * (item.qty || 0);
-        return `
-          <div class="flex items-center justify-between bg-gray-900 p-3 rounded">
-            <div class="flex items-center gap-4">
-              <img src="${item.img || 'assets/watches/placeholder.avif'}" class="w-20 h-20 object-cover rounded" />
-              <div>
-                <div class="font-semibold">${item.name}</div>
-                <div class="text-sm text-gray-400">₱${numberWithCommas(item.price)} x ${item.qty}</div>
-              </div>
-            </div>
-            <div>
-              <button onclick="removeFromCart('${item.id}')" class="text-sm text-red-400">Remove</button>
-            </div>
-          </div>
-        `;
-      }).join('')}
-
-      <div class="mt-4 p-4 bg-gray-900 rounded flex items-center justify-between">
-        <div class="text-gray-400">Total</div>
-        <div class="font-bold text-amber-300">₱${numberWithCommas(total)}</div>
-      </div>
-
-      <div class="mt-4 flex gap-3">
-        <button onclick="checkout()" class="px-6 py-3 bg-amber-400 text-black rounded">Checkout</button>
-        <button onclick="clearCart()" class="px-6 py-3 border border-gray-700 rounded">Clear</button>
-      </div>
-    </div>
-  `;
-}
-
-function removeFromCart(id){
-  let cart = getCart();
-  cart = cart.filter(i=> i.id !== id);
-  saveCart(cart);
-  renderCartPage();
-}
-function clearCart(){ localStorage.removeItem('gentry_cart'); updateCartCounts(); renderCartPage(); }
-function checkout(){ alert('Demo checkout — implement payment gateway in production.'); }
-
-// ----------------- Mobile menu (functioning) -----------------
-function initMobileMenu(){
-  const btn = document.getElementById('mobileMenuBtn');
-  if(!btn) return;
-
-  // create menu container (only once)
-  let mobileMenu = document.getElementById('mobileSiteMenu');
-  if(!mobileMenu){
-    mobileMenu = document.createElement('div');
-    mobileMenu.id = 'mobileSiteMenu';
-    // base styles for mobile overlay (Tailwind classes as string)
-    mobileMenu.className = 'fixed inset-0 z-50 bg-black/70 hidden';
-    mobileMenu.innerHTML = `
-      <div class="absolute right-0 top-0 w-3/4 max-w-xs h-full bg-gray-900 p-6 shadow-lg overflow-auto">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-400 flex items-center justify-center font-bold text-black">GT</div>
-            <div>
-              <div class="font-semibold">The Gentry</div>
-              <div class="text-xs text-gray-400">Luxury timepieces</div>
-            </div>
-          </div>
-          <button id="mobileCloseBtn" aria-label="Close menu" class="text-gray-300 text-2xl">✕</button>
-        </div>
-        <nav class="flex flex-col gap-3 text-lg">
-          <a href="index.html" class="py-2 px-2 rounded hover:bg-gray-800">Home</a>
-          <a href="catalog.html" class="py-2 px-2 rounded hover:bg-gray-800">Catalog</a>
-          <a href="products.html?brand=Rolex" class="py-2 px-2 rounded hover:bg-gray-800">Rolex</a>
-          <a href="products.html?brand=Cartier" class="py-2 px-2 rounded hover:bg-gray-800">Cartier</a>
-          <a href="products.html?brand=Patek" class="py-2 px-2 rounded hover:bg-gray-800">Patek</a>
-          <a href="about.html" class="py-2 px-2 rounded hover:bg-gray-800">About</a>
-          <a href="cart.html" class="py-2 px-2 rounded hover:bg-gray-800">Cart</a>
-          <a href="login.html" class="py-2 px-2 rounded hover:bg-gray-800">Sign in</a>
-        </nav>
-        <div class="mt-6 text-sm text-gray-400">Free shipping on orders over ₱150,000</div>
-      </div>
-    `;
-    document.body.appendChild(mobileMenu);
-
-    // close on clicking overlay outside panel
-    mobileMenu.addEventListener('click', function(e){
-      if(e.target === mobileMenu) toggleMobileMenu(false);
-    });
-    // close button inside
-    document.getElementById('mobileCloseBtn')?.addEventListener('click', ()=> toggleMobileMenu(false));
-    // close on Escape key
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) toggleMobileMenu(false);
-    });
-  }
-
-  btn.addEventListener('click', function(){
-    const isHidden = mobileMenu.classList.contains('hidden');
-    toggleMobileMenu(isHidden);
+  const thumbsDiv = document.createElement('div'); thumbsDiv.className = 'flex gap-3 mt-2';
+  images.forEach((imgSrc,i)=>{
+    const btn = document.createElement('button'); btn.className = `thumb-btn rounded overflow-hidden ${i===0 ? 'border border-amber-400':'border border-transparent'}`;
+    btn.setAttribute('data-idx',i);
+    const thumbImg = document.createElement('img'); thumbImg.src=imgSrc; thumbImg.alt=`thumb-${i}`; thumbImg.className='w-24 h-24 object-cover';
+    btn.appendChild(thumbImg);
+    btn.addEventListener('click',()=>{ mainImg.src=imgSrc; thumbsDiv.querySelectorAll('.thumb-btn').forEach(t=>t.classList.remove('border-amber-400')); btn.classList.add('border-amber-400'); });
+    thumbsDiv.appendChild(btn);
   });
+  left.appendChild(thumbsDiv);
+
+  const right = document.createElement('div');
+  const nameEl = document.createElement('h2'); nameEl.className='text-2xl font-semibold'; nameEl.textContent=p.name;
+  const brandEl = document.createElement('p'); brandEl.className='text-sm text-gray-400 mt-2'; brandEl.textContent=p.brand;
+  const priceEl = document.createElement('div'); priceEl.className='mt-4 text-amber-300 font-bold text-2xl'; priceEl.textContent=`₱${numberWithCommas(p.price)}`;
+  const descEl = document.createElement('p'); descEl.className='mt-4 text-gray-300'; descEl.textContent=p.desc||'No description available.';
+  const availEl = document.createElement('div'); availEl.className='mt-4 text-sm text-gray-400';
+  const availSpan = document.createElement('span'); availSpan.className=`${p.stock?'text-green-400':'text-red-400'} font-semibold`; availSpan.textContent=p.stock?'In Stock':'Out of Stock';
+  availEl.appendChild(document.createTextNode('Availability: ')); availEl.appendChild(availSpan);
+
+  const controls = document.createElement('div'); controls.className='mt-6 flex gap-3';
+  const addBtn = document.createElement('button'); addBtn.className=`px-6 py-3 ${p.stock?'bg-amber-400 text-black':'bg-gray-700 text-gray-400 cursor-not-allowed'} rounded font-semibold`; addBtn.textContent=p.stock?'Add to cart':'Out of stock';
+  if(!p.stock) addBtn.disabled=true;
+  addBtn.addEventListener('click',()=>{ addToCart(p,1); updateCartCounts(); const orig=addBtn.textContent; addBtn.textContent='Added ✅'; addBtn.disabled=true; setTimeout(()=>{ addBtn.textContent=orig; if(p.stock) addBtn.disabled=false; },1200); });
+  const backA = document.createElement('a'); backA.href='catalog.html'; backA.className='px-6 py-3 border border-gray-700 rounded'; backA.textContent='Back to catalog';
+  controls.appendChild(addBtn); controls.appendChild(backA);
+
+  right.appendChild(nameEl); right.appendChild(brandEl); right.appendChild(priceEl); right.appendChild(descEl); right.appendChild(availEl); right.appendChild(controls);
+
+  root.appendChild(left); root.appendChild(right);
+
+  renderProductSuggestions(p);
 }
 
+// ----------------- Cart page -----------------
+function renderCartPage(){
+  const container = document.getElementById('cartContainer'); if(!container) return;
+  const cart = getCart();
+  while(container.firstChild) container.removeChild(container.firstChild);
+  if(!cart || !cart.length){ const p = document.createElement('p'); p.className='text-gray-400'; p.textContent='Your cart is empty.'; container.appendChild(p); return; }
+  let total=0;
+  const wrapper = document.createElement('div'); wrapper.className='space-y-4';
+  cart.forEach(item=>{ total+=(item.price||0)*(item.qty||0);
+    const row = document.createElement('div'); row.className='flex items-center justify-between bg-gray-900 p-3 rounded';
+    const left = document.createElement('div'); left.className='flex items-center gap-4';
+    const img = document.createElement('img'); img.src=item.img||'assets/watches/placeholder.avif'; img.className='w-20 h-20 object-cover rounded';
+    const info = document.createElement('div'); const title=document.createElement('div'); title.className='font-semibold'; title.textContent=item.name;
+    const qty=document.createElement('div'); qty.className='text-sm text-gray-400'; qty.textContent=`₱${numberWithCommas(item.price)} x ${item.qty}`;
+    info.appendChild(title); info.appendChild(qty); left.appendChild(img); left.appendChild(info);
+    const right=document.createElement('div'); const removeBtn=document.createElement('button'); removeBtn.className='text-sm text-red-400'; removeBtn.textContent='Remove';
+    removeBtn.addEventListener('click',()=>removeFromCart(item.id)); right.appendChild(removeBtn);
+    row.appendChild(left); row.appendChild(right); wrapper.appendChild(row);
+  });
+  const totalDiv=document.createElement('div'); totalDiv.className='mt-4 p-4 bg-gray-900 rounded flex items-center justify-between';
+  const label=document.createElement('div'); label.className='text-gray-400'; label.textContent='Total';
+  const amount=document.createElement('div'); amount.className='font-bold text-amber-300'; amount.textContent=`₱${numberWithCommas(total)}`;
+  totalDiv.appendChild(label); totalDiv.appendChild(amount);
+  const controls=document.createElement('div'); controls.className='mt-4 flex gap-3';
+  const checkoutBtn=document.createElement('button'); checkoutBtn.className='px-6 py-3 bg-amber-400 text-black rounded'; checkoutBtn.textContent='Checkout'; checkoutBtn.addEventListener('click',checkout);
+  const clearBtn=document.createElement('button'); clearBtn.className='px-6 py-3 border border-gray-700 rounded'; clearBtn.textContent='Clear'; clearBtn.addEventListener('click',clearCart);
+  controls.appendChild(checkoutBtn); controls.appendChild(clearBtn);
+  wrapper.appendChild(totalDiv); wrapper.appendChild(controls);
+  container.appendChild(wrapper);
+}
+function removeFromCart(id){ let cart=getCart(); cart=cart.filter(i=>i.id!==id); saveCart(cart); renderCartPage(); }
+function clearCart(){ localStorage.removeItem('gentry_cart'); updateCartCounts(); renderCartPage(); }
+function checkout(){
+  const user=getCurrentUser(); if(!user){ alert('Please sign in to checkout.'); window.location.href='login.html'; return; }
+  const cart=getCart(); if(!cart.length){ alert('Cart is empty'); return; }
+  let orders=[]; try{ orders=localStorage.getItem('gentry_orders')?JSON.parse(localStorage.getItem('gentry_orders')):[]; } catch(e){ orders=[]; }
+  const id='ord-'+Date.now().toString(36); const total=cart.reduce((s,i)=>s+(i.price||0)*(i.qty||0),0);
+  orders.push({id,userId:user.id,date:new Date().toISOString(),items:cart,total});
+  localStorage.setItem('gentry_orders',JSON.stringify(orders));
+  clearCart(); alert('Order placed! Order ID: '+id);
+}
+
+// ----------------- Mobile menu -----------------
+function initMobileMenu(){
+  const btn=document.getElementById('mobileMenuBtn'); if(!btn) return;
+  let mobileMenu=document.getElementById('mobileSiteMenu');
+  if(!mobileMenu){
+    mobileMenu=document.createElement('div'); mobileMenu.id='mobileSiteMenu'; mobileMenu.className='fixed inset-0 z-50 bg-black/70 hidden';
+    const panel=document.createElement('div'); panel.className='absolute right-0 top-0 w-3/4 max-w-xs h-full bg-gray-900 p-6 shadow-lg overflow-auto';
+    const header=document.createElement('div'); header.className='flex items-center justify-between mb-6';
+    const headerLeft=document.createElement('div'); headerLeft.className='flex items-center gap-3';
+    const logo=document.createElement('div'); logo.className='w-10 h-10 rounded-xl bg-amber-400 flex items-center justify-center font-bold text-black'; logo.textContent='GT';
+    const textWrap=document.createElement('div'); const title=document.createElement('div'); title.className='font-semibold'; title.textContent='The Gentry';
+    const subtitle=document.createElement('div'); subtitle.className='text-xs text-gray-400'; subtitle.textContent='Luxury timepieces';
+    textWrap.appendChild(title); textWrap.appendChild(subtitle); headerLeft.appendChild(logo); headerLeft.appendChild(textWrap);
+    const closeBtn=document.createElement('button'); closeBtn.id='mobileCloseBtn'; closeBtn.setAttribute('aria-label','Close menu'); closeBtn.className='text-gray-300 text-2xl'; closeBtn.textContent='✕'; closeBtn.addEventListener('click',()=>toggleMobileMenu(false));
+    header.appendChild(headerLeft); header.appendChild(closeBtn); panel.appendChild(header);
+    const nav=panel.appendChild(document.createElement('nav')); nav.className='space-y-3'; ['Home','Catalog','Featured','Cart'].forEach(item=>{
+      const a=document.createElement('a'); a.href=item==='Home'?'index.html':item.toLowerCase()+'.html'; a.className='block py-2 px-3 hover:bg-gray-800 rounded'; a.textContent=item; nav.appendChild(a);
+    });
+    mobileMenu.appendChild(panel); document.body.appendChild(mobileMenu);
+  }
+  btn.addEventListener('click',()=>toggleMobileMenu());
+}
 function toggleMobileMenu(show){
-  const mobileMenu = document.getElementById('mobileSiteMenu');
-  if(!mobileMenu) return;
-  if(show){
-    mobileMenu.classList.remove('hidden');
-    // small body lock
-    document.documentElement.style.overflow = 'hidden';
-  } else {
-    mobileMenu.classList.add('hidden');
-    document.documentElement.style.overflow = '';
-  }
+  const menu=document.getElementById('mobileSiteMenu'); if(!menu) return;
+  const isHidden=menu.classList.contains('hidden');
+  if(show===true || (show===undefined && isHidden)) menu.classList.remove('hidden'); else menu.classList.add('hidden');
 }
 
-// ----------------- External product loader (optional) -----------------
-/*
-  Usage:
-    loadProductsFromJSON('assets/products.json')
-      .then(() => { renderProducts(); renderFeatured(); })
-      .catch(() => { /* fallback to embedded PRODUCTS *\/ });
-  This function does not use try/catch blocks; it returns a Promise.
-*/
-function loadProductsFromJSON(url){
-  if(!url) return Promise.reject('No URL provided');
-  return fetch(url)
-    .then(response => {
-      if(!response.ok) return Promise.reject('Fetch failed: ' + response.status);
-      return response.json();
-    })
-    .then(json => {
-      if(Array.isArray(json) && json.length) {
-        PRODUCTS = json.map(p => ({
-          // normalize minimal fields
-          id: p.id || ('p-'+Math.random().toString(36).slice(2,9)),
-          brand: p.brand || p.make || 'Unknown',
-          name: p.name || p.title || 'Untitled',
-          price: Number(p.price) || 0,
-          img: p.img || p.image || 'assets/watches/placeholder.avif',
-          stock: (typeof p.stock === 'boolean') ? p.stock : true,
-          desc: p.desc || p.description || ''
-        }));
-        return PRODUCTS;
-      } else {
-        return Promise.reject('Invalid JSON structure');
-      }
-    });
+// ----------------- Auth -----------------
+function getCurrentUser(){ 
+  try { return JSON.parse(localStorage.getItem('gentry_user')) || null; } catch(e){ return null; } 
 }
+function logoutUser(){ localStorage.removeItem('gentry_user'); updateAuthUI(); window.location.href='index.html'; }
 
-// ----------------- Auth (client-side demo) -----------------
-// Uses localStorage:
-// - "gentry_users" -> array of registered users [{id, name, email, password}] (demo, no hashing)
-// - "gentry_user"  -> current logged-in user {id, name, email} or null
-
-function getUsers(){
-  const raw = localStorage.getItem('gentry_users');
-  if(!raw) return [];
-  try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_users'); return []; }
-}
-function saveUsers(list){
-  localStorage.setItem('gentry_users', JSON.stringify(list));
-}
-
-function setCurrentUser(user){
-  if(!user) {
-    localStorage.removeItem('gentry_user');
-  } else {
-    localStorage.setItem('gentry_user', JSON.stringify(user));
-  }
-  updateAuthUI();
-}
-
-function getCurrentUser(){
-  const raw = localStorage.getItem('gentry_user');
-  if(!raw) return null;
-  try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_user'); return null; }
-}
-
-// simple id generator
-function uid(prefix='u'){ return prefix + '-' + Math.random().toString(36).slice(2,9); }
-
-// Register function (call from register.html)
-function registerUser({ name, email, password }){
-  if(!name || !email || !password) return { ok:false, error: 'Missing fields' };
-  const users = getUsers();
-  const exists = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-  if(exists) return { ok:false, error: 'Email already registered' };
-  const user = { id: uid('u'), name, email, password }; // demo: store plain password (not for prod)
-  users.push(user);
-  saveUsers(users);
-  // auto-login
-  setCurrentUser({ id: user.id, name: user.name, email: user.email });
-  return { ok:true, user };
-}
-
-// Login function (call from login.html)
-function loginUser({ email, password }){
-  if(!email || !password) return { ok:false, error: 'Missing fields' };
-  const users = getUsers();
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-  if(!user) return { ok:false, error: 'Invalid credentials' };
-  setCurrentUser({ id: user.id, name: user.name, email: user.email });
-  return { ok:true, user };
-}
-
-// Logout
-function logoutUser(){
-  setCurrentUser(null);
-  // optional: clear guest cart or keep it — we keep it
-  // redirect optionally to homepage
-  const nav = document.location.pathname;
-  if(!nav.endsWith('index.html') && !nav.endsWith('/')) {
-    // stay on page but update UI
-  }
-}
-
-// ----------------- Account UI -----------------
-function updateAuthUI(){
-  const area = document.getElementById('accountArea');
-  if(!area) return;
-  const current = getCurrentUser();
-
-  // remove existing dynamic elements if any
-  const existingBtn = document.getElementById('accountBtn');
-  const existingSignIn = document.getElementById('signInBtn');
-  const menu = document.getElementById('accountMenu');
-
-  // show Sign in if not logged
-  if(!current){
-    if(!existingSignIn){
-      const sign = document.createElement('a');
-      sign.id = 'signInBtn';
-      sign.href = 'login.html';
-      sign.className = 'ml-4 px-4 py-2 border border-gray-700 rounded-md';
-      sign.textContent = 'Sign in';
-      area.prepend(sign);
-    }
-    if(existingBtn) existingBtn.remove();
-    if(menu) menu.classList.add('hidden');
-    return;
-  }
-
-  // logged-in: remove signInBtn, create accountBtn if missing
-  if(existingSignIn) existingSignIn.remove();
-
-  if(!existingBtn){
-    const btn = document.createElement('button');
-    btn.id = 'accountBtn';
-    btn.className = 'ml-4 flex items-center gap-2 rounded-md px-3 py-1 bg-gray-800';
-    // avatar (initials)
-    const avatar = document.createElement('span');
-    avatar.id = 'accountAvatar';
-    avatar.className = 'w-8 h-8 rounded-full flex items-center justify-center bg-amber-400 text-black font-semibold';
-    avatar.textContent = initialsFromName(current.name || current.email);
-    btn.appendChild(avatar);
-
-    const nameSpan = document.createElement('span');
-    nameSpan.id = 'accountNameShort';
-    nameSpan.className = 'hidden md:inline-block text-sm text-gray-200';
-    nameSpan.textContent = shortName(current.name || current.email);
-    btn.appendChild(nameSpan);
-
-    area.prepend(btn);
-
-    // ensure accountMenu exists
-    let menuEl = document.getElementById('accountMenu');
-    if(!menuEl){
-      menuEl = document.createElement('div');
-      menuEl.id = 'accountMenu';
-      menuEl.className = 'absolute right-0 mt-2 w-64 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 hidden z-30';
-      area.appendChild(menuEl);
-    }
-
-    // click toggles menu
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleAccountMenu();
-    });
-
-    // close when clicking outside
-    document.addEventListener('click', function(evt){
-      const menu = document.getElementById('accountMenu');
-      const btn = document.getElementById('accountBtn');
-      if(!menu || !btn) return;
-      if(menu.classList.contains('hidden')) return;
-      const isInside = btn.contains(evt.target) || menu.contains(evt.target);
-      if(!isInside) { menu.classList.add('hidden'); }
-    });
-  }
-
-  // fill menu content
-  const menuEl = document.getElementById('accountMenu');
-  if(menuEl){
-    menuEl.innerHTML = `
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center font-semibold text-black">${initialsFromName(current.name || current.email)}</div>
-        <div>
-          <div class="font-semibold">${current.name || current.email}</div>
-          <div class="text-xs text-gray-400">${current.email}</div>
-        </div>
-      </div>
-      <div class="mt-3 border-t border-gray-700 pt-3 space-y-2">
-        <a href="account.html" class="block py-2 px-2 rounded hover:bg-gray-900">Account details</a>
-        <a href="orders.html" class="block py-2 px-2 rounded hover:bg-gray-900">Orders</a>
-        <button id="signOutBtn" class="w-full mt-2 py-2 bg-red-600 text-white rounded">Sign out</button>
-      </div>
-    `;
-    // attach sign out
-    const sOut = document.getElementById('signOutBtn');
-    if(sOut) sOut.addEventListener('click', function(){
-      logoutUser();
-      // close menu
-      const m = document.getElementById('accountMenu'); if(m) m.classList.add('hidden');
-      // optional: redirect to index
-      window.location.href = 'index.html';
-    });
-  }
-}
-
-function initialsFromName(name){
-  if(!name) return 'U';
-  const parts = name.trim().split(/\s+/).slice(0,2);
-  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
-}
-function shortName(name){
-  if(!name) return '';
-  const n = name.split(' ')[0];
-  return n.length > 12 ? n.slice(0,12) + '...' : n;
-}
+function initialsFromName(name){ if(!name) return '?'; return name.split(' ').map(s=>s[0].toUpperCase()).join('').slice(0,2); }
+function shortName(name){ if(!name) return ''; const parts=name.split(' '); return parts[0]+(parts.length>1? ' '+parts[1][0]+'.':''); }
 
 function toggleAccountMenu(){
-  const menu = document.getElementById('accountMenu');
-  if(!menu) return;
+  const menu=document.getElementById('accountMenu'); if(!menu) return;
   menu.classList.toggle('hidden');
 }
 
-// call this once at boot (your DOMContentLoaded block should call updateAuthUI())
+function renderProductSuggestions(currentProduct){
+  const section = document.getElementById('productSuggestionsSection');
+  const container = document.getElementById('productSuggestions');
+  if(!section || !container) return;
+
+  // Clear previous suggestions
+  while(container.firstChild) container.removeChild(container.firstChild);
+
+  // Filter recommended: same brand but not the current product
+  const recommendations = PRODUCTS.filter(p => p.brand === currentProduct.brand && p.id !== currentProduct.id).slice(0,4);
+
+  if(recommendations.length === 0){
+    section.classList.add('hidden');
+    return;
+  }
+  section.classList.remove('hidden');
+
+  recommendations.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'bg-gray-800 p-4 rounded-lg shadow';
+
+    const anchor = document.createElement('a');
+    anchor.href = `product-detail.html?id=${encodeURIComponent(p.id)}`;
+
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.name;
+    img.className = 'w-full h-44 object-cover rounded';
+    anchor.appendChild(img);
+
+    const nameEl = document.createElement('h4');
+    nameEl.className = 'mt-3 font-semibold';
+    nameEl.textContent = p.name;
+    anchor.appendChild(nameEl);
+
+    const priceEl = document.createElement('div');
+    priceEl.className = 'mt-2 font-bold text-amber-300';
+    priceEl.textContent = `₱${numberWithCommas(p.price)}`;
+    anchor.appendChild(priceEl);
+
+    card.appendChild(anchor);
+    container.appendChild(card);
+  });
+}
 
 
-// ----------------- Init (NO try/catch) -----------------
-document.addEventListener('DOMContentLoaded', function(){
-  // initialize mobile menu (will no-op if no button)
-  initMobileMenu();
+function updateAuthUI(){
+  const area=document.getElementById('accountArea'); if(!area) return;
+  const current=getCurrentUser();
+  let btn=document.getElementById('accountBtn');
+  let signIn=document.getElementById('signInBtn');
+  let menu=document.getElementById('accountMenu');
+  if(!menu){ menu=document.createElement('div'); menu.id='accountMenu'; menu.className='absolute right-0 mt-2 w-64 bg-gray-900 text-gray-200 rounded shadow-lg hidden'; area.appendChild(menu); }
 
-  // Optionally attempt to load external JSON first (uncomment to enable)
-  // loadProductsFromJSON('assets/products.json').then(()=>{
-  //   // re-render UI with fetched data
-  //   updateCartCounts();
-  //   renderFeatured();
-  //   renderProducts();
-  //   renderProductDetail();
-  //   renderCartPage();
-  // }).catch(err=>{
-  //   // silent fallback to embedded PRODUCTS if fetch fails
-  //   console.info('products.json not loaded, using embedded PRODUCTS —', err);
-  //   updateCartCounts();
-  //   renderFeatured();
-  //   renderProducts();
-  //   renderProductDetail();
-  //   renderCartPage();
-  // });
+  area.querySelectorAll('#accountBtn,#signInBtn').forEach(el=>el.remove());
 
-  // Default: use embedded PRODUCTS
+  if(!current){
+    signIn=document.createElement('a'); signIn.id='signInBtn'; signIn.href='login.html'; signIn.className='ml-4 px-4 py-2 border border-gray-700 rounded-md'; signIn.textContent='Sign in';
+    area.appendChild(signIn);
+    menu.classList.add('hidden');
+    return;
+  }
+
+  btn=document.createElement('button'); btn.id='accountBtn'; btn.className='ml-4 flex items-center gap-2 rounded-md px-3 py-1 bg-gray-800';
+  const avatar=document.createElement('span'); avatar.id='accountAvatar'; avatar.className='w-8 h-8 rounded-full flex items-center justify-center bg-amber-400 text-black font-semibold'; avatar.textContent=initialsFromName(current.name||current.email);
+  const nameSpan=document.createElement('span'); nameSpan.id='accountNameShort'; nameSpan.className='hidden md:inline-block text-sm text-gray-200'; nameSpan.textContent=shortName(current.name||current.email);
+  btn.appendChild(avatar); btn.appendChild(nameSpan); area.appendChild(btn);
+
+  btn.addEventListener('click',e=>{ e.stopPropagation(); toggleAccountMenu(); });
+  document.addEventListener('click',evt=>{ if(!menu.contains(evt.target) && !btn.contains(evt.target)) menu.classList.add('hidden'); });
+
+  // populate menu
+  while(menu.firstChild) menu.removeChild(menu.firstChild);
+  const topWrap=document.createElement('div'); topWrap.className='flex items-center gap-3 p-3 border-b border-gray-700';
+  const avatarDiv=document.createElement('div'); avatarDiv.className='w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center font-semibold text-black'; avatarDiv.textContent=initialsFromName(current.name||current.email);
+  const infoDiv=document.createElement('div'); const nameDiv=document.createElement('div'); nameDiv.className='font-semibold'; nameDiv.textContent=current.name||current.email; const emailDiv=document.createElement('div'); emailDiv.className='text-xs text-gray-400'; emailDiv.textContent=current.email;
+  infoDiv.appendChild(nameDiv); infoDiv.appendChild(emailDiv); topWrap.appendChild(avatarDiv); topWrap.appendChild(infoDiv); menu.appendChild(topWrap);
+
+  const actions=document.createElement('div'); actions.className='mt-3 border-t border-gray-700 pt-3 space-y-2';
+  const accLink=document.createElement('a'); accLink.href='account.html'; accLink.className='block py-2 px-2 rounded hover:bg-gray-900'; accLink.textContent='Account details';
+  const ordersLink=document.createElement('a'); ordersLink.href='orders.html'; ordersLink.className='block py-2 px-2 rounded hover:bg-gray-900'; ordersLink.textContent='Orders';
+  const signOutBtn=document.createElement('button'); signOutBtn.id='signOutBtn'; signOutBtn.className='w-full mt-2 py-2 bg-red-600 text-white rounded'; signOutBtn.textContent='Sign out';
+  signOutBtn.addEventListener('click',()=>logoutUser());
+  actions.appendChild(accLink); actions.appendChild(ordersLink); actions.appendChild(signOutBtn); menu.appendChild(actions);
+}
+
+
+
+// ----------------- DOM Ready -----------------
+document.addEventListener('DOMContentLoaded',()=>{
   updateCartCounts();
   renderFeatured();
   renderProducts();
   renderProductDetail();
   renderCartPage();
-  updateAuthUI(); // <-- ensure this runs
+  updateAuthUI();
   initMobileMenu();
 });
