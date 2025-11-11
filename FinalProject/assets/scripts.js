@@ -1,9 +1,4 @@
-/* assets/scripts.js
-   Full JS: DOM-based rendering (no innerHTML)
-   - products can be embedded or loaded from assets/products.json via loadProductsFromJSON(url)
-   - account and mobile menus built with createElement
-   - product detail supports p.images
-*/
+/* assets/scripts.js*/
 
 // ----------------- Product data (fallback embedded) -----------------
 let PRODUCTS = [
@@ -53,7 +48,8 @@ function getQueryParam(name){
 function getCart(){
   const raw = localStorage.getItem('gentry_cart');
   if (!raw) return [];
-  try { return JSON.parse(raw); } catch(e) { localStorage.removeItem('gentry_cart'); return []; }
+  const parsed = JSON.parse(raw || '[]');
+  return Array.isArray(parsed) ? parsed : [];
 }
 function saveCart(cart){
   localStorage.setItem('gentry_cart', JSON.stringify(cart));
