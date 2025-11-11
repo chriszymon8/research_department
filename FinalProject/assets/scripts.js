@@ -35,13 +35,13 @@ let PRODUCTS = [
   { id: 'om-3', brand: 'Omega', name: 'Omega Constellation', price: 275000, img: 'assets/watches/omega3.avif', images: ['assets/watches/omega3.avif'], stock: false, desc: 'Elegant integrated bracelet design.' },
   { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/watches/omega4.avif', images: ['assets/watches/omega4.avif'], stock: true, desc: 'Classic dress collection.' },
 
-  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/watches/AP1.avif', images: ['assets/watches/AP1.avif'], stock: true, desc: 'Hammered 18-carat white gold case.' },
-  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/watches/AP2.avif', images: ['assets/watches/AP2.avif'], stock: false, desc: 'Hammered 18-carat yellow gold case.' },
-  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/watches/AP3.avif', images: ['assets/watches/AP3.avif'], stock: true, desc: 'Warm 18-carat pink gold with titanium bezel.' },
+  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/watches/AP1.avif', images: ['assets/watches/AP1.avif','assets/watches/AP/RoyalOakSilver1.webp','assets/watches/AP/RoyalOakSilver2.webp'], stock: true, desc: 'Hammered 18-carat white gold case.' },
+  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/watches/AP2.avif', images: ['assets/watches/AP2.avif','assets/watches/AP/RoyalOakGold1.webp','assets/watches/AP/RoyalOakGold2.webp'], stock: false, desc: 'Hammered 18-carat yellow gold case.' },
+  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/watches/AP3.avif', images: ['assets/watches/AP3.avif','assets/watches/AP/RoyalOakOffshore1.jpg','assets/watches/AP/RoyalOakOffshore2.jpg'], stock: true, desc: 'Warm 18-carat pink gold with titanium bezel.' },
 
-  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/watches/Seiko1.avif', images: ['assets/watches/Seiko1.avif'], stock: true, desc: 'Rugged digital watch.' },
-  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage (Enamel Dial)', price: 84000, img: 'assets/watches/Seiko2.png', images: ['assets/watches/Seiko2.png'], stock: true, desc: 'Enamel dial manufactured by firing at high temperature.' },
-  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', images: ['assets/watches/Seiko3.png'], stock: false, desc: 'Professional diver watch.' }
+  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/watches/Seiko1.avif', images: ['assets/watches/Seiko1.avif','assets/watches/Seiko/LordMarvel1.webp','assets/watches/Seiko/LordMarvel2.webp'], stock: true, desc: 'Rugged digital watch.' },
+  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage (Enamel Dial)', price: 84000, img: 'assets/watches/Seiko2.png', images: ['assets/watches/Seiko2.png','assets/watches/Seiko/Seiko_Presage1.webp','assets/watches/Seiko/Seiko_Presage2.webp'], stock: true, desc: 'Enamel dial manufactured by firing at high temperature.' },
+  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', images: ['assets/watches/Seiko3.png','assets/watches/Seiko/ProspexMarineMaster1.webp','assets/watches/Seiko/ProspexMarineMaster2.webp'], stock: false, desc: 'Professional diver watch.' }
 ];
 
 // ----------------- Utilities & Cart -----------------
