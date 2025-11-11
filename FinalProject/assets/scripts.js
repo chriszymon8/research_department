@@ -8,7 +8,7 @@
 // ----------------- Product data (fallback embedded) -----------------
 let PRODUCTS = [
   { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/watches/m124060.avif', images: ['assets/watches/m124060.avif'], stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
-  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', images: ['assets/watches/m116500ln.avif','assets/watches/daytona.jpg','assets/watches/m116500ln_back.avif'], stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
+  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', images: ['assets/watches/m116500ln.avif','assets/watches/daytona.jpg','assets/watches/Rolex-Daytona-116500LN.jpg'], stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
   { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/watches/m126334.avif', images: ['assets/watches/m126334.avif'], stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
   { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', images: ['assets/watches/m126710blro.avif'], stock: true, desc: 'Dual time zone travel watch — iconic "Pepsi" bezel.' },
   { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/watches/m126622.avif', images: ['assets/watches/m126622.avif'], stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },

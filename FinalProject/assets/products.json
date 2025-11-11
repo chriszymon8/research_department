@@ -13,7 +13,7 @@
     "brand": "Rolex",
     "name": "Rolex Daytona 116500LN",
     "price": 6599000,
-    "images": ["assets/watches/m116500ln.avif", "assets/watches/daytona.jpg", "assets/watches/m116500ln_back.avif"],
+    "images": ["assets/watches/m116500ln.avif", "assets/watches/daytona.jpg", "assets/watches/Rolex-Daytona-116500LN.jpg"],
     "stock": true,
     "desc": "Legendary racing chronograph with Cerachrom bezel and Oyster bracelet."
   },
