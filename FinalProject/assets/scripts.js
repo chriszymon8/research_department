@@ -152,6 +152,7 @@ function renderProducts(){
   apply();
 }
 
+
 // ----------------- Product detail -----------------
 function renderProductDetail(){
   const id = getQueryParam('id');
@@ -203,6 +204,7 @@ function renderProductDetail(){
 
   renderProductSuggestions(p);
 }
+
 
 // ----------------- Cart page -----------------
 function renderCartPage(){
