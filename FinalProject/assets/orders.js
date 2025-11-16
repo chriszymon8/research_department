@@ -1,56 +1,120 @@
-    (function(){
-      const box = document.getElementById('ordersBox');
-      function getCurrentUser(){ const raw = localStorage.getItem('gentry_user'); if(!raw) return null; try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_user'); return null; } }
-      const current = getCurrentUser();
+// assets/orders.js
 
-      if(!box) return;
+document.addEventListener("DOMContentLoaded", async () => {
+  const tbody = document.getElementById("ordersTable");
+  if (!tbody) console.error("ordersTable element not found");
 
-      if(!current){
-        const p = document.createElement('p'); p.className = 'text-gray-400';
-        p.textContent = 'Please sign in to view your orders.';
-        const a = document.createElement('a'); a.href = 'login.html'; a.className = 'text-amber-300 ml-1'; a.textContent = 'Sign in';
-        box.appendChild(p); box.appendChild(a);
-        return;
-      }
+  // -----------------------------
+  // FETCH ORDERS FROM BACKEND
+  // -----------------------------
+  async function fetchOrders() {
+    try {
+      const res = await fetch("http://localhost:3000/api/orders");
+      const data = await res.json();
+      return Array.isArray(data) ? data : data.orders || [];
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+      return [];
+    }
+  }
 
-      const raw = localStorage.getItem('gentry_orders');
-      let orders = [];
-      try { orders = raw ? JSON.parse(raw) : []; } catch(e){ orders = []; }
+  // -----------------------------
+  // RENDER ORDERS IN TABLE
+  // -----------------------------
+  function renderOrders(orders) {
+    if (!tbody) return;
+    tbody.replaceChildren(); // Clear table
 
-      const myOrders = orders.filter(o => o.userId === current.id);
+    orders.forEach(o => {
+      const tr = document.createElement("tr");
+      tr.className = "bg-gray-800 mb-1 rounded";
 
-      if(!myOrders.length){
-        const p = document.createElement('p'); p.className = 'text-gray-400';
-        p.textContent = 'You have no orders yet.';
-        box.appendChild(p);
-        return;
-      }
+      tr.innerHTML = `
+        <td class="p-2">${o.id}</td>
+        <td class="p-2">${o.userEmail || o.userId || "Unknown"}</td>
+        <td class="p-2">${(o.items || []).map(i => i.name + " x" + i.qty).join(", ")}</td>
+        <td class="p-2">₱${(o.total || 0).toLocaleString()}</td>
+        <td class="p-2 flex gap-2">
+          <button class="bg-blue-500 px-2 rounded editBtn">Edit</button>
+          <button class="bg-red-600 px-2 rounded deleteBtn">Delete</button>
+        </td>
+      `;
 
-      myOrders.forEach(o => {
-        const card = document.createElement('div'); card.className = 'bg-gray-900 p-4 rounded mb-4';
-        const header = document.createElement('div'); header.className = 'flex items-center justify-between';
-        const id = document.createElement('div'); id.className = 'font-semibold'; id.textContent = `Order #${o.id}`;
-        const date = document.createElement('div'); date.className = 'text-sm text-gray-400'; date.textContent = new Date(o.date).toLocaleString();
-        header.appendChild(id); header.appendChild(date);
-
-        const list = document.createElement('div'); list.className = 'mt-3 space-y-2';
-        (o.items || []).forEach(it => {
-          const row = document.createElement('div'); row.className = 'flex items-center justify-between';
-          const left = document.createElement('div'); left.className = 'flex items-center gap-3';
-          const img = document.createElement('img'); img.src = it.img || 'assets/watches/placeholder.avif'; img.className = 'w-12 h-12 object-cover rounded';
-          const name = document.createElement('div'); name.className = 'text-sm'; name.textContent = `${it.name} x ${it.qty}`;
-          left.appendChild(img); left.appendChild(name);
-          const price = document.createElement('div'); price.className = 'text-sm text-amber-300'; price.textContent = `₱${(it.price || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-          row.appendChild(left); row.appendChild(price);
-          list.appendChild(row);
-        });
-
-        const total = document.createElement('div'); total.className = 'mt-3 flex items-center justify-between';
-        const tlabel = document.createElement('div'); tlabel.className = 'text-gray-400'; tlabel.textContent = 'Total';
-        const tamount = document.createElement('div'); tamount.className = 'font-bold text-amber-300'; tamount.textContent = `₱${(o.total || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-        total.appendChild(tlabel); total.appendChild(tamount);
-
-        card.appendChild(header); card.appendChild(list); card.appendChild(total);
-        box.appendChild(card);
+      // Delete button
+      tr.querySelector(".deleteBtn").addEventListener("click", async () => {
+        if (!confirm(`Delete order #${o.id}?`)) return;
+        try {
+          const res = await fetch(`http://localhost:3000/api/orders/${o.id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("Failed to delete");
+          tr.remove();
+        } catch (err) {
+          console.error(err);
+          alert("Failed to delete order");
+        }
       });
-    })();
+
+      // Edit button (optional)
+      tr.querySelector(".editBtn").addEventListener("click", () => {
+        alert("Edit order not implemented yet");
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // -----------------------------
+  // PLACE ORDER FUNCTION
+  // -----------------------------
+  async function placeOrder(order) {
+    try {
+      const res = await fetch("http://localhost:3000/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+      });
+
+      if (!res.ok) throw new Error("Failed to place order");
+      const data = await res.json();
+      console.log("Order placed:", data);
+      alert("Order placed successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to place order");
+    }
+  }
+
+  // Example: hook this to a button in your main website
+  document.getElementById("placeOrderBtn")?.addEventListener("click", () => {
+    const order = {
+      userEmail: "test@example.com", // replace with logged-in user email
+      items: [
+        { name: "Rolex Submariner", qty: 1, price: 2650000 }
+      ],
+      total: 2650000
+    };
+
+    placeOrder(order);
+  });
+
+  // -----------------------------
+  // INITIAL LOAD
+  // -----------------------------
+  const orders = await fetchOrders();
+  renderOrders(orders);
+
+  // -----------------------------
+  // WEBSOCKET FOR LIVE UPDATES
+  // -----------------------------
+  const ws = new WebSocket("ws://localhost:3000");
+
+  ws.addEventListener("open", () => console.log("Connected to WS for orders"));
+
+  ws.addEventListener("message", (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.type === "orders-update") {
+      renderOrders(msg.data);
+    }
+  });
+
+  ws.addEventListener("close", () => console.log("WS disconnected"));
+});

@@ -1,44 +1,44 @@
-  document.getElementById('registerForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const password = document.getElementById('regPassword').value;
+const registerForm = document.getElementById('registerForm');
+const msg = document.getElementById('regMsg');
 
-    if(!name || !email || !password){ 
-      alert('Please fill all fields'); 
-      return; 
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const password2 = document.getElementById('regPassword2').value;
+
+  msg.textContent = '';
+
+  if (!name || !email || !password || !password2) {
+    msg.textContent = 'All fields are required.';
+    return;
+  }
+
+  if (password !== password2) {
+    msg.textContent = 'Passwords do not match.';
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:3000/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.message || 'Server error. Try again later.';
+      return;
     }
 
-    const users = JSON.parse(localStorage.getItem('gentry_users')||'[]');
-    if(users.find(u=>u.email===email)){ 
-      alert('Email already registered'); 
-      return; 
-    }
-
-    const newUser = { id:'u'+Date.now(), name, email, password };
-    users.push(newUser);
-    localStorage.setItem('gentry_users', JSON.stringify(users));
-
-    // create notification div
-    const notification = document.createElement('div');
-    notification.textContent = 'Registered Successfully!';
-    notification.style.position = 'fixed';
-    notification.style.top = '50%';
-    notification.style.left = '50%';
-    notification.style.transform = 'translate(-50%, -50%)';
-    notification.style.backgroundColor = '#4ade80'; // green
-    notification.style.color = 'white';
-    notification.style.padding = '20px 40px';
-    notification.style.borderRadius = '12px';
-    notification.style.fontSize = '18px';
-    notification.style.zIndex = '9999';
-    notification.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-    notification.style.textAlign = 'center';
-    document.body.appendChild(notification);
-
-    // remove notification after 1.5s and redirect to login
-    setTimeout(() => {
-      document.body.removeChild(notification);
-      window.location.href = 'login.html';
-    }, 1500);
-  });
+    // Registration successful, redirect to login
+    window.location.href = 'login.html';
+  } catch (err) {
+    console.error(err);
+    msg.textContent = 'Server error. Try again later.';
+  }
+});

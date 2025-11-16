@@ -1,43 +1,28 @@
 /* assets/scripts.js*/
 
 // ----------------- Product data (fallback embedded) -----------------
-let PRODUCTS = [
-  { id: 'rx-1', brand: 'Rolex', name: 'Rolex Submariner 124060', price: 2650000, img: 'assets/watches/m124060.avif', images: ['assets/watches/m124060.avif','assets/watches/rolex/r1/r2.avif','assets/watches/rolex/r1/r3.webp'], stock: true, desc: 'Iconic diver watch, 40mm Oystersteel case, unidirectional bezel.' },
-  { id: 'rx-2', brand: 'Rolex', name: 'Rolex Daytona 116500LN', price: 6599000, img: 'assets/watches/m116500ln.avif', images: ['assets/watches/m116500ln.avif','assets/watches/daytona.jpg','assets/watches/Rolex-Daytona-116500LN.jpg'], stock: true, desc: 'Legendary racing chronograph with Cerachrom bezel and Oyster bracelet.' },
-  { id: 'rx-3', brand: 'Rolex', name: 'Rolex Datejust 126334', price: 1850000, img: 'assets/watches/m126334.avif', images: ['assets/watches/m126334.avif', 'assets/watches/rolex/DJ/r2.webp', 'assets/watches/rolex/DJ/r3.webp'  ], stock: false, desc: 'Timeless Datejust in steel with fluted bezel and jubilee bracelet.' },
-  { id: 'rx-4', brand: 'Rolex', name: 'Rolex GMT-Master II 126710BLRO', price: 4125000, img: 'assets/watches/m126710blro.avif', images: ['assets/watches/m126710blro.avif', 'assets/watches/rolex/gmt/r3.jpg', 'assets/watches/rolex/gmt/r2.jpg'], stock: true, desc: 'Dual time zone travel watch — iconic "Pepsi" bezel.' },
-  { id: 'rx-5', brand: 'Rolex', name: 'Rolex Yacht-Master 126622', price: 2750000, img: 'assets/watches/m126622.avif', images: ['assets/watches/m126622.avif', 'assets/watches/rolex/YM/r2.webp', 'assets/watches/rolex/YM/r3.jpg'], stock: true, desc: 'Sport-luxury model with comfortable Oysterflex bracelet option.' },
-  { id: 'rx-6', brand: 'Rolex', name: 'Rolex Explorer 124270', price: 480000, img: 'assets/watches/m124270.avif', images: ['assets/watches/m124270.avif','assets/watches/rolex/RE/r2.JPG', 'assets/watches/rolex/RE/r3.jpg'], stock: true, desc: 'Compact 36mm sports watch built for exploration and durability.' },
-  { id: 'rx-7', brand: 'Rolex', name: 'Rolex Milgauss 116400GV', price: 620000, img: 'assets/watches/116400GV.jpg', images: ['assets/watches/116400GV.jpg', 'assets/watches/rolex/RM/r2.JPG', 'assets/watches/rolex/RM/r3.WEBP'], stock: false, desc: 'Engineered for scientists, anti-magnetic performance.' },
-  { id: 'rx-8', brand: 'Rolex', name: 'Rolex Sea-Dweller 126600', price: 3550000, img: 'assets/watches/m126600.avif', images: ['assets/watches/m126600.avif', 'assets/watches/rolex/SD/r2.avif', 'assets/watches/rolex/SD/r3.jpg'], stock: true, desc: 'Professional diver rated to 1220 meters, helium escape valve.' },
-  { id: 'rx-9', brand: 'Rolex', name: 'Rolex Sky-Dweller 326934', price: 5200000, img: 'assets/watches/m326934.avif', images: ['assets/watches/m326934.avif', 'assets/watches/rolex/sky/r2.JPG', 'assets/watches/rolex/sky/r3.WEBP'], stock: true, desc: 'Annual calendar and dual time — complex yet intuitive.' },
-  { id: 'rx-10', brand: 'Rolex', name: 'Rolex Cellini Time 50509', price: 3200000, img: 'assets/watches/50509.jpg', images: ['assets/watches/50509.jpg', 'assets/watches/rolex/rc/r2.JPG', 'assets/watches/rolex/rc/r3.WEBP'], stock: true, desc: 'Refined dress watch with polished case and classic leather strap.' },
-  { id: 'rx-11', brand: 'Rolex', name: 'Rolex Oyster Perpetual 41 124300', price: 3000000, img: 'assets/watches/m124300.avif', images: ['assets/watches/m124300.avif', 'assets/watches/rolex/oys/r2.JPG', 'assets/watches/rolex/oys/r3.WEBP'], stock: true, desc: 'Modern entry-level Rolex with colourful dials and reliable movement.' },
-  { id: 'rx-12', brand: 'Rolex', name: 'Rolex Day-Date 40 228238', price: 12500000, img: 'assets/watches/m228238.avif', images: ['assets/watches/m228238.avif', 'assets/watches/rolex/DD/r2.JPG', 'assets/watches/rolex/DD/23.WEBP'], stock: false, desc: "The President's watch: 18k yellow gold with day and date apertures." },
+// 1. PRODUCTS from backend
+let PRODUCTS = [];
 
-  { id: 'ct-1', brand: 'Cartier', name: 'Cartier Santos De Cartier Automatic', price: 446299, img: 'assets/watches/cartier1.avif', images: ['assets/watches/cartier1.avif', 'assets/watches/cartier/santos/r2.webp', 'assets/watches/cartier/santos/r3.jpg'], stock: true, desc: 'Classic square case with refined finishing.' },
-  { id: 'ct-2', brand: 'Cartier', name: 'Santos de Cartier watch (Yellow Gold)', price: 1991135, img: 'assets/watches/cartier2.avif', images: ['assets/watches/cartier2.avif', 'assets/watches/cartier/gold/r2.webp', 'assets/watches/cartier/gold/r3.jpg'], stock: true, desc: 'Santos de Cartier watch, small model, quartz movement.' },
-  { id: 'ct-3', brand: 'Cartier', name: 'Santos de Cartier watch (Two Tone)', price: 688315, img: 'assets/watches/cartier3.avif', images: ['assets/watches/cartier3.avif', 'assets/watches/cartier/2tone/r2.webp', 'assets/watches/cartier/2tone/r3.webp'], stock: true, desc: 'Manufacture mechanical movement with automatic winding.' },
-  { id: 'ct-4', brand: 'Cartier', name: 'Tank Must de Cartier watch', price: 222605, img: 'assets/watches/cartier4.avif', images: ['assets/watches/cartier4.avif', 'assets/watches/cartier/tank/r2.jpg', 'assets/watches/cartier/tank/r3.jpg'], stock: false, desc: 'Tank Must watch, large model, SolarBeat™ movement.' },
+// Fetch initial products from backend
+function fetchProducts() {
+  fetch("http://localhost:3000/api/products")
+    .then(res => res.json())
+    .then(data => {
+      PRODUCTS = data;
+      renderFeatured();
+      renderProducts();
+      renderProductDetail();
+    })
+    .catch(err => console.log(err));
+}
 
-  { id: 'pp-1', brand: 'Patek', name: 'Patek Philippe Nautilus (White Gold)', price: 4523000, img: 'assets/watches/PatekPhilippe1.avif', images: ['assets/watches/PatekPhilippe1.avif','assets/watches/Patek Philippe/Patek Philippe Nautilus (White Gold)1.jpg','assets/watches/Patek Philippe/Patek Philippe Nautilus (White Gold)2.jpg'], stock: true, desc: 'White gold case and bracelet.' },
-  { id: 'pp-2', brand: 'Patek', name: 'Patek Philippe Nautilus (Rose Gold)', price: 5383000, img: 'assets/watches/PatekPhilippe2.avif', images: ['assets/watches/PatekPhilippe2.avif','assets/watches/Patek Philippe/Patek Philippe Nautilus (Rose Gold)1.jpg','assets/watches/Patek Philippe/Patek Philippe Nautilus (Rose Gold)2.jpg'], stock: true, desc: 'Rose gold with sunburst brown dial.' },
-  { id: 'pp-3', brand: 'Patek', name: 'Patek Philippe Nautilus (Steel)', price: 3462000, img: 'assets/watches/PatekPhilippe3.avif', images: ['assets/watches/PatekPhilippe3.avif','assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)1.jpg','assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)2.jpg'], stock: false, desc: 'Steel version with embossed dial.' },
-  { id: 'pp-4', brand: 'Patek', name: 'Patek Philippe Aquanaut (Rose Gold)', price: 4903000, img: 'assets/watches/PatekPhilippe4.avif', images: ['assets/watches/PatekPhilippe4.avif','assets/watches/Patek Philippe/Patek Philippe Aquanaut (Rose Gold)1.jpg','assets/watches/Patek Philippe/Patek Philippe Aquanaut (Rose Gold)2.jpg'], stock: true, desc: 'Aquanaut pattern with rose-gold case.' },
+function renderProducts(list) {
+  // your existing renderProducts code
+}
 
-  { id: 'om-1', brand: 'Omega', name: 'Omega Seamaster Diver 300M', price: 420000, img: 'assets/watches/omega1.avif', images: ['assets/watches/omega1.avif','assets/watches/Omega/Omega Seamaster Diver 300M (1).jpg','assets/watches/Omega/Omega Seamaster Diver 300M (2).jpg'], stock: true, desc: 'Diver watch with co-axial escapement.' },
-  { id: 'om-2', brand: 'Omega', name: 'Omega Speedmaster Professional', price: 380000, img: 'assets/watches/omega2.avif', images: ['assets/watches/omega2.avif','assets/watches/Omega/Omega Speedmaster Professional(1).jpg','assets/watches/Omega/Omega Speedmaster Professional(2).jpg'], stock: true, desc: 'The Moonwatch — legendary chronograph.' },
-  { id: 'om-3', brand: 'Omega', name: 'Omega Constellation', price: 275000, img: 'assets/watches/omega3.avif', images: ['assets/watches/omega3.avif','assets/watches/Omega/Omega Constellation(1).jpg','assets/watches/Omega/Omega Constellation(2).jpg'], stock: false, desc: 'Elegant integrated bracelet design.' },
-  { id: 'om-4', brand: 'Omega', name: 'Omega De Ville', price: 240000, img: 'assets/watches/omega4.avif', images: ['assets/watches/omega4.avif','assets/watches/Omega/Omega De Ville(1).jpg','assets/watches/Omega/Omega De Ville(2).jpg'], stock: true, desc: 'Classic dress collection.' },
+// other JS like cart, filters, navbar toggle, etc...
 
-  { id: 'ap-1', brand: 'Audemars', name: 'Royal Oak Mini Frosted Quartz', price: 6310224, img: 'assets/watches/AP1.avif', images: ['assets/watches/AP1.avif','assets/watches/AP/RoyalOakSilver1.webp','assets/watches/AP/RoyalOakSilver2.webp'], stock: true, desc: 'Hammered 18-carat white gold case.' },
-  { id: 'ap-2', brand: 'Audemars', name: 'Royal Oak Mini Frosted Gold Quartz', price: 5528958, img: 'assets/watches/AP2.avif', images: ['assets/watches/AP2.avif','assets/watches/AP/RoyalOakGold1.webp','assets/watches/AP/RoyalOakGold2.webp'], stock: false, desc: 'Hammered 18-carat yellow gold case.' },
-  { id: 'ap-3', brand: 'Audemars', name: 'Royal Oak Offshore Selfwinding Chronograph', price: 4891934, img: 'assets/watches/AP3.avif', images: ['assets/watches/AP3.avif','assets/watches/AP/RoyalOakOffshore1.jpg','assets/watches/AP/RoyalOakOffshore2.jpg'], stock: true, desc: 'Warm 18-carat pink gold with titanium bezel.' },
-
-  { id: 'sk-1', brand: 'Seiko', name: 'Seiko Lord Marvel', price: 8000, img: 'assets/watches/Seiko1.avif', images: ['assets/watches/Seiko1.avif','assets/watches/Seiko/LordMarvel1.webp','assets/watches/Seiko/LordMarvel2.webp'], stock: true, desc: 'Rugged digital watch.' },
-  { id: 'sk-2', brand: 'Seiko', name: 'Seiko Presage (Enamel Dial)', price: 84000, img: 'assets/watches/Seiko2.png', images: ['assets/watches/Seiko2.png','assets/watches/Seiko/Seiko_Presage1.webp','assets/watches/Seiko/Seiko_Presage2.webp'], stock: true, desc: 'Enamel dial manufactured by firing at high temperature.' },
-  { id: 'sk-3', brand: 'Seiko', name: 'Seiko Prospex Marinemaster (Green Dial)', price: 92800, img: 'assets/watches/Seiko3.png', images: ['assets/watches/Seiko3.png','assets/watches/Seiko/ProspexMarineMaster1.webp','assets/watches/Seiko/ProspexMarineMaster2.webp'], stock: false, desc: 'Professional diver watch.' }
-];
 
 // ----------------- Utilities & Cart -----------------
 function getQueryParam(name){
@@ -55,13 +40,58 @@ function saveCart(cart){
   localStorage.setItem('gentry_cart', JSON.stringify(cart));
   updateCartCounts();
 }
-function addToCart(product, qty=1){
-  if (!product || !product.id) return;
-  const cart = getCart();
-  const found = cart.find(i => i.id === product.id);
-  if(found) found.qty += qty; else cart.push({ id: product.id, qty, price: product.price, name: product.name, img: product.img });
-  saveCart(cart);
+function addToCart(product, qty = 1) {
+    const user = getCurrentUser();
+
+    if (!user) {
+        // Save pending item
+        const pending = { ...product, qty };
+        localStorage.setItem('gentry_pending_item', JSON.stringify(pending));
+
+        // Diretso redirect sa login
+        window.location.href = './login.html';
+        return;
+    }
+
+    if (!product || !product.id) return;
+
+    const cart = getCart();
+    const found = cart.find(i => i.id === product.id);
+    if (found) found.qty += qty;
+    else cart.push({ id: product.id, qty, price: product.price, name: product.name, img: product.img });
+
+    saveCart(cart);
+    updateCartCounts();
+    showToast('Added to cart', 'success');
 }
+
+
+
+
+function addToCartHandler(id){
+    const user = getCurrentUser();
+    if(!user){
+        // wala pang account/login
+        showToast('Please register or sign in first', 'error');
+        setTimeout(() => {
+            window.location.href = 'register.html';
+        }, 1000);
+        return;
+    }
+
+    const p = PRODUCTS.find(x => x.id === id);
+    if(!p){
+        showToast('Product not found','error');
+        return;
+    }
+
+    addToCart(p,1);
+    showToast('Added to cart','success');
+}
+
+
+
+
 function updateCartCounts(){
   const cart = getCart();
   const count = cart.reduce((s,i)=> s + (i.qty||0), 0);
@@ -87,19 +117,18 @@ function renderFeatured(){
     const bottom = document.createElement('div'); bottom.className = 'mt-2 flex items-center justify-between';
     const price = document.createElement('div'); price.className = 'text-amber-300 font-bold'; price.textContent = `₱${numberWithCommas(p.price)}`;
     const btn = document.createElement('button'); btn.className = 'bg-amber-400 text-black px-3 py-1 rounded text-sm'; btn.textContent = 'Add';
-    btn.addEventListener('click', (e) => { e.preventDefault(); addToCartHandler(p.id); });
+    btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    addToCartHandler(p.id); // <— laging dito dumaan
+});
+
     bottom.appendChild(price); bottom.appendChild(btn);
     anchor.appendChild(bottom);
     card.appendChild(anchor);
     grid.appendChild(card);
   });
 }
-function addToCartHandler(id){
-  const p = PRODUCTS.find(x => x.id === id);
-  if(!p) return alert('Product not found');
-  addToCart(p,1);
-  alert('Added to cart');
-}
+
 
 function renderProducts(){
   const brand = getQueryParam('brand');
@@ -153,57 +182,111 @@ function renderProducts(){
 }
 
 
-// ----------------- Product detail -----------------
-function renderProductDetail(){
-  const id = getQueryParam('id');
-  const root = document.getElementById('productDetail');
-  if(!root) return;
-  while(root.firstChild) root.removeChild(root.firstChild);
-  if(!id){ showNoProduct(root); return; }
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p){ showNotFound(root,id); return; }
+function renderProductDetail() {
+    const id = getQueryParam('id');
+    const root = document.getElementById('productDetail');
+    if (!root) return;
 
-  let images = Array.isArray(p.images) && p.images.length ? p.images.slice() : [p.img || 'assets/watches/placeholder.avif'];
-  while(images.length < 3) images.push(images[0]);
+    while (root.firstChild) root.removeChild(root.firstChild);
+    if (!id) { 
+        const p = document.createElement('p');
+        p.textContent = 'No product selected.';
+        root.appendChild(p);
+        return; 
+    }
 
-  const left = document.createElement('div'); left.className = 'space-y-4';
-  const mainWrap = document.createElement('div'); mainWrap.className = 'bg-gray-800 rounded-lg overflow-hidden';
-  const mainImg = document.createElement('img'); mainImg.id = 'productMainImage'; mainImg.src = images[0]; mainImg.alt = p.name; mainImg.className = 'w-full object-cover h-96';
-  mainWrap.appendChild(mainImg); left.appendChild(mainWrap);
+    // Fetch product directly from server
+    fetch("http://localhost:3000/api/products")
+        .then(res => res.json())
+        .then(products => {
+            const p = products.find(x => x.id === id);
+            if (!p) {
+                const notFound = document.createElement('p');
+                notFound.textContent = `Product with ID "${id}" not found.`;
+                root.appendChild(notFound);
+                return;
+            }
 
-  const thumbsDiv = document.createElement('div'); thumbsDiv.className = 'flex gap-3 mt-2';
-  images.forEach((imgSrc,i)=>{
-    const btn = document.createElement('button'); btn.className = `thumb-btn rounded overflow-hidden ${i===0 ? 'border border-amber-400':'border border-transparent'}`;
-    btn.setAttribute('data-idx',i);
-    const thumbImg = document.createElement('img'); thumbImg.src=imgSrc; thumbImg.alt=`thumb-${i}`; thumbImg.className='w-24 h-24 object-cover';
-    btn.appendChild(thumbImg);
-    btn.addEventListener('click',()=>{ mainImg.src=imgSrc; thumbsDiv.querySelectorAll('.thumb-btn').forEach(t=>t.classList.remove('border-amber-400')); btn.classList.add('border-amber-400'); });
-    thumbsDiv.appendChild(btn);
-  });
-  left.appendChild(thumbsDiv);
+            let images = Array.isArray(p.images) && p.images.length ? p.images.slice() : [p.img || 'assets/watches/placeholder.avif'];
+            while (images.length < 3) images.push(images[0]);
 
-  const right = document.createElement('div');
-  const nameEl = document.createElement('h2'); nameEl.className='text-2xl font-semibold'; nameEl.textContent=p.name;
-  const brandEl = document.createElement('p'); brandEl.className='text-sm text-gray-400 mt-2'; brandEl.textContent=p.brand;
-  const priceEl = document.createElement('div'); priceEl.className='mt-4 text-amber-300 font-bold text-2xl'; priceEl.textContent=`₱${numberWithCommas(p.price)}`;
-  const descEl = document.createElement('p'); descEl.className='mt-4 text-gray-300'; descEl.textContent=p.desc||'No description available.';
-  const availEl = document.createElement('div'); availEl.className='mt-4 text-sm text-gray-400';
-  const availSpan = document.createElement('span'); availSpan.className=`${p.stock?'text-green-400':'text-red-400'} font-semibold`; availSpan.textContent=p.stock?'In Stock':'Out of Stock';
-  availEl.appendChild(document.createTextNode('Availability: ')); availEl.appendChild(availSpan);
+            // LEFT: main image + thumbnails
+            const left = document.createElement('div'); left.className = 'space-y-4';
+            const mainWrap = document.createElement('div'); mainWrap.className = 'bg-gray-800 rounded-lg overflow-hidden';
+            const mainImg = document.createElement('img'); mainImg.id = 'productMainImage'; mainImg.src = images[0]; mainImg.alt = p.name; mainImg.className = 'w-full object-cover h-96';
+            mainWrap.appendChild(mainImg); left.appendChild(mainWrap);
 
-  const controls = document.createElement('div'); controls.className='mt-6 flex gap-3';
-  const addBtn = document.createElement('button'); addBtn.className=`px-6 py-3 ${p.stock?'bg-amber-400 text-black':'bg-gray-700 text-gray-400 cursor-not-allowed'} rounded font-semibold`; addBtn.textContent=p.stock?'Add to cart':'Out of stock';
-  if(!p.stock) addBtn.disabled=true;
-  addBtn.addEventListener('click',()=>{ addToCart(p,1); updateCartCounts(); const orig=addBtn.textContent; addBtn.textContent='Added ✅'; addBtn.disabled=true; setTimeout(()=>{ addBtn.textContent=orig; if(p.stock) addBtn.disabled=false; },1200); });
-  const backA = document.createElement('a'); backA.href='catalog.html'; backA.className='px-6 py-3 border border-gray-700 rounded'; backA.textContent='Back to catalog';
-  controls.appendChild(addBtn); controls.appendChild(backA);
+            const thumbsDiv = document.createElement('div'); thumbsDiv.className = 'flex gap-3 mt-2';
+            images.forEach((imgSrc,i)=>{
+                const btn = document.createElement('button'); 
+                btn.className = `thumb-btn rounded overflow-hidden ${i===0 ? 'border border-amber-400':'border border-transparent'}`;
+                btn.setAttribute('data-idx',i);
+                const thumbImg = document.createElement('img'); 
+                thumbImg.src=imgSrc; thumbImg.alt=`thumb-${i}`; thumbImg.className='w-24 h-24 object-cover';
+                btn.appendChild(thumbImg);
 
-  right.appendChild(nameEl); right.appendChild(brandEl); right.appendChild(priceEl); right.appendChild(descEl); right.appendChild(availEl); right.appendChild(controls);
+                btn.addEventListener('click', () => {
+                    mainImg.src = imgSrc;
+                    thumbsDiv.querySelectorAll('button').forEach(b=>b.classList.remove('border-amber-400'));
+                    btn.classList.add('border-amber-400');
+                });
 
-  root.appendChild(left); root.appendChild(right);
+                thumbsDiv.appendChild(btn);
+            });
+            left.appendChild(thumbsDiv);
 
-  renderProductSuggestions(p);
+            // RIGHT: product info + controls
+            const right = document.createElement('div');
+            const nameEl = document.createElement('h2'); nameEl.className='text-2xl font-semibold'; nameEl.textContent=p.name;
+            const brandEl = document.createElement('p'); brandEl.className='text-sm text-gray-400 mt-2'; brandEl.textContent=p.brand;
+            const priceEl = document.createElement('div'); priceEl.className='mt-4 text-amber-300 font-bold text-2xl'; priceEl.textContent=`₱${numberWithCommas(p.price)}`;
+            const descEl = document.createElement('p'); descEl.className='mt-4 text-gray-300'; descEl.textContent=p.desc||'No description available.';
+            const availEl = document.createElement('div'); availEl.className='mt-4 text-sm text-gray-400';
+            const availSpan = document.createElement('span'); availSpan.className=`${p.stock?'text-green-400':'text-red-400'} font-semibold`; availSpan.textContent=p.stock?'In Stock':'Out of Stock';
+            availEl.appendChild(document.createTextNode('Availability: ')); availEl.appendChild(availSpan);
+
+            const controls = document.createElement('div'); controls.className='mt-6 flex gap-3';
+            const addBtn = document.createElement('button'); 
+            addBtn.className=`px-6 py-3 ${p.stock?'bg-amber-400 text-black':'bg-gray-700 text-gray-400 cursor-not-allowed'} rounded font-semibold`; 
+            addBtn.textContent=p.stock?'Add to cart':'Out of stock';
+            if(!p.stock) addBtn.disabled=true;
+            addBtn.addEventListener('click',()=>{ 
+                if(p.stock){ 
+                    addToCart(p,1); 
+                    updateCartCounts(); 
+                    const orig=addBtn.textContent; 
+                    addBtn.textContent='Added ✅'; 
+                    addBtn.disabled=true; 
+                    setTimeout(()=>{
+                        addBtn.textContent=orig; 
+                        if(p.stock) addBtn.disabled=false; 
+                    },1200); 
+                }
+            });
+            const backA = document.createElement('a'); backA.href='catalog.html'; backA.className='px-6 py-3 border border-gray-700 rounded'; backA.textContent='Back to catalog';
+            controls.appendChild(addBtn); controls.appendChild(backA);
+
+            right.appendChild(nameEl); 
+            right.appendChild(brandEl); 
+            right.appendChild(priceEl); 
+            right.appendChild(descEl); 
+            right.appendChild(availEl); 
+            right.appendChild(controls);
+
+            root.appendChild(left); 
+            root.appendChild(right);
+
+            renderProductSuggestions(p);
+        })
+        .catch(err => {
+            console.error(err);
+            const errEl = document.createElement('p');
+            errEl.textContent = 'Failed to load product data.';
+            root.appendChild(errEl);
+        });
 }
+
+
 
 
 // ----------------- Cart page -----------------
@@ -236,17 +319,71 @@ function renderCartPage(){
   wrapper.appendChild(totalDiv); wrapper.appendChild(controls);
   container.appendChild(wrapper);
 }
-function removeFromCart(id){ let cart=getCart(); cart=cart.filter(i=>i.id!==id); saveCart(cart); renderCartPage(); }
-function clearCart(){ localStorage.removeItem('gentry_cart'); updateCartCounts(); renderCartPage(); }
-function checkout(){
-  const user=getCurrentUser(); if(!user){ alert('Please sign in to checkout.'); window.location.href='login.html'; return; }
-  const cart=getCart(); if(!cart.length){ alert('Cart is empty'); return; }
-  let orders=[]; try{ orders=localStorage.getItem('gentry_orders')?JSON.parse(localStorage.getItem('gentry_orders')):[]; } catch(e){ orders=[]; }
-  const id='ord-'+Date.now().toString(36); const total=cart.reduce((s,i)=>s+(i.price||0)*(i.qty||0),0);
-  orders.push({id,userId:user.id,date:new Date().toISOString(),items:cart,total});
-  localStorage.setItem('gentry_orders',JSON.stringify(orders));
-  clearCart(); alert('Order placed! Order ID: '+id);
+// ---------------- CART FUNCTIONS ----------------
+
+// Remove a product from cart by ID
+function removeFromCart(id) {
+    let cart = getCart();
+    cart = cart.filter(item => item.id !== id);
+    saveCart(cart);
+    updateCartCounts();
+    renderCartPage();
+    showToast('Item removed from cart', 'success');
 }
+
+// Clear the entire cart
+function clearCart() {
+    localStorage.removeItem('gentry_cart');
+    updateCartCounts();
+    renderCartPage();
+    showToast('Cart cleared', 'success');
+}
+
+// Checkout function
+function checkout() {
+    const user = getCurrentUser();
+    if (!user) {
+        showToast('Please sign in to checkout.', 'error');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1000);
+        return;
+    }
+
+    const cart = getCart();
+    if (!cart.length) {
+        showToast('Cart is empty', 'error');
+        return;
+    }
+
+    // Load previous orders
+    let orders = [];
+    try {
+        orders = localStorage.getItem('gentry_orders') 
+            ? JSON.parse(localStorage.getItem('gentry_orders')) 
+            : [];
+    } catch (e) {
+        orders = [];
+    }
+
+    // Create new order
+    const id = 'ord-' + Date.now().toString(36);
+    const total = cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
+    orders.push({
+        id,
+        userId: user.id,
+        date: new Date().toISOString(),
+        items: cart,
+        total
+    });
+
+    // Save orders and clear cart
+    localStorage.setItem('gentry_orders', JSON.stringify(orders));
+    clearCart(); // already shows toast inside
+
+    showToast('Order placed! Order ID: ' + id, 'success');
+}
+
 
 // ----------------- Mobile menu -----------------
 function initMobileMenu(){
@@ -376,15 +513,160 @@ function updateAuthUI(){
   actions.appendChild(accLink); actions.appendChild(ordersLink); actions.appendChild(signOutBtn); menu.appendChild(actions);
 }
 
+// ---------- ADMIN (client-side demo) ----------
+const ADMIN_CREDENTIALS = { username: 'admin', password: 'gentry123' }; // change as needed
+
+function adminLogin(username, password){
+  if(username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password){
+    localStorage.setItem('gentry_admin', JSON.stringify({ username }));
+    return true;
+  }
+  return 'Invalid username or password';
+}
+function adminLogout(){
+  localStorage.removeItem('gentry_admin');
+}
+function isAdminLoggedIn(){
+  try { return !!JSON.parse(localStorage.getItem('gentry_admin')); } catch(e){ return false; }
+}
+
+// ----- Users management -----
+function getUsers(){
+  try { return JSON.parse(localStorage.getItem('gentry_users')) || []; } catch(e){ return []; }
+}
+function saveUsers(list){ localStorage.setItem('gentry_users', JSON.stringify(list)); }
+
+function blockUser(userId, block=true){
+  const users = getUsers();
+  const u = users.find(x=>x.id === userId || x.email === userId);
+  if(!u) return false;
+  u.blocked = !!block;
+  saveUsers(users);
+  return true;
+}
+
+// ----- Products CRUD for admin -----
+function getProducts(){
+  try { return Array.isArray(window.PRODUCTS) ? PRODUCTS : (JSON.parse(localStorage.getItem('gentry_products')) || []);} catch(e){ return []; }
+}
+function saveProducts(list){
+  // update global PRODUCTS if present and persist to localStorage for admin usage
+  if(Array.isArray(window.PRODUCTS)) window.PRODUCTS = list;
+  localStorage.setItem('gentry_products', JSON.stringify(list));
+}
+function addProduct(prod){
+  const list = getProducts();
+  if(list.find(p=>p.id === prod.id)) { alert('Product id already exists'); return false; }
+  list.push(prod);
+  saveProducts(list);
+  return true;
+}
+function deleteProduct(id){
+  let list = getProducts();
+  list = list.filter(p=>p.id !== id);
+  saveProducts(list);
+}
+
+// ----- Admin rendering & analytics -----
+function renderAdminDashboard(){
+  renderAdminUsers();
+  renderAdminProducts();
+  renderAnalytics();
+}
+
+function renderAdminUsers(){
+  const wrap = document.getElementById('adminUsersList');
+  if(!wrap) return;
+  while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+  const users = getUsers();
+  if(!users.length){ wrap.textContent = 'No registered users.'; return; }
+  users.forEach(u=>{
+    const row = document.createElement('div'); row.className = 'flex items-center justify-between bg-gray-900 p-2 rounded';
+    const left = document.createElement('div');
+    left.innerHTML = `<div class="font-semibold text-sm">${u.name || u.email}</div><div class="text-xs text-gray-400">${u.email}</div>`;
+    const right = document.createElement('div');
+    const blockBtn = document.createElement('button'); blockBtn.className = u.blocked ? 'px-2 py-1 bg-green-600 rounded text-xs' : 'px-2 py-1 bg-red-600 rounded text-xs';
+    blockBtn.textContent = u.blocked ? 'Unblock' : 'Block';
+    blockBtn.addEventListener('click', ()=> { blockUser(u.id || u.email, !u.blocked); renderAdminUsers(); });
+    right.appendChild(blockBtn);
+    row.appendChild(left); row.appendChild(right);
+    wrap.appendChild(row);
+  });
+}
+
+function renderAdminProducts(){
+  const wrap = document.getElementById('adminProductsList');
+  if(!wrap) return;
+  while(wrap.firstChild) wrap.removeChild(wrap.firstChild);
+  const prods = getProducts();
+  if(!prods.length){ wrap.textContent = 'No products.'; return; }
+  prods.forEach(p=>{
+    const card = document.createElement('div'); card.className='bg-gray-900 p-3 rounded flex items-start gap-3';
+    const img = document.createElement('img'); img.src = p.img || 'assets/watches/placeholder.avif'; img.className='w-16 h-16 object-cover rounded';
+    const info = document.createElement('div'); info.className='flex-1';
+    info.innerHTML = `<div class="font-semibold">${p.name}</div><div class="text-xs text-gray-400">₱${numberWithCommas(p.price)}</div>`;
+    const actions = document.createElement('div');
+    const del = document.createElement('button'); del.className='px-2 py-1 bg-red-600 rounded text-xs'; del.textContent='Delete';
+    del.addEventListener('click', ()=> { if(confirm('Delete product?')){ deleteProduct(p.id); renderAdminProducts(); } });
+    actions.appendChild(del);
+    card.appendChild(img); card.appendChild(info); card.appendChild(actions); wrap.appendChild(card);
+  });
+}
+
+// ----- Analytics: chart of purchases per product -----
+function renderAnalytics(){
+  const ordersRaw = localStorage.getItem('gentry_orders');
+  let orders = [];
+  try { orders = ordersRaw ? JSON.parse(ordersRaw) : []; } catch(e){ orders = []; }
+  // aggregate count per product id
+  const counts = {};
+  orders.forEach(o=>{
+    (o.items || []).forEach(it=>{
+      counts[it.id] = (counts[it.id] || 0) + (it.qty || 1);
+    });
+  });
+  const labels = Object.keys(counts);
+  const data = labels.map(l => counts[l]);
+
+  // fallback: show top 5 products by count or show empty
+  const ctx = document.getElementById('salesChart');
+  if(!ctx) return;
+  // destroy previous chart if exists
+  if(window._adminSalesChart){ window._adminSalesChart.destroy(); window._adminSalesChart = null; }
+  window._adminSalesChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels.length ? labels : ['No sales'],
+      datasets: [{
+        label: 'Units sold',
+        data: labels.length ? data : [0]
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
 
 
 // ----------------- DOM Ready -----------------
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', () => {
   updateCartCounts();
-  renderFeatured();
-  renderProducts();
-  renderProductDetail();
-  renderCartPage();
   updateAuthUI();
   initMobileMenu();
+
+  // fetch products first
+  fetch("http://localhost:3000/api/products")
+    .then(res => res.json())
+    .then(data => {
+      PRODUCTS = data;
+      renderFeatured();
+      renderProducts();
+      renderProductDetail();
+    })
+    .catch(err => console.log(err));
+
+  renderCartPage();
 });
+

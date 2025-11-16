@@ -1,0 +1,34 @@
+[
+  {
+    "id": "rolex-daytona",
+    "name": "Rolex Daytona",
+    "price": 250000,
+    "img": "/FinalProject/assets/watches/rolex-daytona-history.webp",
+    "brand": "Rolex",
+    "featured": true
+  },
+  {
+    "id": "ap-royal-oak",
+    "name": "AP Royal Oak",
+    "price": 300000,
+    "img": "/FinalProject/assets/watches/AP/RoyalOakSilver1.webp",
+    "brand": "Audemars",
+    "featured": true
+  },
+  {
+    "id": "patek-nautilus",
+    "name": "Patek Philippe Nautilus",
+    "price": 350000,
+    "img": "/FinalProject/assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)1.jpg",
+    "brand": "Patek",
+    "featured": true
+  },
+  {
+    "id": "cartier-tank",
+    "name": "Cartier Tank",
+    "price": 200000,
+    "img": "/FinalProject/assets/watches/cartier/tank/r2.jpg",
+    "brand": "Cartier",
+    "featured": false
+  }
+]
