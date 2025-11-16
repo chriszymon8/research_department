@@ -103,12 +103,15 @@ async function renderProducts(products = []) {
 
     const tdImg = document.createElement("td");
     tdImg.className = "p-2";
+
     const img = document.createElement("img");
-    img.src = p.img;
-    img.onerror = () => img.src = "assets/default.png";
+    //img.src = p.img || "./watches/Seiko2.png"; 
+    //img.onerror = () => img.src = "./watches/Seiko2.png"; 
+
     img.className = "w-16 h-16 object-contain";
     tdImg.appendChild(img);
     tr.appendChild(tdImg);
+
 
     const tdActions = document.createElement("td");
     tdActions.className = "p-2 flex gap-2";

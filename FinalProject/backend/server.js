@@ -7,6 +7,7 @@ const WebSocket = require("ws");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static("assets"));
 
 // HTTP + WebSocket server
 const server = http.createServer(app);
