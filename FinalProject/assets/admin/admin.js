@@ -138,25 +138,29 @@ async function renderProducts(products = []) {
 
 // ADD PRODUCT FORM
 
-const addProductForm = document.getElementById("addProductForm");
 if (addProductForm) {
   addProductForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const newProduct = {
-      brand: document.getElementById("productBrand").value,
-      name: document.getElementById("productName").value,
+      id: document.getElementById("productId").value.trim(),
+      brand: document.getElementById("productBrand").value.trim(),
+      name: document.getElementById("productName").value.trim(),
       price: Number(document.getElementById("productPrice").value),
-      img: document.getElementById("productImage").value,
-      stock: Boolean(Number(document.getElementById("productStock").value)),
+      img: document.getElementById("productImage").value.trim(),
+      stock: document.getElementById("productStock").value === "1",
     };
+
     await fetchData("http://localhost:3000/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProduct)
     });
+
     addProductForm.reset();
   });
 }
+
 
 
 // EDIT PRODUCT MODAL

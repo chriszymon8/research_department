@@ -2,8 +2,8 @@
   {
     "id": "rx-1",
     "brand": "Rolex",
-    "name": "Rolex Submariner 124060",
-    "price": 2650003,
+    "name": "Rolex Submariner 1240601",
+    "price": 2650004,
     "img": "assets/watches/m124060.avif",
     "images": [
       "assets/watches/m124060.avif",
@@ -262,7 +262,7 @@
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)1.jpg",
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)2.jpg"
     ],
-    "stock": false,
+    "stock": true,
     "desc": "Steel version with embossed dial."
   },
   {
@@ -420,19 +420,19 @@
     "desc": "Professional diver watch."
   },
   {
-    "id": "rx-13",
-    "brand": "Rolex",
-    "name": "Rolex Day-Date Fully Iced Out",
-    "price": 5000000,
-    "img": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjyugkqQu6_Cpd7cEl8gvjeF1BCoXwbJH6u7-r5NMK3dTmAV-kppmns8JtfT-iClkL_glwiYebMeM7I-5LMYbXUXsLZ8BzBhdFDs7ErwumWDjXwd7JHj3EYw",
-    "stock": false
-  },
-  {
     "id": "rx-14",
     "brand": "Rolex",
     "name": "Rolex GMT-Master II 126710GRNR",
     "price": 1351062,
     "img": "https://img.chrono24.com/images/uhren/43371389-ykt4kng7k7tq6qz4jwj0mjac-ExtraLarge.jpg",
+    "stock": false
+  },
+  {
+    "id": "rx-15",
+    "brand": "Rolex",
+    "name": "Rolex Day-Date Fully Iced Out",
+    "price": 500000,
+    "img": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjyugkqQu6_Cpd7cEl8gvjeF1BCoXwbJH6u7-r5NMK3dTmAV-kppmns8JtfT-iClkL_glwiYebMeM7I-5LMYbXUXsLZ8BzBhdFDs7ErwumWDjXwd7JHj3EYw",
     "stock": false
   }
 ]
