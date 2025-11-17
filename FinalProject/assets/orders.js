@@ -1,12 +1,10 @@
-// assets/orders.js
 
 document.addEventListener("DOMContentLoaded", async () => {
   const tbody = document.getElementById("ordersTable");
   if (!tbody) console.error("ordersTable element not found");
 
-  // -----------------------------
+  
   // FETCH ORDERS FROM BACKEND
-  // -----------------------------
   async function fetchOrders() {
     try {
       const res = await fetch("http://localhost:3000/api/orders");
@@ -18,12 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // -----------------------------
   // RENDER ORDERS IN TABLE
-  // -----------------------------
   function renderOrders(orders) {
     if (!tbody) return;
-    tbody.replaceChildren(); // Clear table
+    tbody.replaceChildren();
 
     orders.forEach(o => {
       const tr = document.createElement("tr");
@@ -62,9 +58,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // -----------------------------
+
   // PLACE ORDER FUNCTION
-  // -----------------------------
+  
   async function placeOrder(order) {
     try {
       const res = await fetch("http://localhost:3000/api/orders", {
@@ -86,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Example: hook this to a button in your main website
   document.getElementById("placeOrderBtn")?.addEventListener("click", () => {
     const order = {
-      userEmail: "test@example.com", // replace with logged-in user email
+      userEmail: "test@example.com",
       items: [
         { name: "Rolex Submariner", qty: 1, price: 2650000 }
       ],
@@ -96,15 +92,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     placeOrder(order);
   });
 
-  // -----------------------------
+  
   // INITIAL LOAD
-  // -----------------------------
+  
   const orders = await fetchOrders();
   renderOrders(orders);
 
-  // -----------------------------
+  
   // WEBSOCKET FOR LIVE UPDATES
-  // -----------------------------
+  
   const ws = new WebSocket("ws://localhost:3000");
 
   ws.addEventListener("open", () => console.log("Connected to WS for orders"));

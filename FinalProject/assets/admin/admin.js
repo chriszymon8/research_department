@@ -1,6 +1,6 @@
-// =========================
+
 // ADMIN LOGIN & DASHBOARD PROTECTION
-// =========================
+
 const adminEmail = "admin@gentry.com";
 const adminPassword = "admin123";
 
@@ -30,9 +30,9 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
   window.location.href = "./admin-login.html";
 });
 
-// =========================
+
 // FETCH HELPER
-// =========================
+
 async function fetchData(url, options = {}) {
   try {
     const res = await fetch(url, options);
@@ -43,9 +43,9 @@ async function fetchData(url, options = {}) {
   }
 }
 
-// =========================
+
 // RENDER USERS
-// =========================
+
 async function renderUsers(users = []) {
   const tbody = document.getElementById("usersTable");
   if (!tbody) return;
@@ -84,9 +84,9 @@ async function renderUsers(users = []) {
   });
 }
 
-// =========================
+
 // RENDER PRODUCTS
-// =========================
+
 async function renderProducts(products = []) {
   const tbody = document.getElementById("productsTable");
   if (!tbody) return;
@@ -135,9 +135,9 @@ async function renderProducts(products = []) {
   });
 }
 
-// =========================
+
 // ADD PRODUCT FORM
-// =========================
+
 const addProductForm = document.getElementById("addProductForm");
 if (addProductForm) {
   addProductForm.addEventListener("submit", async (e) => {
@@ -158,9 +158,9 @@ if (addProductForm) {
   });
 }
 
-// =========================
+
 // EDIT PRODUCT MODAL
-// =========================
+
 function openEditModal(product) {
   document.getElementById("editModal")?.remove();
 
@@ -207,9 +207,9 @@ function openEditModal(product) {
   });
 }
 
-// =========================
+
 // RENDER ORDERS
-// =========================
+
 async function renderOrders(orders = []) {
   const tbody = document.getElementById("ordersTable");
   if (!tbody) return;
@@ -243,9 +243,9 @@ async function renderOrders(orders = []) {
   }
 }
 
-// =========================
+
 // FETCH ORDERS ON PAGE LOAD
-// =========================
+
 async function loadOrdersFallback() {
   const orders = await fetchData("http://localhost:3000/api/orders");
   const ordersArray = Array.isArray(orders) ? orders : (orders.orders || []);
@@ -255,9 +255,9 @@ async function loadOrdersFallback() {
 
 if (mainEl) loadOrdersFallback();
 
-// =========================
+
 // TOAST NOTIFICATION
-// =========================
+
 function showAdminToast(message, type = "info") {
   const toast = document.createElement("div");
   toast.textContent = message;
@@ -274,9 +274,9 @@ function showAdminToast(message, type = "info") {
   }, 3000);
 }
 
-// =========================
+
 // WEBSOCKET
-// =========================
+
 const ws = new WebSocket("ws://localhost:3000");
 ws.addEventListener("open", () => console.log("Connected to WebSocket server"));
 ws.addEventListener("message", (event) => {

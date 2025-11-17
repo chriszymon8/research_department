@@ -1,6 +1,6 @@
-/* assets/scripts.js*/
 
-// ----------------- Product data (fallback embedded) -----------------
+
+
 // 1. PRODUCTS from backend
 let PRODUCTS = [];
 
@@ -18,13 +18,13 @@ function fetchProducts() {
 }
 
 function renderProducts(list) {
-  // your existing renderProducts code
+ 
 }
 
-// other JS like cart, filters, navbar toggle, etc...
 
 
-// ----------------- Utilities & Cart -----------------
+
+
 function getQueryParam(name){
   const params = new URLSearchParams(window.location.search || '');
   return params.get(name);
@@ -44,11 +44,11 @@ function addToCart(product, qty = 1) {
     const user = getCurrentUser();
 
     if (!user) {
-        // Save pending item
+        
         const pending = { ...product, qty };
         localStorage.setItem('gentry_pending_item', JSON.stringify(pending));
 
-        // Diretso redirect sa login
+        
         window.location.href = './login.html';
         return;
     }
@@ -71,7 +71,7 @@ function addToCart(product, qty = 1) {
 function addToCartHandler(id){
     const user = getCurrentUser();
     if(!user){
-        // wala pang account/login
+        
         showToast('Please register or sign in first', 'error');
         setTimeout(() => {
             window.location.href = 'register.html';
@@ -119,7 +119,7 @@ function renderFeatured(){
     const btn = document.createElement('button'); btn.className = 'bg-amber-400 text-black px-3 py-1 rounded text-sm'; btn.textContent = 'Add';
     btn.addEventListener('click', (e) => {
     e.preventDefault();
-    addToCartHandler(p.id); // <— laging dito dumaan
+    addToCartHandler(p.id);
 });
 
     bottom.appendChild(price); bottom.appendChild(btn);
@@ -379,7 +379,7 @@ function checkout() {
 
     // Save orders and clear cart
     localStorage.setItem('gentry_orders', JSON.stringify(orders));
-    clearCart(); // already shows toast inside
+    clearCart(); 
 
     showToast('Order placed! Order ID: ' + id, 'success');
 }
@@ -514,8 +514,7 @@ function updateAuthUI(){
 }
 
 // ---------- ADMIN (client-side demo) ----------
-const ADMIN_CREDENTIALS = { username: 'admin', password: 'gentry123' }; // change as needed
-
+const ADMIN_CREDENTIALS = { username: 'admin', password: 'gentry123' }; 
 function adminLogin(username, password){
   if(username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password){
     localStorage.setItem('gentry_admin', JSON.stringify({ username }));

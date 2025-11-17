@@ -12,5 +12,5 @@ command:
 
 2. admin password saka user yung admin folder nandun yung file ng admin
     password:
-    dmin@gentry.com
+    admin@gentry.com
     admin123

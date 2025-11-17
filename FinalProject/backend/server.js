@@ -13,9 +13,9 @@ app.use(express.static("assets"));
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// -------------------
+
 // UTILITY FUNCTIONS
-// -------------------
+
 function broadcast(data) {
   const msg = JSON.stringify(data);
   wss.clients.forEach(client => {
@@ -31,14 +31,14 @@ function writeJSON(filename, data) {
   fs.writeFileSync(filename, JSON.stringify(data, null, 2));
 }
 
-// -------------------
+
 // ROUTES
-// -------------------
+
 app.get("/", (req, res) => res.send("Backend is running"));
 
-// -------------------
+
 // PRODUCTS
-// -------------------
+
 app.get("/api/products", (req, res) => res.json(readJSON("products.json")));
 
 app.post("/api/products", (req, res) => {
@@ -64,12 +64,12 @@ app.delete("/api/products/:id", (req, res) => {
   broadcast({ type: "product-deleted", productName: deletedProduct?.name || "Unknown" });
 });
 
-// -------------------
+
 // PATCH endpoint para EDIT
-// -------------------
+
 app.patch("/api/products/:id", (req, res) => {
   const products = readJSON("products.json");
-  const prodId = req.params.id; // string
+  const prodId = req.params.id; 
   const product = products.find(p => p.id === prodId);
 
   if (!product) return res.status(404).json({ message: "Product not found" });
@@ -95,9 +95,9 @@ app.delete("/api/products/:id", (req, res) => {
   broadcast({ type: "product-deleted", productName: deletedProduct?.name || "Unknown" });
 });
 
-// -------------------
+
 // USERS
-// -------------------
+
 app.get("/api/users", (req, res) => res.json(readJSON("users.json")));
 
 app.post("/api/users", (req, res) => {
@@ -136,9 +136,9 @@ app.delete("/api/users/:id", (req, res) => {
   broadcast({ type: "users-update", data: users });
 });
 
-// -------------------
+
 // ORDERS
-// -------------------
+
 app.get("/api/orders", (req, res) => res.json(readJSON("orders.json")));
 
 app.post("/api/orders", (req, res) => {
@@ -152,9 +152,9 @@ app.post("/api/orders", (req, res) => {
   broadcast({ type: "orders-update", data: orders });
 });
 
-// -------------------
+
 // WebSocket
-// -------------------
+
 wss.on("connection", ws => {
   console.log("Client connected via WS");
 
@@ -188,7 +188,7 @@ app.patch("/api/orders/:id", (req, res) => {
 
 // POST product (for Add Product)
 app.post("/api/orders", (req, res) => {
-  const orders = readJSON("assets/orders.json"); // PATH DITO
+  const orders = readJSON("assets/orders.json"); 
   const newOrder = { id: `order-${Date.now()}`, ...req.body };
   orders.push(newOrder);
   writeJSON("assets/orders.json", orders);
@@ -197,7 +197,7 @@ app.post("/api/orders", (req, res) => {
 });
 
 
-// -------------------
+
 // START SERVER
-// -------------------
+
 server.listen(3000, () => console.log("Backend + WS running on http://localhost:3000"));

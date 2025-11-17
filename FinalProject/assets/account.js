@@ -3,7 +3,7 @@
       const current = (function getCurrentUser(){ const raw = localStorage.getItem('gentry_user'); if(!raw) return null; try { return JSON.parse(raw); } catch(e){ localStorage.removeItem('gentry_user'); return null; } })();
 
       if(!container) return;
-      container.textContent = ''; // clear if any
+      container.textContent = '';
 
       if(!current){
         const el = document.createElement('div');
