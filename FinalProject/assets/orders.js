@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // INITIAL LOAD
   const orders = await fetchOrders();
+  console.log("Fetched orders:", orders); // check console
   renderOrders(orders);
 
   // POLLING EVERY 10 SECONDS (no WebSocket)
