@@ -344,9 +344,7 @@ function checkout() {
     const user = getCurrentUser();
     if (!user) {
         showToast('Please sign in to checkout.', 'error');
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 1000);
+        setTimeout(() => window.location.href = 'login.html', 1000);
         return;
     }
 
@@ -356,32 +354,31 @@ function checkout() {
         return;
     }
 
-    // Load previous orders
-    let orders = [];
-    try {
-        orders = localStorage.getItem('gentry_orders') 
-            ? JSON.parse(localStorage.getItem('gentry_orders')) 
-            : [];
-    } catch (e) {
-        orders = [];
-    }
+    const order = {
+        userEmail: user.email || "guest@example.com",
+        items: cart.map(item => ({ name: item.name, qty: item.qty, price: item.price })),
+        total: cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0),
+        date: new Date().toISOString()
+    };
 
-    // Create new order
-    const id = 'ord-' + Date.now().toString(36);
-    const total = cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0);
-    orders.push({
-        id,
-        userId: user.id,
-        date: new Date().toISOString(),
-        items: cart,
-        total
+    // Send order to backend
+    fetch("https://research-department.onrender.com/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Failed to place order');
+        return res.json();
+    })
+    .then(data => {
+        clearCart();
+        showToast(`Order placed! Order ID: ${data.order?.id || "N/A"}`, 'success');
+    })
+    .catch(err => {
+        console.error(err);
+        showToast('Failed to place order', 'error');
     });
-
-    // Save orders and clear cart
-    localStorage.setItem('gentry_orders', JSON.stringify(orders));
-    clearCart(); 
-
-    showToast('Order placed! Order ID: ' + id, 'success');
 }
 
 

@@ -5,98 +5,103 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const BASE_URL = "https://research-department.onrender.com";
-
-  // FETCH ORDERS
+  // ----------------- FETCH ORDERS -----------------
   async function fetchOrders() {
-    try {
-      const res = await fetch(`${BASE_URL}/api/orders`);
-      const data = await res.json();
-      return Array.isArray(data) ? data : data.orders || [];
-    } catch (err) {
-      console.error("Error fetching orders:", err);
-      return [];
-    }
+    const url = "https://research-department.onrender.com/api/orders";
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : data.orders || [];
   }
 
-  // RENDER ORDERS
+  // ----------------- RENDER ORDERS -----------------
   function renderOrders(orders) {
     tbody.replaceChildren();
-    orders.forEach(o => {
+
+    if (orders.length === 0) {
       const tr = document.createElement("tr");
-      tr.className = "bg-gray-700 mb-1 rounded";
+      const td = document.createElement("td");
+      td.colSpan = 5;
+      td.textContent = "No orders found";
+      td.className = "p-4 text-center text-gray-400";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
 
-      tr.innerHTML = `
-        <td class="p-2">${o.id}</td>
-        <td class="p-2">${o.userEmail || o.userId || "Unknown"}</td>
-        <td class="p-2">${(o.items || []).map(i => i.name + " x" + i.qty).join(", ")}</td>
-        <td class="p-2">₱${(o.total || 0).toLocaleString()}</td>
-        <td class="p-2 flex gap-2">
-          <button class="bg-blue-500 px-2 rounded editBtn">Edit</button>
-          <button class="bg-red-600 px-2 rounded deleteBtn">Delete</button>
-        </td>
-      `;
+    orders.forEach(order => {
+      const tr = document.createElement("tr");
+      tr.className = "bg-gray-800 mb-1 rounded";
 
-      // DELETE
-      tr.querySelector(".deleteBtn").addEventListener("click", async () => {
-        if (!confirm(`Delete order #${o.id}?`)) return;
-        try {
-          const res = await fetch(`${BASE_URL}/api/orders/${o.id}`, { method: "DELETE" });
-          if (!res.ok) throw new Error("Failed to delete");
-          tr.remove();
-        } catch (err) {
-          console.error(err);
+      // ID
+      const tdId = document.createElement("td");
+      tdId.textContent = order.id;
+      tdId.className = "p-2";
+      tr.appendChild(tdId);
+
+      // User
+      const tdUser = document.createElement("td");
+      tdUser.textContent = order.userEmail || order.userId || "Unknown";
+      tdUser.className = "p-2";
+      tr.appendChild(tdUser);
+
+      // Items
+      const tdItems = document.createElement("td");
+      tdItems.textContent = (order.items || []).map(i => `${i.name} x${i.qty}`).join(", ");
+      tdItems.className = "p-2";
+      tr.appendChild(tdItems);
+
+      // Total
+      const tdTotal = document.createElement("td");
+      tdTotal.textContent = `₱${(order.total || 0).toLocaleString()}`;
+      tdTotal.className = "p-2";
+      tr.appendChild(tdTotal);
+
+      // Actions
+      const tdActions = document.createElement("td");
+      tdActions.className = "p-2 flex gap-2";
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.className = "bg-blue-500 px-2 rounded";
+      editBtn.addEventListener("click", () => alert("Edit order not implemented yet"));
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.className = "bg-red-600 px-2 rounded";
+      deleteBtn.addEventListener("click", async () => {
+        if (!confirm(`Delete order #${order.id}?`)) return;
+        const res = await fetch(`https://research-department.onrender.com/api/orders/${order.id}`, { method: "DELETE" });
+        if (!res.ok) {
+          console.error("Failed to delete order");
           alert("Failed to delete order");
+        } else {
+          tr.remove();
         }
       });
 
-      // EDIT (optional)
-      tr.querySelector(".editBtn").addEventListener("click", () => {
-        alert("Edit order not implemented yet");
-      });
+      tdActions.append(editBtn, deleteBtn);
+      tr.appendChild(tdActions);
 
       tbody.appendChild(tr);
     });
   }
 
-  // PLACE ORDER FUNCTION (example)
-  async function placeOrder(order) {
-    try {
-      const res = await fetch(`${BASE_URL}/api/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(order),
-      });
-      if (!res.ok) throw new Error("Failed to place order");
-      const data = await res.json();
-      console.log("Order placed:", data);
-      alert("Order placed successfully!");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to place order");
-    }
-  }
-
-  // Example hook for place order button
-  document.getElementById("placeOrderBtn")?.addEventListener("click", () => {
-    const order = {
-      userEmail: "test@example.com",
-      items: [
-        { name: "Rolex Submariner", qty: 1, price: 2650000 }
-      ],
-      total: 2650000
-    };
-    placeOrder(order);
-  });
-
-  // INITIAL LOAD
+  // ----------------- INITIAL LOAD -----------------
   const orders = await fetchOrders();
-  console.log("Fetched orders:", orders); // check console
   renderOrders(orders);
 
-  // POLLING EVERY 10 SECONDS (no WebSocket)
-  setInterval(async () => {
-    const updatedOrders = await fetchOrders();
-    renderOrders(updatedOrders);
-  }, 10000);
+  // ----------------- WEBSOCKET -----------------
+  const ws = new WebSocket("wss://research-department.onrender.com"); // Use WSS for HTTPS
+
+  ws.addEventListener("open", () => console.log("Connected to WebSocket for orders"));
+
+  ws.addEventListener("message", (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.type === "orders-update") {
+      renderOrders(msg.data);
+    }
+  });
+
+  ws.addEventListener("close", () => console.log("WebSocket disconnected"));
 });
