@@ -1,13 +1,16 @@
-
 document.addEventListener("DOMContentLoaded", async () => {
   const tbody = document.getElementById("ordersTable");
-  if (!tbody) console.error("ordersTable element not found");
+  if (!tbody) {
+    console.error("ordersTable element not found");
+    return;
+  }
 
-  
-  // FETCH ORDERS FROM BACKEND
+  const BASE_URL = "https://research-department.onrender.com";
+
+  // FETCH ORDERS
   async function fetchOrders() {
     try {
-      const res = await fetch("https://research-department.onrender.com/api/orders");
+      const res = await fetch(`${BASE_URL}/api/orders`);
       const data = await res.json();
       return Array.isArray(data) ? data : data.orders || [];
     } catch (err) {
@@ -16,14 +19,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // RENDER ORDERS IN TABLE
+  // RENDER ORDERS
   function renderOrders(orders) {
-    if (!tbody) return;
     tbody.replaceChildren();
-
     orders.forEach(o => {
       const tr = document.createElement("tr");
-      tr.className = "bg-gray-800 mb-1 rounded";
+      tr.className = "bg-gray-700 mb-1 rounded";
 
       tr.innerHTML = `
         <td class="p-2">${o.id}</td>
@@ -36,11 +37,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         </td>
       `;
 
-      // Delete button
+      // DELETE
       tr.querySelector(".deleteBtn").addEventListener("click", async () => {
         if (!confirm(`Delete order #${o.id}?`)) return;
         try {
-          const res = await fetch(`https://research-department.onrender.com/api/orders/${o.id}`, { method: "DELETE" });
+          const res = await fetch(`${BASE_URL}/api/orders/${o.id}`, { method: "DELETE" });
           if (!res.ok) throw new Error("Failed to delete");
           tr.remove();
         } catch (err) {
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
 
-      // Edit button (optional)
+      // EDIT (optional)
       tr.querySelector(".editBtn").addEventListener("click", () => {
         alert("Edit order not implemented yet");
       });
@@ -58,17 +59,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-
-  // PLACE ORDER FUNCTION
-  
+  // PLACE ORDER FUNCTION (example)
   async function placeOrder(order) {
     try {
-      const res = await fetch("https://research-department.onrender.com/api/orders", {
+      const res = await fetch(`${BASE_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
       });
-
       if (!res.ok) throw new Error("Failed to place order");
       const data = await res.json();
       console.log("Order placed:", data);
@@ -79,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Example: hook this to a button in your main website
+  // Example hook for place order button
   document.getElementById("placeOrderBtn")?.addEventListener("click", () => {
     const order = {
       userEmail: "test@example.com",
@@ -88,29 +86,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       ],
       total: 2650000
     };
-
     placeOrder(order);
   });
 
-  
   // INITIAL LOAD
-  
   const orders = await fetchOrders();
   renderOrders(orders);
 
-  
-  // WEBSOCKET FOR LIVE UPDATES
-  
-  const ws = new WebSocket("ws://https://research-department.onrender.com");
-
-  ws.addEventListener("open", () => console.log("Connected to WS for orders"));
-
-  ws.addEventListener("message", (event) => {
-    const msg = JSON.parse(event.data);
-    if (msg.type === "orders-update") {
-      renderOrders(msg.data);
-    }
-  });
-
-  ws.addEventListener("close", () => console.log("WS disconnected"));
+  // POLLING EVERY 10 SECONDS (no WebSocket)
+  setInterval(async () => {
+    const updatedOrders = await fetchOrders();
+    renderOrders(updatedOrders);
+  }, 10000);
 });
