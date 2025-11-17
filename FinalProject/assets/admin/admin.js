@@ -132,13 +132,19 @@ if (addProductForm) {
     e.preventDefault();
 
     const newProduct = {
-      id: document.getElementById("productId").value.trim(),
-      brand: document.getElementById("productBrand").value.trim(),
-      name: document.getElementById("productName").value.trim(),
-      price: Number(document.getElementById("productPrice").value),
-      img: document.getElementById("productImage").value.trim(),
-      stock: document.getElementById("productStock").value === "1",
-    };
+    id: document.getElementById("productId").value.trim(),
+    brand: document.getElementById("productBrand").value.trim(),
+    name: document.getElementById("productName").value.trim(),
+    price: Number(document.getElementById("productPrice").value),
+    img: document.getElementById("productImgMain").value.trim(),
+    images: [
+      document.getElementById("productImg1").value.trim(),
+      document.getElementById("productImg2").value.trim(),
+      document.getElementById("productImg3").value.trim()
+    ],
+    stock: document.getElementById("productStock").value === "1",
+    desc: document.getElementById("productDesc")?.value.trim() || ""
+  };
 
     await fetchData(`${BASE_URL}/api/products`, {
       method: "POST",
@@ -152,42 +158,98 @@ if (addProductForm) {
 
 // EDIT PRODUCT MODAL
 function openEditModal(product) {
-  document.getElementById("editModal")?.remove();
+  // Remove previous modal if exists
+  const oldModal = document.getElementById("editModal");
+  if (oldModal) oldModal.remove();
 
   const modal = document.createElement("div");
   modal.id = "editModal";
   modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
 
-  modal.innerHTML = `
-    <div class="bg-gray-800 p-6 rounded-lg w-96 space-y-4">
-      <h2 class="text-lg font-semibold">Edit Product</h2>
-      <input id="editBrand" type="text" class="w-full p-2 rounded bg-gray-900" value="${product.brand}">
-      <input id="editName" type="text" class="w-full p-2 rounded bg-gray-900" value="${product.name}">
-      <input id="editPrice" type="number" class="w-full p-2 rounded bg-gray-900" value="${product.price}">
-      <input id="editImg" type="text" class="w-full p-2 rounded bg-gray-900" value="${product.img}">
-      <select id="editStock" class="w-full p-2 rounded bg-gray-900">
-        <option value="true" ${product.stock ? "selected" : ""}>In Stock</option>
-        <option value="false" ${!product.stock ? "selected" : ""}>Out of Stock</option>
-      </select>
-      <div class="flex justify-end gap-2">
-        <button id="cancelEdit" class="px-4 py-2 bg-gray-600 rounded">Cancel</button>
-        <button id="saveEdit" class="px-4 py-2 bg-green-500 rounded">Save</button>
-      </div>
-    </div>
-  `;
+  // Modal content container
+  const container = document.createElement("div");
+  container.className = "bg-gray-800 p-6 rounded-lg w-96 space-y-4";
 
-  document.body.appendChild(modal);
+  // Title
+  const title = document.createElement("h2");
+  title.className = "text-lg font-semibold";
+  title.textContent = "Edit Product";
+  container.appendChild(title);
 
-  document.getElementById("cancelEdit").addEventListener("click", () => modal.remove());
+  // Brand input
+  const editBrand = document.createElement("input");
+  editBrand.id = "editBrand";
+  editBrand.type = "text";
+  editBrand.className = "w-full p-2 rounded bg-gray-900";
+  editBrand.value = product.brand;
+  container.appendChild(editBrand);
 
-  document.getElementById("saveEdit").addEventListener("click", async () => {
+  // Name input
+  const editName = document.createElement("input");
+  editName.id = "editName";
+  editName.type = "text";
+  editName.className = "w-full p-2 rounded bg-gray-900";
+  editName.value = product.name;
+  container.appendChild(editName);
+
+  // Price input
+  const editPrice = document.createElement("input");
+  editPrice.id = "editPrice";
+  editPrice.type = "number";
+  editPrice.className = "w-full p-2 rounded bg-gray-900";
+  editPrice.value = product.price;
+  container.appendChild(editPrice);
+
+  // Image input
+  const editImg = document.createElement("input");
+  editImg.id = "editImg";
+  editImg.type = "text";
+  editImg.className = "w-full p-2 rounded bg-gray-900";
+  editImg.value = product.img;
+  container.appendChild(editImg);
+
+  // Stock select
+  const editStock = document.createElement("select");
+  editStock.id = "editStock";
+  editStock.className = "w-full p-2 rounded bg-gray-900";
+  
+  const optionTrue = document.createElement("option");
+  optionTrue.value = "true";
+  optionTrue.textContent = "In Stock";
+  if (product.stock) optionTrue.selected = true;
+
+  const optionFalse = document.createElement("option");
+  optionFalse.value = "false";
+  optionFalse.textContent = "Out of Stock";
+  if (!product.stock) optionFalse.selected = true;
+
+  editStock.appendChild(optionTrue);
+  editStock.appendChild(optionFalse);
+  container.appendChild(editStock);
+
+  // Buttons container
+  const btnContainer = document.createElement("div");
+  btnContainer.className = "flex justify-end gap-2";
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.id = "cancelEdit";
+  cancelBtn.className = "px-4 py-2 bg-gray-600 rounded";
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.addEventListener("click", () => modal.remove());
+
+  const saveBtn = document.createElement("button");
+  saveBtn.id = "saveEdit";
+  saveBtn.className = "px-4 py-2 bg-green-500 rounded";
+  saveBtn.textContent = "Save";
+  saveBtn.addEventListener("click", async () => {
     const updatedProduct = {
-      brand: document.getElementById("editBrand").value,
-      name: document.getElementById("editName").value,
-      price: Number(document.getElementById("editPrice").value),
-      img: document.getElementById("editImg").value,
-      stock: document.getElementById("editStock").value === "true"
+      brand: editBrand.value,
+      name: editName.value,
+      price: Number(editPrice.value),
+      img: editImg.value,
+      stock: editStock.value === "true"
     };
+
     await fetchData(`${BASE_URL}/api/products/${product.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -195,6 +257,13 @@ function openEditModal(product) {
     });
     modal.remove();
   });
+
+  btnContainer.appendChild(cancelBtn);
+  btnContainer.appendChild(saveBtn);
+  container.appendChild(btnContainer);
+
+  modal.appendChild(container);
+  document.body.appendChild(modal);
 }
 
 // RENDER ORDERS
