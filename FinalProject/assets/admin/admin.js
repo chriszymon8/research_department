@@ -1,6 +1,7 @@
+// BASE URL for Render deployment
+const BASE_URL = "https://research-department.onrender.com";
 
 // ADMIN LOGIN & DASHBOARD PROTECTION
-
 const adminEmail = "admin@gentry.com";
 const adminPassword = "admin123";
 
@@ -30,9 +31,7 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
   window.location.href = "./admin-login.html";
 });
 
-
 // FETCH HELPER
-
 async function fetchData(url, options = {}) {
   try {
     const res = await fetch(url, options);
@@ -43,9 +42,7 @@ async function fetchData(url, options = {}) {
   }
 }
 
-
 // RENDER USERS
-
 async function renderUsers(users = []) {
   const tbody = document.getElementById("usersTable");
   if (!tbody) return;
@@ -67,14 +64,14 @@ async function renderUsers(users = []) {
     btnBlock.className = "blockBtn bg-yellow-400 px-2 rounded";
     btnBlock.textContent = "Toggle Block";
     btnBlock.addEventListener("click", async () => {
-      await fetchData(`http://localhost:3000/api/users/${u.id}/toggle-block`, { method: "PATCH" });
+      await fetchData(`${BASE_URL}/api/users/${u.id}/toggle-block`, { method: "PATCH" });
     });
 
     const btnDelete = document.createElement("button");
     btnDelete.className = "deleteBtn bg-red-600 px-2 rounded";
     btnDelete.textContent = "Delete";
     btnDelete.addEventListener("click", async () => {
-      await fetchData(`http://localhost:3000/api/users/${u.id}`, { method: "DELETE" });
+      await fetchData(`${BASE_URL}/api/users/${u.id}`, { method: "DELETE" });
     });
 
     tdActions.appendChild(btnBlock);
@@ -84,9 +81,7 @@ async function renderUsers(users = []) {
   });
 }
 
-
 // RENDER PRODUCTS
-
 async function renderProducts(products = []) {
   const tbody = document.getElementById("productsTable");
   if (!tbody) return;
@@ -105,13 +100,9 @@ async function renderProducts(products = []) {
     tdImg.className = "p-2";
 
     const img = document.createElement("img");
-    //img.src = p.img || "./watches/Seiko2.png"; 
-    //img.onerror = () => img.src = "./watches/Seiko2.png"; 
-
     img.className = "w-16 h-16 object-contain";
     tdImg.appendChild(img);
     tr.appendChild(tdImg);
-
 
     const tdActions = document.createElement("td");
     tdActions.className = "p-2 flex gap-2";
@@ -125,7 +116,7 @@ async function renderProducts(products = []) {
     btnDelete.className = "deleteProdBtn bg-red-600 px-2 rounded";
     btnDelete.textContent = "Delete";
     btnDelete.addEventListener("click", async () => {
-      await fetchData(`http://localhost:3000/api/products/${p.id}`, { method: "DELETE" });
+      await fetchData(`${BASE_URL}/api/products/${p.id}`, { method: "DELETE" });
     });
 
     tdActions.appendChild(btnEdit);
@@ -135,9 +126,7 @@ async function renderProducts(products = []) {
   });
 }
 
-
 // ADD PRODUCT FORM
-
 if (addProductForm) {
   addProductForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -151,7 +140,7 @@ if (addProductForm) {
       stock: document.getElementById("productStock").value === "1",
     };
 
-    await fetchData("http://localhost:3000/api/products", {
+    await fetchData(`${BASE_URL}/api/products`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProduct)
@@ -161,10 +150,7 @@ if (addProductForm) {
   });
 }
 
-
-
 // EDIT PRODUCT MODAL
-
 function openEditModal(product) {
   document.getElementById("editModal")?.remove();
 
@@ -202,7 +188,7 @@ function openEditModal(product) {
       img: document.getElementById("editImg").value,
       stock: document.getElementById("editStock").value === "true"
     };
-    await fetchData(`http://localhost:3000/api/products/${product.id}`, {
+    await fetchData(`${BASE_URL}/api/products/${product.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProduct)
@@ -211,9 +197,7 @@ function openEditModal(product) {
   });
 }
 
-
 // RENDER ORDERS
-
 async function renderOrders(orders = []) {
   const tbody = document.getElementById("ordersTable");
   if (!tbody) return;
@@ -247,11 +231,9 @@ async function renderOrders(orders = []) {
   }
 }
 
-
 // FETCH ORDERS ON PAGE LOAD
-
 async function loadOrdersFallback() {
-  const orders = await fetchData("http://localhost:3000/api/orders");
+  const orders = await fetchData(`${BASE_URL}/api/orders`);
   const ordersArray = Array.isArray(orders) ? orders : (orders.orders || []);
   console.log("Orders fetched on page load:", ordersArray);
   renderOrders(ordersArray);
@@ -259,9 +241,7 @@ async function loadOrdersFallback() {
 
 if (mainEl) loadOrdersFallback();
 
-
 // TOAST NOTIFICATION
-
 function showAdminToast(message, type = "info") {
   const toast = document.createElement("div");
   toast.textContent = message;
@@ -278,10 +258,8 @@ function showAdminToast(message, type = "info") {
   }, 3000);
 }
 
-
 // WEBSOCKET
-
-const ws = new WebSocket("ws://localhost:3000");
+const ws = new WebSocket("wss://research-department.onrender.com");
 ws.addEventListener("open", () => console.log("Connected to WebSocket server"));
 ws.addEventListener("message", (event) => {
   const msg = JSON.parse(event.data);

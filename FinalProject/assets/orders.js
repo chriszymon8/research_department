@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // FETCH ORDERS FROM BACKEND
   async function fetchOrders() {
     try {
-      const res = await fetch("http://localhost:3000/api/orders");
+      const res = await fetch("https://research-department.onrender.com/api/orders");
       const data = await res.json();
       return Array.isArray(data) ? data : data.orders || [];
     } catch (err) {
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       tr.querySelector(".deleteBtn").addEventListener("click", async () => {
         if (!confirm(`Delete order #${o.id}?`)) return;
         try {
-          const res = await fetch(`http://localhost:3000/api/orders/${o.id}`, { method: "DELETE" });
+          const res = await fetch(`https://research-department.onrender.com/api/orders/${o.id}`, { method: "DELETE" });
           if (!res.ok) throw new Error("Failed to delete");
           tr.remove();
         } catch (err) {
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   async function placeOrder(order) {
     try {
-      const res = await fetch("http://localhost:3000/api/orders", {
+      const res = await fetch("https://research-department.onrender.com/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   // WEBSOCKET FOR LIVE UPDATES
   
-  const ws = new WebSocket("ws://localhost:3000");
+  const ws = new WebSocket("ws://https://research-department.onrender.com");
 
   ws.addEventListener("open", () => console.log("Connected to WS for orders"));
 

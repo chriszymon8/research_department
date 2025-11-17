@@ -6,7 +6,7 @@ let PRODUCTS = [];
 
 // Fetch initial products from backend
 function fetchProducts() {
-  fetch("http://localhost:3000/api/products")
+  fetch("https://research-department.onrender.com/api/products")
     .then(res => res.json())
     .then(data => {
       PRODUCTS = data;
@@ -196,7 +196,7 @@ function renderProductDetail() {
     }
 
     // Fetch product directly from server
-    fetch("http://localhost:3000/api/products")
+    fetch("https://research-department.onrender.com/api/products")
         .then(res => res.json())
         .then(products => {
             const p = products.find(x => x.id === id);
@@ -656,7 +656,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
 
   // fetch products first
-  fetch("http://localhost:3000/api/products")
+  fetch("https://research-department.onrender.com/api/products")
     .then(res => res.json())
     .then(data => {
       PRODUCTS = data;
