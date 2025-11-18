@@ -10,7 +10,7 @@
       "assets/watches/rolex/r1/r2.avif",
       "assets/watches/rolex/r1/r3.webp"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Iconic diver watch, 40mm Oystersteel case, unidirectional bezel."
   },
   {
@@ -24,7 +24,7 @@
       "assets/watches/daytona.jpg",
       "assets/watches/Rolex-Daytona-116500LN.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Legendary racing chronograph with Cerachrom bezel and Oyster bracelet."
   },
   {
@@ -38,7 +38,7 @@
       "assets/watches/rolex/DJ/r2.webp",
       "assets/watches/rolex/DJ/r3.webp"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "Timeless Datejust in steel with fluted bezel and jubilee bracelet."
   },
   {
@@ -52,7 +52,7 @@
       "assets/watches/rolex/gmt/r3.jpg",
       "assets/watches/rolex/gmt/r2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Dual time zone travel watch — iconic \"Pepsi\" bezel."
   },
   {
@@ -66,7 +66,7 @@
       "assets/watches/rolex/YM/r2.webp",
       "assets/watches/rolex/YM/r3.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Sport-luxury model with comfortable Oysterflex bracelet option."
   },
   {
@@ -80,7 +80,7 @@
       "assets/watches/rolex/RE/r2.JPG",
       "assets/watches/rolex/RE/r3.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Compact 36mm sports watch built for exploration and durability."
   },
   {
@@ -94,7 +94,7 @@
       "assets/watches/rolex/RM/r2.JPG",
       "assets/watches/rolex/RM/r3.WEBP"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "Engineered for scientists, anti-magnetic performance."
   },
   {
@@ -108,7 +108,7 @@
       "assets/watches/rolex/SD/r2.avif",
       "assets/watches/rolex/SD/r3.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Professional diver rated to 1220 meters, helium escape valve."
   },
   {
@@ -122,7 +122,7 @@
       "assets/watches/rolex/sky/r2.JPG",
       "assets/watches/rolex/sky/r3.WEBP"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Annual calendar and dual time — complex yet intuitive."
   },
   {
@@ -136,7 +136,7 @@
       "assets/watches/rolex/rc/r2.JPG",
       "assets/watches/rolex/rc/r3.WEBP"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Refined dress watch with polished case and classic leather strap."
   },
   {
@@ -150,7 +150,7 @@
       "assets/watches/rolex/oys/r2.JPG",
       "assets/watches/rolex/oys/r3.WEBP"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Modern entry-level Rolex with colourful dials and reliable movement."
   },
   {
@@ -164,7 +164,7 @@
       "assets/watches/rolex/DD/r2.JPG",
       "assets/watches/rolex/DD/23.WEBP"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "The President's watch: 18k yellow gold with day and date apertures."
   },
   {
@@ -178,7 +178,7 @@
       "assets/watches/cartier/santos/r2.webp",
       "assets/watches/cartier/santos/r3.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Classic square case with refined finishing."
   },
   {
@@ -192,7 +192,7 @@
       "assets/watches/cartier/gold/r2.webp",
       "assets/watches/cartier/gold/r3.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Santos de Cartier watch, small model, quartz movement."
   },
   {
@@ -206,7 +206,7 @@
       "assets/watches/cartier/2tone/r2.webp",
       "assets/watches/cartier/2tone/r3.webp"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Manufacture mechanical movement with automatic winding."
   },
   {
@@ -220,7 +220,7 @@
       "assets/watches/cartier/tank/r2.jpg",
       "assets/watches/cartier/tank/r3.jpg"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "Tank Must watch, large model, SolarBeat™ movement."
   },
   {
@@ -234,7 +234,7 @@
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (White Gold)1.jpg",
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (White Gold)2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "White gold case and bracelet."
   },
   {
@@ -248,7 +248,7 @@
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Rose Gold)1.jpg",
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Rose Gold)2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Rose gold with sunburst brown dial."
   },
   {
@@ -262,7 +262,7 @@
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)1.jpg",
       "assets/watches/Patek Philippe/Patek Philippe Nautilus (Steel)2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Steel version with embossed dial."
   },
   {
@@ -276,7 +276,7 @@
       "assets/watches/Patek Philippe/Patek Philippe Aquanaut (Rose Gold)1.jpg",
       "assets/watches/Patek Philippe/Patek Philippe Aquanaut (Rose Gold)2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Aquanaut pattern with rose-gold case."
   },
   {
@@ -290,7 +290,7 @@
       "assets/watches/Omega/Omega Seamaster Diver 300M (1).jpg",
       "assets/watches/Omega/Omega Seamaster Diver 300M (2).jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Diver watch with co-axial escapement."
   },
   {
@@ -304,7 +304,7 @@
       "assets/watches/Omega/Omega Speedmaster Professional(1).jpg",
       "assets/watches/Omega/Omega Speedmaster Professional(2).jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "The Moonwatch — legendary chronograph."
   },
   {
@@ -318,7 +318,7 @@
       "assets/watches/Omega/Omega Constellation(1).jpg",
       "assets/watches/Omega/Omega Constellation(2).jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Elegant integrated bracelet design."
   },
   {
@@ -332,7 +332,7 @@
       "assets/watches/Omega/Omega De Ville(1).jpg",
       "assets/watches/Omega/Omega De Ville(2).jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Classic dress collection."
   },
   {
@@ -346,7 +346,7 @@
       "assets/watches/AP/RoyalOakSilver1.webp",
       "assets/watches/AP/RoyalOakSilver2.webp"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Hammered 18-carat white gold case."
   },
   {
@@ -360,7 +360,7 @@
       "assets/watches/AP/RoyalOakGold1.webp",
       "assets/watches/AP/RoyalOakGold2.webp"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "Hammered 18-carat yellow gold case."
   },
   {
@@ -374,7 +374,7 @@
       "assets/watches/AP/RoyalOakOffshore1.jpg",
       "assets/watches/AP/RoyalOakOffshore2.jpg"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Warm 18-carat pink gold with titanium bezel."
   },
   {
@@ -388,7 +388,7 @@
       "assets/watches/Seiko/LordMarvel1.webp",
       "assets/watches/Seiko/LordMarvel2.webp"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Rugged digital watch."
   },
   {
@@ -402,7 +402,7 @@
       "assets/watches/Seiko/Seiko_Presage1.webp",
       "assets/watches/Seiko/Seiko_Presage2.webp"
     ],
-    "stock": true,
+    "quantity": 10,
     "desc": "Enamel dial manufactured by firing at high temperature."
   },
   {
@@ -416,7 +416,7 @@
       "assets/watches/Seiko/ProspexMarineMaster1.webp",
       "assets/watches/Seiko/ProspexMarineMaster2.webp"
     ],
-    "stock": false,
+    "quantity": 10,
     "desc": "Professional diver watch."
   },
   {
@@ -425,7 +425,7 @@
     "name": "Rolex GMT-Master II 126710GRNR",
     "price": 1351062,
     "img": "https://img.chrono24.com/images/uhren/43371389-ykt4kng7k7tq6qz4jwj0mjac-ExtraLarge.jpg",
-    "stock": false
+    "quantity": 10
   },
   {
     "id": "rx-15",
@@ -433,6 +433,6 @@
     "name": "Rolex Day-Date Fully Iced Out",
     "price": 500000,
     "img": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSjyugkqQu6_Cpd7cEl8gvjeF1BCoXwbJH6u7-r5NMK3dTmAV-kppmns8JtfT-iClkL_glwiYebMeM7I-5LMYbXUXsLZ8BzBhdFDs7ErwumWDjXwd7JHj3EYw",
-    "stock": false
+    "quantity": 10
   }
 ]

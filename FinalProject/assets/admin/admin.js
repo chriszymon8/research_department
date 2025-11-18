@@ -142,9 +142,10 @@ if (addProductForm) {
       document.getElementById("productImg2").value.trim(),
       document.getElementById("productImg3").value.trim()
     ],
-    stock: document.getElementById("productStock").value === "1",
+    quantity: Number(document.getElementById("productQuantity").value),
     desc: document.getElementById("productDesc")?.value.trim() || ""
   };
+
 
     await fetchData(`${BASE_URL}/api/products`, {
       method: "POST",
