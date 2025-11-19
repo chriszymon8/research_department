@@ -101,8 +101,8 @@ async function renderProducts(products = []) {
 
     const img = document.createElement("img");
     img.className = "w-16 h-16 object-contain";
+    img.src = p.img || "watches/placeholder.avif"; 
     tdImg.appendChild(img);
-    tr.appendChild(tdImg);
 
     const tdActions = document.createElement("td");
     tdActions.className = "p-2 flex gap-2";

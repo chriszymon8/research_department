@@ -4,11 +4,11 @@
     "brand": "Rolex",
     "name": "Rolex Submariner 1240601",
     "price": 2650004,
-    "img": "assets/watches/m124060.avif",
+    "img": "watches/m124060.avif",
     "images": [
-      "assets/watches/m124060.avif",
-      "assets/watches/rolex/r1/r2.avif",
-      "assets/watches/rolex/r1/r3.webp"
+      "watches/m124060.avif",
+      "watches/rolex/r1/r2.avif",
+      "watches/rolex/r1/r3.webp"
     ],
     "quantity": 10,
     "stock": true,
