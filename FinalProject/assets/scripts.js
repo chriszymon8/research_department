@@ -340,6 +340,7 @@ function clearCart() {
 }
 
 // Checkout function
+// ----------------- Checkout function (updated) -----------------
 function checkout() {
     const user = getCurrentUser();
     if (!user) {
@@ -354,9 +355,10 @@ function checkout() {
         return;
     }
 
+    // Create order object
     const order = {
         userEmail: user.email || "guest@example.com",
-        items: cart.map(item => ({ name: item.name, qty: item.qty, price: item.price })),
+        items: cart.map(item => ({ name: item.name, id: item.id, qty: item.qty, price: item.price })),
         total: cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0),
         date: new Date().toISOString()
     };
@@ -368,10 +370,21 @@ function checkout() {
         body: JSON.stringify(order)
     })
     .then(res => {
-        if (!res.ok) throw new Error('Failed to place order');
+        if (!res.ok) return Promise.reject('Failed to place order');
         return res.json();
     })
     .then(data => {
+        // For each item in cart, reduce stock in backend
+        cart.forEach(item => {
+            // Calculate new quantity
+            fetch(`https://research-department.onrender.com/api/products/${item.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ quantityChange: -item.qty }) // send negative value to reduce stock
+            });
+        });
+
+        // Clear cart after successful order
         clearCart();
         showToast(`Order placed! Order ID: ${data.order?.id || "N/A"}`, 'success');
     })
@@ -380,6 +393,7 @@ function checkout() {
         showToast('Failed to place order', 'error');
     });
 }
+
 
 
 // ----------------- Mobile menu -----------------
