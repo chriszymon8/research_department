@@ -69,27 +69,20 @@ app.delete("/api/products/:id", (req, res) => {
 
 app.patch("/api/products/:id", (req, res) => {
   const products = readJSON("products.json");
-  const prodId = req.params.id;
+  const prodId = req.params.id; // string comparison
   const product = products.find(p => p.id === prodId);
-
   if (!product) return res.status(404).json({ message: "Product not found" });
 
-  // Check if frontend sends 'quantityChange'
   if (typeof req.body.quantityChange === "number") {
-    product.quantity = (product.quantity || 0) + req.body.quantityChange; // decrease or increase
-    if (product.quantity < 0) product.quantity = 0; // no negative stock
+    product.quantity = (product.quantity || 0) + req.body.quantityChange;
+    if (product.quantity < 0) product.quantity = 0;
   }
 
-  // Update other fields if any
-  const allowedFields = ["name", "brand", "price", "img", "stock", "desc"];
-  allowedFields.forEach(key => {
-    if (req.body[key] !== undefined) product[key] = req.body[key];
-  });
-
   writeJSON("products.json", products);
-  res.json({ message: "Product updated!", product });
   broadcast({ type: "products-update", data: products });
+  res.json({ message: "Product updated!", product });
 });
+
 
 
 
