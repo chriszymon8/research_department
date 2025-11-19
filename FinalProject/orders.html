@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="assets/logo/logo.jpg">
 </head>
+
 <body class="bg-gray-900 text-gray-100">
   <header class="px-6 py-6 border-b border-gray-800">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -40,6 +41,27 @@
       <a href="index.html" class="text-gray-400">Back to home</a>
     </div>
   </main>
+
+  <!-- SUCCESS POPUP -->
+  <div id="successPopup" 
+       class="hidden fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+    <div class="bg-green-600 text-white px-8 py-4 rounded-xl shadow-xl text-lg animate-popup">
+      Successfully canceled!
+    </div>
+  </div>
+
+  <!-- POPUP ANIMATION -->
+  <style>
+    @keyframes popFade {
+      0% { transform: scale(0.8); opacity: 0; }
+      20% { transform: scale(1.03); opacity: 1; }
+      80% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .animate-popup {
+      animation: popFade 2s ease forwards;
+    }
+  </style>
 
   <script src="assets/scripts.js"></script>
   <script src="assets/orders.js"></script>

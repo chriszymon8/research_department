@@ -1,11 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const tbody = document.getElementById("ordersTable");
-  if (!tbody) {
-    console.error("ordersTable element not found");
+
+  // Get logged in user
+  const loggedUser = JSON.parse(localStorage.getItem("gentry_user"));
+  if (!loggedUser) {
+    window.location.href = "login.html";
     return;
   }
 
-  // ----------------- FETCH ORDERS -----------------
+  const USER_EMAIL = loggedUser.email;
+
+  // Success popup function
+  function showSuccessPopup() {
+    const popup = document.getElementById("successPopup");
+    popup.classList.remove("hidden");
+    setTimeout(() => popup.classList.add("hidden"), 2000);
+  }
+
+  // Fetch orders
   async function fetchOrders() {
     const url = "https://research-department.onrender.com/api/orders";
     const res = await fetch(url);
@@ -14,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return Array.isArray(data) ? data : data.orders || [];
   }
 
-  // ----------------- RENDER ORDERS -----------------
+  // Render orders
   function renderOrders(orders) {
     tbody.replaceChildren();
 
@@ -41,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // User
       const tdUser = document.createElement("td");
-      tdUser.textContent = order.userEmail || order.userId || "Unknown";
+      tdUser.textContent = order.userEmail || "Unknown";
       tdUser.className = "p-2";
       tr.appendChild(tdUser);
 
@@ -59,49 +71,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Actions
       const tdActions = document.createElement("td");
-      tdActions.className = "p-2 flex gap-2";
+      tdActions.className = "p-2";
 
-      const editBtn = document.createElement("button");
-      editBtn.textContent = "Edit";
-      editBtn.className = "bg-blue-500 px-2 rounded";
-      editBtn.addEventListener("click", () => alert("Edit order not implemented yet"));
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "Cancel";
+      cancelBtn.className = "bg-yellow-600 px-3 py-1 rounded hover:bg-yellow-500 transition";
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Delete";
-      deleteBtn.className = "bg-red-600 px-2 rounded";
-      deleteBtn.addEventListener("click", async () => {
-        if (!confirm(`Delete order #${order.id}?`)) return;
-        const res = await fetch(`https://research-department.onrender.com/api/orders/${order.id}`, { method: "DELETE" });
+      cancelBtn.addEventListener("click", async () => {
+        const res = await fetch(`https://research-department.onrender.com/api/orders/${order.id}`, { 
+          method: "DELETE"
+        });
+
         if (!res.ok) {
-          console.error("Failed to delete order");
-          alert("Failed to delete order");
-        } else {
-          tr.remove();
+          console.error("Failed to cancel order");
+          return;
         }
+
+        tr.remove();
+        showSuccessPopup();
       });
 
-      tdActions.append(editBtn, deleteBtn);
+      tdActions.appendChild(cancelBtn);
       tr.appendChild(tdActions);
 
       tbody.appendChild(tr);
     });
   }
 
-  // ----------------- INITIAL LOAD -----------------
+  // Load and filter orders
   const orders = await fetchOrders();
-  renderOrders(orders);
 
-  // ----------------- WEBSOCKET -----------------
-  const ws = new WebSocket("wss://research-department.onrender.com"); // Use WSS for HTTPS
+  const filteredOrders = orders.filter(o =>
+    o.userEmail?.toLowerCase() === USER_EMAIL.toLowerCase()
+  );
 
-  ws.addEventListener("open", () => console.log("Connected to WebSocket for orders"));
-
-  ws.addEventListener("message", (event) => {
-    const msg = JSON.parse(event.data);
-    if (msg.type === "orders-update") {
-      renderOrders(msg.data);
-    }
-  });
-
-  ws.addEventListener("close", () => console.log("WebSocket disconnected"));
+  renderOrders(filteredOrders);
 });
