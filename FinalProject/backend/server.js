@@ -69,20 +69,29 @@ app.delete("/api/products/:id", (req, res) => {
 
 app.patch("/api/products/:id", (req, res) => {
   const products = readJSON("products.json");
-  const prodId = req.params.id; // string comparison
+  const prodId = req.params.id;
   const product = products.find(p => p.id === prodId);
   if (!product) return res.status(404).json({ message: "Product not found" });
 
+  // Handle stock change separately (from checkout)
   if (typeof req.body.quantityChange === "number") {
     product.quantity = (product.quantity || 0) + req.body.quantityChange;
     if (product.quantity < 0) product.quantity = 0;
   }
 
+  // Update other fields from admin edit
+  const { brand, name, price, img, stock, quantity } = req.body;
+  if (brand !== undefined) product.brand = brand;
+  if (name !== undefined) product.name = name;
+  if (price !== undefined) product.price = price;
+  if (img !== undefined) product.img = img;
+  if (stock !== undefined) product.stock = stock;
+  if (quantity !== undefined) product.quantity = quantity;
+
   writeJSON("products.json", products);
   broadcast({ type: "products-update", data: products });
   res.json({ message: "Product updated!", product });
 });
-
 
 
 
