@@ -14,7 +14,7 @@ if (loginForm) {
 
     if (email === adminEmail && password === adminPassword) {
       localStorage.setItem("gentry_admin", "true");
-      window.location.href = "./admin-dashboard.html";
+      window.location.href = "/admin-dashboard.html";
     } else {
       document.getElementById("loginMsg").textContent = "Invalid credentials";
     }
@@ -23,12 +23,12 @@ if (loginForm) {
 
 const mainEl = document.querySelector("main");
 if (mainEl && localStorage.getItem("gentry_admin") !== "true") {
-  window.location.href = "./admin-login.html";
+  window.location.href = "/admin-login.html";
 }
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
   localStorage.removeItem("gentry_admin");
-  window.location.href = "./admin-login.html";
+  window.location.href = "/admin-login.html";
 });
 
 // FETCH HELPER
@@ -51,21 +51,38 @@ async function renderUsers(users = []) {
   users.forEach(u => {
     const tr = document.createElement("tr");
     ["id", "name", "email", "blocked"].forEach(key => {
-      const td = document.createElement("td");
-      td.className = "p-2";
+    const td = document.createElement("td");
+    td.className = "p-2";
+    if (key === "blocked") {
+      // Swap true/false for display
+      td.textContent = u[key] ? "Blocked" : "Active";
+    } else {
       td.textContent = u[key];
-      tr.appendChild(td);
-    });
+    }
+    tr.appendChild(td);
+  });
 
     const tdActions = document.createElement("td");
     tdActions.className = "p-2 flex gap-2";
 
     const btnBlock = document.createElement("button");
-    btnBlock.className = "blockBtn bg-yellow-400 px-2 rounded";
-    btnBlock.textContent = "Toggle Block";
+    btnBlock.className = `px-3 py-1 rounded font-semibold w-24 text-center ${
+      u.blocked ? "bg-green-600" : "bg-yellow-400"
+    }`;
+    btnBlock.textContent = u.blocked ? "Unblock" : "Block";
+
     btnBlock.addEventListener("click", async () => {
       await fetchData(`${BASE_URL}/api/users/${u.id}/toggle-block`, { method: "PATCH" });
+
+      u.blocked = !u.blocked;
+
+      btnBlock.textContent = u.blocked ? "Unblock" : "Block";
+      btnBlock.className = `px-3 py-1 rounded font-semibold w-24 text-center ${
+        u.blocked ? "bg-green-600" : "bg-yellow-400"
+      }`;
     });
+
+
 
     const btnDelete = document.createElement("button");
     btnDelete.className = "deleteBtn bg-red-600 px-2 rounded";
@@ -101,8 +118,8 @@ async function renderProducts(products = []) {
 
     const img = document.createElement("img");
     img.className = "w-16 h-16 object-contain";
-    img.src = p.img || "watches/placeholder.avif"; 
     tdImg.appendChild(img);
+    tr.appendChild(tdImg);
 
     const tdActions = document.createElement("td");
     tdActions.className = "p-2 flex gap-2";

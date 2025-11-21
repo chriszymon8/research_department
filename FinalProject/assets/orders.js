@@ -52,10 +52,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       tr.appendChild(tdId);
 
       // User
-      const tdUser = document.createElement("td");
-      tdUser.textContent = order.userEmail || "Unknown";
-      tdUser.className = "p-2";
-      tr.appendChild(tdUser);
+      // Inside renderOrders function
+      // Add User ID column
+      const tdUserId = document.createElement("td");
+      tdUserId.textContent = order.userId || "N/A";
+      tdUserId.className = "p-2";
+      tr.appendChild(tdUserId);
+
+// Make sure your table header has <th>User ID</th> before appending tbody
+
 
       // Items
       const tdItems = document.createElement("td");

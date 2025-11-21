@@ -291,34 +291,123 @@ function renderProductDetail() {
 
 // ----------------- Cart page -----------------
 function renderCartPage(){
-  const container = document.getElementById('cartContainer'); if(!container) return;
-  const cart = getCart();
-  while(container.firstChild) container.removeChild(container.firstChild);
-  if(!cart || !cart.length){ const p = document.createElement('p'); p.className='text-gray-400'; p.textContent='Your cart is empty.'; container.appendChild(p); return; }
-  let total=0;
-  const wrapper = document.createElement('div'); wrapper.className='space-y-4';
-  cart.forEach(item=>{ total+=(item.price||0)*(item.qty||0);
-    const row = document.createElement('div'); row.className='flex items-center justify-between bg-gray-900 p-3 rounded';
-    const left = document.createElement('div'); left.className='flex items-center gap-4';
-    const img = document.createElement('img'); img.src=item.img||'assets/watches/placeholder.avif'; img.className='w-20 h-20 object-cover rounded';
-    const info = document.createElement('div'); const title=document.createElement('div'); title.className='font-semibold'; title.textContent=item.name;
-    const qty=document.createElement('div'); qty.className='text-sm text-gray-400'; qty.textContent=`₱${numberWithCommas(item.price)} x ${item.qty}`;
-    info.appendChild(title); info.appendChild(qty); left.appendChild(img); left.appendChild(info);
-    const right=document.createElement('div'); const removeBtn=document.createElement('button'); removeBtn.className='text-sm text-red-400'; removeBtn.textContent='Remove';
-    removeBtn.addEventListener('click',()=>removeFromCart(item.id)); right.appendChild(removeBtn);
-    row.appendChild(left); row.appendChild(right); wrapper.appendChild(row);
-  });
-  const totalDiv=document.createElement('div'); totalDiv.className='mt-4 p-4 bg-gray-900 rounded flex items-center justify-between';
-  const label=document.createElement('div'); label.className='text-gray-400'; label.textContent='Total';
-  const amount=document.createElement('div'); amount.className='font-bold text-amber-300'; amount.textContent=`₱${numberWithCommas(total)}`;
-  totalDiv.appendChild(label); totalDiv.appendChild(amount);
-  const controls=document.createElement('div'); controls.className='mt-4 flex gap-3';
-  const checkoutBtn=document.createElement('button'); checkoutBtn.className='px-6 py-3 bg-amber-400 text-black rounded'; checkoutBtn.textContent='Checkout'; checkoutBtn.addEventListener('click',checkout);
-  const clearBtn=document.createElement('button'); clearBtn.className='px-6 py-3 border border-gray-700 rounded'; clearBtn.textContent='Clear'; clearBtn.addEventListener('click',clearCart);
-  controls.appendChild(checkoutBtn); controls.appendChild(clearBtn);
-  wrapper.appendChild(totalDiv); wrapper.appendChild(controls);
-  container.appendChild(wrapper);
+    const container = document.getElementById('cartContainer'); 
+    if(!container) return;
+    const cart = getCart();
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    if(!cart || !cart.length){ 
+        const p = document.createElement('p'); 
+        p.className='text-gray-400'; 
+        p.textContent='Your cart is empty.'; 
+        container.appendChild(p); 
+        return; 
+    }
+
+    let total = 0;
+    const wrapper = document.createElement('div'); 
+    wrapper.className = 'space-y-4';
+
+    cart.forEach(item => {
+        total += (item.price||0)*(item.qty||0);
+
+        const row = document.createElement('div'); 
+        row.className = 'flex items-center justify-between bg-gray-900 p-3 rounded';
+
+        const left = document.createElement('div'); 
+        left.className='flex items-center gap-4';
+
+        const img = document.createElement('img'); 
+        img.src = item.img || 'assets/watches/placeholder.avif'; 
+        img.className='w-20 h-20 object-cover rounded';
+
+        const info = document.createElement('div'); 
+        const title = document.createElement('div'); 
+        title.className='font-semibold'; 
+        title.textContent = item.name;
+
+        // Quantity controls
+        const qtyContainer = document.createElement('div'); 
+        qtyContainer.className = 'flex items-center gap-2 mt-1 text-sm';
+
+        const minusBtn = document.createElement('button'); 
+        minusBtn.textContent = '–'; 
+        minusBtn.className='px-2 bg-gray-700 rounded';
+        minusBtn.addEventListener('click', () => {
+            if(item.qty > 1) item.qty--;
+            saveCart(cart);
+            renderCartPage();
+        });
+
+        const qtyText = document.createElement('span'); 
+        qtyText.textContent = item.qty;
+
+        const plusBtn = document.createElement('button'); 
+        plusBtn.textContent = '+'; 
+        plusBtn.className='px-2 bg-gray-700 rounded';
+        plusBtn.addEventListener('click', () => {
+            item.qty++;
+            saveCart(cart);
+            renderCartPage();
+        });
+
+        qtyContainer.appendChild(minusBtn);
+        qtyContainer.appendChild(qtyText);
+        qtyContainer.appendChild(plusBtn);
+
+        const price = document.createElement('div'); 
+        price.className='text-gray-400'; 
+        price.textContent = `₱${numberWithCommas(item.price)}`;
+
+        info.appendChild(title);
+        info.appendChild(qtyContainer);
+        info.appendChild(price);
+
+        left.appendChild(img);
+        left.appendChild(info);
+
+        const right = document.createElement('div'); 
+        const removeBtn = document.createElement('button'); 
+        removeBtn.className='text-sm text-red-400'; 
+        removeBtn.textContent='Remove';
+        removeBtn.addEventListener('click', ()=>removeFromCart(item.id)); 
+        right.appendChild(removeBtn);
+
+        row.appendChild(left); 
+        row.appendChild(right); 
+        wrapper.appendChild(row);
+    });
+
+    // Total and controls
+    const totalDiv = document.createElement('div'); 
+    totalDiv.className='mt-4 p-4 bg-gray-900 rounded flex items-center justify-between';
+    const label = document.createElement('div'); 
+    label.className='text-gray-400'; 
+    label.textContent='Total';
+    const amount = document.createElement('div'); 
+    amount.className='font-bold text-amber-300'; 
+    amount.textContent=`₱${numberWithCommas(cart.reduce((sum,i)=>sum+(i.price*i.qty),0))}`;
+    totalDiv.appendChild(label); 
+    totalDiv.appendChild(amount);
+
+    const controls = document.createElement('div'); 
+    controls.className='mt-4 flex gap-3';
+    const checkoutBtn = document.createElement('button'); 
+    checkoutBtn.className='px-6 py-3 bg-amber-400 text-black rounded hover:bg-amber-500 transition'; 
+    checkoutBtn.textContent='Checkout'; 
+    checkoutBtn.addEventListener('click',checkout);
+    const clearBtn = document.createElement('button'); 
+    clearBtn.className='px-6 py-3 border border-gray-700 rounded hover:bg-gray-700 transition'; 
+    clearBtn.textContent='Clear'; 
+    clearBtn.addEventListener('click',clearCart);
+    controls.appendChild(checkoutBtn); 
+    controls.appendChild(clearBtn);
+
+    wrapper.appendChild(totalDiv); 
+    wrapper.appendChild(controls);
+    container.appendChild(wrapper);
 }
+
 // ---------------- CART FUNCTIONS ----------------
 
 // Remove a product from cart by ID
@@ -357,42 +446,46 @@ function checkout() {
 
     // Create order object
     const order = {
+        userId: user.id || "guest",
         userEmail: user.email || "guest@example.com",
         items: cart.map(item => ({ name: item.name, id: item.id, qty: item.qty, price: item.price })),
         total: cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 0), 0),
         date: new Date().toISOString()
     };
 
-    // Send order to backend
+    // Send order to server
     fetch("https://research-department.onrender.com/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order)
-    })
-    .then(res => {
-        if (!res.ok) return Promise.reject('Failed to place order');
-        return res.json();
-    })
-    .then(data => {
-        // For each item in cart, reduce stock in backend
-        cart.forEach(item => {
-            // Calculate new quantity
-            fetch(`https://research-department.onrender.com/api/products/${item.id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ quantityChange: -item.qty }) // send negative value to reduce stock
-            });
-        });
+    }).then(res => {
+        if (res.ok) {
+            // Clear cart
+            localStorage.removeItem('gentry_cart');
+            updateCartCounts();
+            renderCartPage();
 
-        // Clear cart after successful order
-        clearCart();
-        showToast(`Order placed! Order ID: ${data.order?.id || "N/A"}`, 'success');
-    })
-    .catch(err => {
-        console.error(err);
-        showToast('Failed to place order', 'error');
+            // Show center popup
+            showCheckoutPopup();
+
+            // Redirect to orders page after 1.5s
+            setTimeout(() => window.location.href = "orders.html", 1500);
+        } else {
+            showToast('Checkout failed', 'error');
+        }
     });
 }
+
+// ----------------- Centered Checkout Popup -----------------
+function showCheckoutPopup() {
+    const popup = document.createElement('div');
+    popup.textContent = "✅ Successfully Checkout!";
+    popup.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 text-white text-xl font-semibold p-6 rounded-lg";
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.remove(), 1500);
+}
+
 
 
 
